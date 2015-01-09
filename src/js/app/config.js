@@ -1,10 +1,3 @@
-// app.js
-// create our angular app and inject ngAnimate and ui-router 
-// =============================================================================
-var app = angular.module('App', ['ui.router']);
-
-// configuring our routes 
-// =============================================================================
 app.config(function($stateProvider, $urlRouterProvider) {
     
   $stateProvider

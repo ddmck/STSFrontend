@@ -6,6 +6,7 @@ var concat = require('gulp-concat');
 var connect = require('gulp-connect');
 var autoprefixer = require('gulp-autoprefixer');
 var stdlib = require('./stdlib');
+var appfiles = require('./appfiles');
 var plumber = require('gulp-plumber');
 var gutil = require('gulp-util');
 var s3 = require("gulp-s3");
@@ -33,18 +34,17 @@ gulp.task('sass', function() {
 
 gulp.task('scripts', function() {
     // Single entry point to browserify
-    gulp.src('src/js/app.js')
-      .pipe(plumber({
-        errorHandler: onError
-      }))
-      .pipe(gulp.dest('./build/js'))
-      .pipe(connect.reload());
+    return gulp.src(appfiles.files)
+    .pipe(concat('app.js'))
+    .pipe(gulp.dest('./build/js/'))
+    .pipe(connect.reload());
 });
 
 gulp.task('lib', function(){
   return gulp.src(stdlib.files)
     .pipe(concat('lib.js'))
-    .pipe(gulp.dest('./build/js/'));
+    .pipe(gulp.dest('./build/js/'))
+    .pipe(connect.reload());
 });
 
 gulp.task('rev', ['sass', 'scripts'], function() {
@@ -58,12 +58,13 @@ gulp.task('rev', ['sass', 'scripts'], function() {
 gulp.task('site', function(){
   gulp.src('src/index.html').pipe(gulp.dest('build/'));
   gulp.src('src/partials/*').pipe(gulp.dest('build/partials/'));
+  gulp.src('src/templates/*').pipe(gulp.dest('build/templates/'));
 });
 
 gulp.task('watch', ['sass', 'scripts', 'lib', 'site'], function() {
   gulp.watch('src/scss/**/*.scss', ['sass']);
   gulp.watch('src/js/**/*.*', ['scripts']);
-  gulp.watch(['src/index.html', 'src/partials/*'], ['site']);
+  gulp.watch(['src/index.html', 'src/partials/*', 'src/templates/*'], ['site']);
   gulp.watch('./stdlib.js', ['lib']);
   // gulp.watch()
 });
