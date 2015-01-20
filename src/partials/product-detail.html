@@ -1,0 +1,24 @@
+<div class="side-image">
+  <div class="images-wrapper" ng-style="{'background-image':'url('+ product.large_image_url +')'}"></div>
+    <div class="side-image-content">
+      <h4>{{product.brand_name}}</h4>
+      <h1>{{product.name}}</h1>
+      <p>{{product.description}}</p>
+      <div class="dropdown">
+        <div class="dropdown-container">
+          <p class="dropdown-description">Sizes</p>
+          <p class="dropdown-button">Click to Select</p>
+          <ul class="dropdown-menu dropdown-select">
+            <li>Small</li>
+            <li>Medium</li>
+            <li>Large</li>
+            <li>Extra Large</li>
+          </ul>
+        </div>
+      </div>
+      <a class="button buy-button" target="_blank" ng-href="{{product.url}}">Buy</a> 
+  </div>
+</div>  
+
+  
+

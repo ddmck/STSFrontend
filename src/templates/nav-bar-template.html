@@ -1,37 +1,57 @@
-<div class="contain-to-grid sticky">
-  <nav class="top-bar" data-topbar role="navigation" data-options="sticky_on: large">
-    <ul class="title-area">
-      <li class="name">
-        <h1><a>FETCH MY FASHION</a></h1>
-      </li>
-       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-    </ul>
-    <section class="top-bar-section">
-      <!-- Left Nav Section -->
-      <ul class="left">
-        <li class="active"><a>New</a></li>
-        <li><a>Hot</a></li>
-        <li><a>Blog</a></li>
-      </ul>
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <li class="has-dropdown">
-          <a href="#">Mens</a>
-          <ul class="dropdown">
-            <li><a href="#">First link in dropdown</a></li>
-            <li class="active"><a href="#">Active link in dropdown</a></li>
+<header class="centered-navigation" role="banner">
+  <div class="centered-navigation-wrapper">
+    <a href="javascript:void(0)" class="mobile-logo">
+      FETCH MY FASHION
+    </a>
+    <a href="javascript:void(0)" id="js-centered-navigation-mobile-menu" class="centered-navigation-mobile-menu">MENU</a>
+    <nav role="navigation">
+      <ul id="js-centered-navigation-menu" class="centered-navigation-menu show">
+        <li class="nav-link" ui-sref-active="active"><a ui-sref="products.new">New</a></li>
+        <li class="nav-link" ui-sref-active="active"><a ui-sref="products.hot">Hot</a></li>
+        <li class="nav-link" ui-sref-active="active"><a ui-sref="products.new">Blog</a></li>
+        <li class="nav-link logo">
+          <a href="javascript:void(0)" class="logo">
+            FETCH MY FASHION
+          </a>
+        </li>
+        <li class="nav-link more"><a href="javascript:void(0)">Mens</a>
+          <ul class="submenu">
+            <li><a href="javascript:void(0)">Submenu Item</a></li>
+            <li><a href="javascript:void(0)">Another Item</a></li>
+            <li class="more"><a href="javascript:void(0)">Item with submenu</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0)">Sub-submenu Item</a></li>
+                <li><a href="javascript:void(0)">Another Item</a></li>
+              </ul>
+            </li>
+            <li class="more"><a href="javascript:void(0)">Womens</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0)">Sub-submenu</a></li>
+                <li><a href="javascript:void(0)">An Item</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
-        <li class="has-dropdown">
-          <a href="#">Womens</a>
-          <ul class="dropdown">
-            <li><a href="#">First link in dropdown</a></li>
-            <li class="active"><a href="#">Active link in dropdown</a></li>
+        <li class="nav-link more"><a href="javascript:void(0)">Womens</a>
+          <ul class="submenu">
+            <li><a href="javascript:void(0)">Submenu Item</a></li>
+            <li><a href="javascript:void(0)">Another Item</a></li>
+            <li class="more"><a href="javascript:void(0)">Item with submenu</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0)">Sub-submenu Item</a></li>
+                <li><a href="javascript:void(0)">Another Item</a></li>
+              </ul>
+            </li>
+            <li class="more"><a href="javascript:void(0)">Womens</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0)">Sub-submenu</a></li>
+                <li><a href="javascript:void(0)">An Item</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
-        <li><a>Sign In</a></li>
+        <li class="nav-link"><a href="javascript:void(0)">Sign up</a></li>
       </ul>
-    </section>
-  </nav>
-</div>
+    </nav>
+  </div>
+</header>

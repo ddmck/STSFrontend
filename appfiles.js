@@ -9,6 +9,7 @@ module.exports =
       resolve('config'),
       resolve('directives'),
       resolve('factories'),
-      resolve('controllers')
+      resolve('controllers'),
+      resolve('foundation_init')
     ]
   }
