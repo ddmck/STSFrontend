@@ -28,11 +28,22 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       templateUrl: 'partials/product-detail.html',
       controller: function($scope, $stateParams, $http) {
         // get the id
+        $scope.showMenu = false;
         $scope.id = $stateParams.productID;
+        $scope.size = null;
         $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
           $scope.product = data;
           window.scrollTo(0, 0);
         });
+
+        $scope.toggleMenu = function(){
+          $scope.showMenu = !$scope.showMenu;
+        };
+
+        $scope.selectSize = function(size){
+          $scope.size = size;
+          $scope.showMenu = false;
+        }
 
         // $(document).ready(function(){
         //   $(".dropdown-button").click(function() {

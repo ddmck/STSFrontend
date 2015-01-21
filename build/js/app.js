@@ -1,6 +1,6 @@
 var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'ui.router', 'ng-token-auth', 'ipCookie']);
-// var backendUrl = "http://localhost:3000/"; 
-var backendUrl = "https://www.shopshopgo.com/"; 
+var backendUrl = "http://localhost:3000/"; 
+// var backendUrl = "https://www.shopshopgo.com/"; 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     
   $stateProvider
@@ -31,11 +31,22 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       templateUrl: 'partials/product-detail.html',
       controller: function($scope, $stateParams, $http) {
         // get the id
+        $scope.showMenu = false;
         $scope.id = $stateParams.productID;
+        $scope.size = null;
         $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
           $scope.product = data;
           window.scrollTo(0, 0);
         });
+
+        $scope.toggleMenu = function(){
+          $scope.showMenu = !$scope.showMenu;
+        };
+
+        $scope.selectSize = function(size){
+          $scope.size = size;
+          $scope.showMenu = false;
+        }
 
         // $(document).ready(function(){
         //   $(".dropdown-button").click(function() {
@@ -429,5 +440,13 @@ app.controller('SearchController', ['Filters', 'Products', 'Categories', functio
 
 }]);
 $(document).ready(function(){
-  $(document).foundation();
+  $(".dropdown-button").click(function() {
+    $(".dropdown-menu").toggleClass("show-menu");
+    $(".dropdown-menu > li").click(function(){
+      $(".dropdown-menu").removeClass("show-menu");
+    });
+    $(".dropdown-menu.dropdown-select > li").click(function() {
+      $(".dropdown-button").html($(this).html());
+    });
+  });
 });
