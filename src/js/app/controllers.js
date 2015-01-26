@@ -147,14 +147,12 @@ app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categori
   };
 }]);
 
-app.controller('SubCategoryController', ['Filters', 'Products', 'Categories', 'SubCategories', function(Filters, Products, Categories, SubCategories){
-  var subCatCtrl = this;
-  subCatCtrl.subCategories = [];
-  SubCategories.fetchSubCategories();
-  subCatCtrl.subCategories = SubCategories;
-  this.filters = Filters;
+app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categories', 'SubCategories', function($scope, Filters, Products, Categories, SubCategories){
+  $scope.subCategories = SubCategories;
+  $scope.subCategories.fetchSubCategories();
+  $scope.filters = Filters;
 
-  this.setSubCat = function(sub_cat_id){
+  $scope.setSubCat = function(sub_cat_id){
     if (sub_cat_id === "") {
       Filters.removeFilter("subCategory");
     } else {

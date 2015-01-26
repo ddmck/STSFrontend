@@ -48,7 +48,7 @@ app.factory('Categories', [ '$http', function($http){
   }
 }]);
 
-app.factory('SubCategories', [ '$http', function($http){
+app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   var subCategories = [];
   return {
     fetchSubCategories: function(){
@@ -58,6 +58,11 @@ app.factory('SubCategories', [ '$http', function($http){
     },
     list: function(){
       return subCategories;
+    },
+    availableList: function(){
+      return _.filter(subCategories, function(subCat){
+        return subCat.category_id === Filters.getFilters().category
+      })
     }
   }
 }]);

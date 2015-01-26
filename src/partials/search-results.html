@@ -19,10 +19,13 @@
         </option>
       </select>
     </div>
-    <div class="filter">
-      <label>Sub Categories</label>
-      <select>
-        <option>Hi</option>
+    <div class="filter" ng-controller="SubCategoryController" >
+      <label ng-show="filters.getFilters().category">Sub Categories</label>
+      <select ng-model="subCatId" ng-change="setSubCat(subCatId)" ng-show="filters.getFilters().category">
+        <option value="">Sub Category</option>
+        <option ng-repeat="subCat in subCategories.availableList()" value={{subCat.id}} ng-selected="filters.getFilters().subCategory === subCat.id">
+          {{ subCat.name }}
+        </option>
       </select>
     </div>
   </div>

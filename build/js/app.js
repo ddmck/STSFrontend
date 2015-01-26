@@ -220,7 +220,7 @@ app.factory('Categories', [ '$http', function($http){
   }
 }]);
 
-app.factory('SubCategories', [ '$http', function($http){
+app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   var subCategories = [];
   return {
     fetchSubCategories: function(){
@@ -230,6 +230,11 @@ app.factory('SubCategories', [ '$http', function($http){
     },
     list: function(){
       return subCategories;
+    },
+    availableList: function(){
+      return _.filter(subCategories, function(subCat){
+        return subCat.category_id === Filters.getFilters().category
+      })
     }
   }
 }]);
@@ -438,14 +443,12 @@ app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categori
   };
 }]);
 
-app.controller('SubCategoryController', ['Filters', 'Products', 'Categories', 'SubCategories', function(Filters, Products, Categories, SubCategories){
-  var subCatCtrl = this;
-  subCatCtrl.subCategories = [];
-  SubCategories.fetchSubCategories();
-  subCatCtrl.subCategories = SubCategories;
-  this.filters = Filters;
+app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categories', 'SubCategories', function($scope, Filters, Products, Categories, SubCategories){
+  $scope.subCategories = SubCategories;
+  $scope.subCategories.fetchSubCategories();
+  $scope.filters = Filters;
 
-  this.setSubCat = function(sub_cat_id){
+  $scope.setSubCat = function(sub_cat_id){
     if (sub_cat_id === "") {
       Filters.removeFilter("subCategory");
     } else {
