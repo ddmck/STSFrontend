@@ -1,22 +1,15 @@
-<div class="side-image">
-  <div class="images-wrapper" ng-style="{'background-image':'url('+ product.large_image_url +')'}"></div>
+<section class="row">
+  <div class="side-image">
+    <div class="images-wrapper" ng-style="{'background-image':'url('+ product.large_image_url +')'}"></div>
     <div class="side-image-content">
       <h4>{{product.brand_name}}</h4>
       <h1>{{product.name}}</h1>
-      <p>{{product.description}}</p>
-      <div class="dropdown">
-        <div class="dropdown-container">
-          <p class="dropdown-description">Size</p>
-          <p class="dropdown-button" ng-click="toggleMenu()">{{size.name || "Click to Select"}}</p>
-          <ul class="dropdown-menu dropdown-select" ng-class="{'show-menu': showMenu}" >
-            <li ng-repeat="size in product.sizes" ng-click="selectSize(size)">{{size.name}}</li>
-          </ul>
-        </div>
-      </div>
       <p>{{ product.display_price | currency : '£' }}</p>
+      <div ng-size-dropdown></div>
+      <div ng-product-details></div>
       <a class="button buy-button" target="_blank" ng-href="{{product.url}}">Buy</a> 
-  </div>
-</div>  
-
+    </div>
+  </div>  
+</section>
   
 

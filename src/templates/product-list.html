@@ -1,0 +1,22 @@
+<section class="row">
+  <div class="cards" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="1" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
+    <div class="card" ng-repeat="product in products.products.getProducts() track by $index" ng-click="products.viewProduct(product)">
+      <div class="card-image">
+        <img ng-src="{{product.image_url}}" alt="">
+      </div>
+      <div class="card-header">
+        {{ product.brand_name }}
+      </div>
+      <div class="card-copy">
+        <p ng-bind-html="product.name"></p>
+      </div>
+      <div class="card-stats">
+        <ul>
+          <li>{{ product.display_price | currency : '£' }}</li>
+          <!-- <li>298<span>Things</span></li>
+          <li>923<span>Objects</span></li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

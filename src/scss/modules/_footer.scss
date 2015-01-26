@@ -19,7 +19,7 @@
   }
   //////////////////////////////////////////////////////////////////////////////////
 
-  $footer-background: desaturate(darken($brand-black, 20%), 30%);
+  $footer-background: $brand-black;
   $footer-color: $off-white;
   $footer-link-color: transparentize($footer-color, 0.3);
   $footer-disclaimer-color: transparentize($footer-color, 0.6);

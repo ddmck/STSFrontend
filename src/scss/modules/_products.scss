@@ -24,7 +24,7 @@
   $card-image-background: #DBD199;
   $card-image-hover-background: lighten($card-image-background, 5%);
   $card-stats-color: lighten($base-accent-color, 10%);
-  $card-padding-for-absolute-stats: 2.25em;
+  $card-padding-for-absolute-stats: 1.75em;
   $card-margin: 1em;
 
   @include flex-basis(15em);
@@ -42,7 +42,7 @@
 
   .card-image {
     overflow: hidden;
-    max-height: 290px;
+    max-height: 350px;
 
     img {
       @include transition (all 0.2s ease-in-out);

@@ -6,6 +6,11 @@
       <h1>Fashion Delivered Without the Wait</h1>
       <p>Its not getting better than this until someone invents a decent teleporter</p>  
     </div>
-    <button>Shop now</button>
+    <form class="search-bar" role="search" ng-controller="SearchController as SearchCtrl" ng-submit="SearchCtrl.updateSearch(searchString)">
+      <input type="search" ng-model="searchString" placeholder="Enter Search" />
+      <button type="submit">
+        <img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon.png" alt="Search Icon">
+      </button>
+    </form>
   </div>
 </div>

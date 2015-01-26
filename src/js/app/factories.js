@@ -8,7 +8,7 @@ app.factory('Filters', ['$location', function($location){
     },
     setFilter: function(name, value){
       filters[name] = value;
-      $location.search(name, value);
+      // $location.search(name, value);
     },
     removeFilter: function(name){
       delete filters[name];
@@ -44,6 +44,7 @@ app.factory('Categories', [ '$http', function($http){
     list: function(){
       return categories;
     }
+
   }
 }]);
 

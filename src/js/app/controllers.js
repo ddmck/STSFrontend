@@ -112,8 +112,8 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   };
 }]);
 
-app.controller('GenderController', ['Filters', 'Products', function(Filters, Products){
-  this.setGender = function(gender) {
+app.controller('GenderController', ['$scope', 'Filters', 'Products', function($scope, Filters, Products){
+  $scope.setGender = function(gender) {
     if ( gender === "mens") {
       Filters.setFilter("gender", "male");
     } else if ( gender === "womens") {
@@ -127,14 +127,14 @@ app.controller('GenderController', ['Filters', 'Products', function(Filters, Pro
   };
 }]);
 
-app.controller('CategoryController', ['Filters', 'Products', 'Categories', function(Filters, Products, Categories){
-  var categoryCtrl = this;
-  categoryCtrl.categories = [];
+app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categories', function($scope, Filters, Products, Categories){
+  
+  $scope.categories = [];
   Categories.fetchCategories();
-  categoryCtrl.categories = Categories;
-  this.filters = Filters;
-
-  this.setCategory = function(cat_id){
+  $scope.categories = Categories;
+  $scope.filters = Filters;
+  console.log($scope.categories);
+  $scope.setCategory = function(cat_id){
     if (cat_id === "") {
       Filters.removeFilter("category");
     } else {
@@ -166,15 +166,17 @@ app.controller('SubCategoryController', ['Filters', 'Products', 'Categories', 'S
   };
 }]);
 
-app.controller('SearchController', ['Filters', 'Products', 'Categories', function(Filters, Products, Categories){
+app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories', function($state, Filters, Products, Categories){
   this.updateSearch = function(searchString){
     if (searchString === null || searchString === undefined || searchString === '' || searchString === ' ') {
       return
     } else {
+      Filters.resetAll();
       Filters.setFilter("searchString", searchString);
       Products.resetProducts();
       Products.resetPage();
       Products.fetchProducts();
+      $state.go('search', {searchString: searchString})
     }
   }
 
@@ -198,4 +200,12 @@ app.controller('SearchController', ['Filters', 'Products', 'Categories', functio
     
   };
 
+}]);
+
+app.controller('ToggleController', ['$scope', function($scope){
+  $scope.open = false;
+
+  $scope.toggle = function(){
+    $scope.open = !$scope.open;
+  } 
 }]);

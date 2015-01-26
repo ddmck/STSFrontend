@@ -16,11 +16,28 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .state('products.new', {
       url: '/new',
       templateUrl: 'partials/new.html'
+      // controller: function
     })
 
     .state('products.hot', {
       url: '/hot',
       templateUrl: 'partials/hot.html'
+    })
+
+    .state('categoryView', {
+      url: '/products/:gender/{catID}-{category}',
+      templateUrl: 'partials/category-view.html',
+      controller: function($scope, $stateParams, Products, Filters, Categories){
+        console.log($stateParams);
+        console.log(Products);
+        console.log(Filters);
+        Products.resetProducts();
+        Products.resetPage();
+        Filters.resetAll();
+        Filters.setFilter('category', $stateParams.catID);
+        Filters.setFilter('gender', $stateParams.gender);
+        Products.fetchProducts();
+      }
     })
 
     .state('productDetail', {
@@ -44,20 +61,17 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
           $scope.size = size;
           $scope.showMenu = false;
         }
+      }
+    })
 
-        // $(document).ready(function(){
-        //   $(".dropdown-button").click(function() {
-        //     $(".dropdown-menu").toggleClass("show-menu");
-        //     $(".dropdown-menu > li").click(function(){
-        //       $(".dropdown-menu").removeClass("show-menu");
-        //     });
-        //     $(".dropdown-menu.dropdown-select > li").click(function() {
-        //       $(".dropdown-button").html($(this).html());
-        //     });
-        //   });
-        // });
-
-
+    .state('search', {
+      url: '/search?searchString&category',
+      templateUrl: "partials/search-results.html",
+      controller: function($scope, $stateParams, Products){
+        $scope.searchString = $stateParams.searchString;
+        Products.resetProducts();
+        Products.resetPage();
+        Products.fetchProducts();
       }
     })
 

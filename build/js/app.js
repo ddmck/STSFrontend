@@ -1,5 +1,5 @@
 var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'ui.router', 'ng-token-auth', 'ipCookie']);
-var backendUrl = "http://localhost:3000/"; 
+var backendUrl = "http://localhost:3000/";
 // var backendUrl = "https://www.shopshopgo.com/"; 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     
@@ -19,11 +19,28 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .state('products.new', {
       url: '/new',
       templateUrl: 'partials/new.html'
+      // controller: function
     })
 
     .state('products.hot', {
       url: '/hot',
       templateUrl: 'partials/hot.html'
+    })
+
+    .state('categoryView', {
+      url: '/products/:gender/{catID}-{category}',
+      templateUrl: 'partials/category-view.html',
+      controller: function($scope, $stateParams, Products, Filters, Categories){
+        console.log($stateParams);
+        console.log(Products);
+        console.log(Filters);
+        Products.resetProducts();
+        Products.resetPage();
+        Filters.resetAll();
+        Filters.setFilter('category', $stateParams.catID);
+        Filters.setFilter('gender', $stateParams.gender);
+        Products.fetchProducts();
+      }
     })
 
     .state('productDetail', {
@@ -47,20 +64,17 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
           $scope.size = size;
           $scope.showMenu = false;
         }
+      }
+    })
 
-        // $(document).ready(function(){
-        //   $(".dropdown-button").click(function() {
-        //     $(".dropdown-menu").toggleClass("show-menu");
-        //     $(".dropdown-menu > li").click(function(){
-        //       $(".dropdown-menu").removeClass("show-menu");
-        //     });
-        //     $(".dropdown-menu.dropdown-select > li").click(function() {
-        //       $(".dropdown-button").html($(this).html());
-        //     });
-        //   });
-        // });
-
-
+    .state('search', {
+      url: '/search?searchString&category',
+      templateUrl: "partials/search-results.html",
+      controller: function($scope, $stateParams, Products){
+        $scope.searchString = $stateParams.searchString;
+        Products.resetProducts();
+        Products.resetPage();
+        Products.fetchProducts();
       }
     })
 
@@ -94,7 +108,17 @@ app.directive('ngNavBar', function(){
     replace: true,
     transclude: true,
     compile: function() {
-      $(document).foundation();
+      var menuToggle = $('#js-mobile-menu').unbind();
+      $('#js-navigation-menu').removeClass("show");
+
+      menuToggle.on('click', function(e) {
+        e.preventDefault();
+        $('#js-navigation-menu').slideToggle(function(){
+          if($('#js-navigation-menu').is(':hidden')) {
+            $('#js-navigation-menu').removeAttr('style');
+          }
+        });
+      });
     }
   }
 });
@@ -120,6 +144,32 @@ app.directive('ngFooter', function(){
   }
 });
 
+app.directive('ngSizeDropdown', function(){
+  return {
+    restrict: 'A',
+    templateUrl: 'templates/size-dropdown.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngProductDetails', function(){
+  return {
+    restrict: 'A',
+    templateUrl: 'templates/product-details.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngProductList', function(){
+  return {
+    restrict: "A",
+    templateUrl: 'templates/product-list.html',
+    replace: true,
+    transclude: true
+  }
+});
 app.factory('Filters', ['$location', function($location){
   // Hacky way to prevent location being set to empty string causing refresh
   var filters = {};
@@ -130,7 +180,7 @@ app.factory('Filters', ['$location', function($location){
     },
     setFilter: function(name, value){
       filters[name] = value;
-      $location.search(name, value);
+      // $location.search(name, value);
     },
     removeFilter: function(name){
       delete filters[name];
@@ -166,6 +216,7 @@ app.factory('Categories', [ '$http', function($http){
     list: function(){
       return categories;
     }
+
   }
 }]);
 
@@ -352,8 +403,8 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   };
 }]);
 
-app.controller('GenderController', ['Filters', 'Products', function(Filters, Products){
-  this.setGender = function(gender) {
+app.controller('GenderController', ['$scope', 'Filters', 'Products', function($scope, Filters, Products){
+  $scope.setGender = function(gender) {
     if ( gender === "mens") {
       Filters.setFilter("gender", "male");
     } else if ( gender === "womens") {
@@ -367,14 +418,14 @@ app.controller('GenderController', ['Filters', 'Products', function(Filters, Pro
   };
 }]);
 
-app.controller('CategoryController', ['Filters', 'Products', 'Categories', function(Filters, Products, Categories){
-  var categoryCtrl = this;
-  categoryCtrl.categories = [];
+app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categories', function($scope, Filters, Products, Categories){
+  
+  $scope.categories = [];
   Categories.fetchCategories();
-  categoryCtrl.categories = Categories;
-  this.filters = Filters;
-
-  this.setCategory = function(cat_id){
+  $scope.categories = Categories;
+  $scope.filters = Filters;
+  console.log($scope.categories);
+  $scope.setCategory = function(cat_id){
     if (cat_id === "") {
       Filters.removeFilter("category");
     } else {
@@ -406,15 +457,17 @@ app.controller('SubCategoryController', ['Filters', 'Products', 'Categories', 'S
   };
 }]);
 
-app.controller('SearchController', ['Filters', 'Products', 'Categories', function(Filters, Products, Categories){
+app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories', function($state, Filters, Products, Categories){
   this.updateSearch = function(searchString){
     if (searchString === null || searchString === undefined || searchString === '' || searchString === ' ') {
       return
     } else {
+      Filters.resetAll();
       Filters.setFilter("searchString", searchString);
       Products.resetProducts();
       Products.resetPage();
       Products.fetchProducts();
+      $state.go('search', {searchString: searchString})
     }
   }
 
@@ -439,14 +492,12 @@ app.controller('SearchController', ['Filters', 'Products', 'Categories', functio
   };
 
 }]);
-$(document).ready(function(){
-  $(".dropdown-button").click(function() {
-    $(".dropdown-menu").toggleClass("show-menu");
-    $(".dropdown-menu > li").click(function(){
-      $(".dropdown-menu").removeClass("show-menu");
-    });
-    $(".dropdown-menu.dropdown-select > li").click(function() {
-      $(".dropdown-button").html($(this).html());
-    });
-  });
-});
+
+app.controller('ToggleController', ['$scope', function($scope){
+  $scope.open = false;
+
+  $scope.toggle = function(){
+    $scope.open = !$scope.open;
+  } 
+}]);
+

@@ -1,0 +1,30 @@
+<section class="row">
+  <h4>Showing results for {{searchString}}</h4>
+  <div class="search-tools">
+    <div class="filter">
+      <label>Gender</label>
+      <select ng-controller="GenderController" ng-model="genderId" ng-change="setGender(genderId)">
+        <option value="">Genders</option>
+        <option value="mens">Mens</option>
+        <option value="womens">Womens</option>
+      </select> 
+    </li>
+    </div>
+    <div class="filter">
+      <label>Categories</label>
+      <select ng-controller="CategoryController" ng-model="catId" ng-change="setCategory(catId)">
+        <option value="">Categories</option>
+        <option ng-repeat="category in categories.list()" value={{category.id}} ng-selected="filters.getFilters().category === category.id">
+          {{category.name}}
+        </option>
+      </select>
+    </div>
+    <div class="filter">
+      <label>Sub Categories</label>
+      <select>
+        <option>Hi</option>
+      </select>
+    </div>
+  </div>
+</section>
+<div ng-product-list></div>

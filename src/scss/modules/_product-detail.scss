@@ -1,3 +1,8 @@
+section.row {
+  @include outer-container;
+
+}
+
 .side-image {  
   ///////////////////////////////////////////////////////////////////////////////////
   $base-line-height: 1.5em !default;
@@ -18,20 +23,23 @@
   $side-image-content-background: #F9F9F9;
   $side-image-border: 1px solid darken(transparentize($side-image-background-bottom, 0.8), 30%);
 
-  background: $side-image-content-background;
-
+  // background: $side-image-content-background;
+  margin-top: 3em;
+  margin-bottom: 3em;
+  
   @include media($large-screen) {
     @include row(table);
   }
 
   .images-wrapper {
-    @include background(url('https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/mountains.png'), linear-gradient($side-image-background-top, $side-image-background-bottom), no-repeat $side-image-background-top scroll);
+    // @include background(url('https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/mountains.png'), linear-gradient($side-image-background-top, $side-image-background-bottom), no-repeat $side-image-background-top scroll);
     background-color: $side-image-content-background;
+    background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    border-bottom: $side-image-border;
+    // border-bottom: $side-image-border;
     display: block;
-    min-height: 12em;
+    min-height: 24em;
     padding: 3em;
 
     @include media($large-screen) {
@@ -39,13 +47,14 @@
       background-position: top right;
       background-size: contain;
       background-repeat: no-repeat;
-      border-right: $side-image-border;
+      // border-right: $side-image-border;
     }
   }
 
   .side-image-content {
     @include span-columns(12);
     padding: 1em 1em 4em 1em;
+    background: $side-image-content-background;
 
     @include media($large-screen) {
       @include span-columns(8);
