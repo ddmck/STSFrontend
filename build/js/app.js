@@ -1,6 +1,13 @@
-var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'ui.router', 'ng-token-auth', 'ipCookie']);
+var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'ui.router', 'ng-token-auth', 'ipCookie', 'LocalStorageModule']);
 var backendUrl = "http://localhost:3000/";
-// var backendUrl = "https://www.shopshopgo.com/"; 
+// var backendUrl = "https://www.shopshopgo.com/";
+app.config(function (localStorageServiceProvider) {
+  localStorageServiceProvider
+    .setPrefix('FetchMyFashion')
+    .setStorageCookieDomain('')
+    .setNotify(true, true);
+});
+
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     
   $stateProvider
@@ -8,7 +15,15 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     // route to show our landing page (/welcome)
     .state('welcome', {
       url: '/welcome',
-      templateUrl: 'partials/welcome.html'
+      templateUrl: 'partials/welcome.html',
+      controller: function($scope, localStorageService, WishlistItems){
+        if (localStorageService.get("gender")){
+          $scope.msg = "Welcome back!";
+        } else {
+          $scope.msg = "Fashion Delivered Without the Wait";
+        };
+        $scope.wishlist = WishlistItems;
+      }
     })
 
     .state('products', {
@@ -19,7 +34,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .state('products.new', {
       url: '/new',
       templateUrl: 'partials/new.html'
-      // controller: function
     })
 
     .state('products.hot', {
@@ -101,6 +115,8 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       apiUrl: backendUrl + 'api'
   });
 })
+
+
 app.directive('ngNavBar', function(){
   return {
     restrict: 'A',
@@ -239,18 +255,31 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   }
 }]);
 
-app.factory('WishlistItems', [ '$http', function($http){
-  var wishlistItems = [];
+app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, localStorageService){
+  if (!localStorageService.get("wishlistItems")){
+    localStorageService.set("wishlistItems", [])
+  };
+  var products = [];
   return {
-    fetchWishlistItems: function(){
-      // $http.get('http://localhost:3000/wishlist_items.json').success(function(data){
-      //   wishlistItems = data;
-      //   console.table(wishlistItems)
-      // });
-      wishlistItems = [];
+    fetchWishlistItemProducts: function(){
+      products = [];
+      var wishlistItems = localStorageService.get("wishlistItems");
+      _.forEach(wishlistItems, function(item){
+        $http.get('http://localhost:3000/products/' + item + '.json').success(function(data){
+          products.push(data);
+        });
+      });
+    },
+    listProducts: function(){
+      return products;
     },
     list: function(){
-      return wishlistItems;
+      return localStorageService.get("wishlistItems");
+    },
+    addToWishlistItems: function(product){
+      var wishlistItems = localStorageService.get("wishlistItems");
+      wishlistItems.push(product.id);
+      localStorageService.set("wishlistItems", wishlistItems);
     }
   }
 }]);
@@ -336,12 +365,13 @@ app.controller('UserRegistrationsController', ['$scope', '$auth', function($scop
 }]);
 
 
-app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', function($http, $state, Filters, Products, WishlistItems){
+app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', 'localStorageService', function($http, $state, Filters, Products, WishlistItems, localStorageService){
+  console.log("Cookie for gender: " + localStorageService.get("gender"))
   this.scrollActive = false;
   var scrollActive = this.scrollActive;
   var productCtrl = this;
   productCtrl.products = Products;
-  WishlistItems.fetchWishlistItems();
+  // WishlistItems.fetchWishlistItems();
 
   this.filters = Filters;
   
@@ -362,29 +392,29 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
     $state.go('productDetail', {productID: product.id})
   };
 
-  this.wishFor = function(product, userId){
-    if (!userId) {
-      $('#signInModal').foundation('reveal', 'open');
-    } else if (_.some(WishlistItems.list(), { 'product_id': product.id })){
-       index = _.findIndex(WishlistItems.list(), { 'product_id': product.id })
-       wishlistItem = WishlistItems.list()[index]
-       $http.delete(backendUrl + 'wishlist_items/' + wishlistItem.id + '.json', {
-       } ).success(function(data){
-        WishlistItems.fetchWishlistItems();
-       });
-    } else {
-      $http.post(backendUrl + 'wishlist_items.json', {wishlist_item: {
-        product_id: product.id
-      }} ).success(function(data){
-        WishlistItems.fetchWishlistItems();
-      });  
-    }
+  // this.wishFor = function(product, userId){
+  //   if (!userId) {
+  //     $('#signInModal').foundation('reveal', 'open');
+  //   } else if (_.some(WishlistItems.list(), { 'product_id': product.id })){
+  //      index = _.findIndex(WishlistItems.list(), { 'product_id': product.id })
+  //      wishlistItem = WishlistItems.list()[index]
+  //      $http.delete(backendUrl + 'wishlist_items/' + wishlistItem.id + '.json', {
+  //      } ).success(function(data){
+  //       WishlistItems.fetchWishlistItems();
+  //      });
+  //   } else {
+  //     $http.post(backendUrl + 'wishlist_items.json', {wishlist_item: {
+  //       product_id: product.id
+  //     }} ).success(function(data){
+  //       WishlistItems.fetchWishlistItems();
+  //     });  
+  //   }
     
-  }; 
+  // }; 
 
-  this.checkIfWishedFor = function(product_id){
-    return _.some(WishlistItems.list(), { 'product_id': product_id });
-  },                           
+  // this.checkIfWishedFor = function(product_id){
+  //   return _.some(WishlistItems.list(), { 'product_id': product_id });
+  // },                           
 
 
   this.openLink = function(product, userId){
@@ -408,7 +438,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   };
 }]);
 
-app.controller('GenderController', ['$scope', 'Filters', 'Products', function($scope, Filters, Products){
+app.controller('GenderController', ['$scope', 'Filters', 'Products', 'localStorageService', function($scope, Filters, Products, localStorageService){
   $scope.setGender = function(gender) {
     if ( gender === "mens") {
       Filters.setFilter("gender", "male");
@@ -417,6 +447,7 @@ app.controller('GenderController', ['$scope', 'Filters', 'Products', function($s
     } else if ( gender === "" ){
       Filters.removeFilter("gender")
     }
+    localStorageService.set("gender", Filters.getFilters().gender)
     Products.resetProducts();
     Products.resetPage()
     Products.fetchProducts();

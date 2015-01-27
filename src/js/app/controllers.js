@@ -46,7 +46,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   var scrollActive = this.scrollActive;
   var productCtrl = this;
   productCtrl.products = Products;
-  WishlistItems.fetchWishlistItems();
+  // WishlistItems.fetchWishlistItems();
 
   this.filters = Filters;
   
@@ -67,29 +67,29 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
     $state.go('productDetail', {productID: product.id})
   };
 
-  this.wishFor = function(product, userId){
-    if (!userId) {
-      $('#signInModal').foundation('reveal', 'open');
-    } else if (_.some(WishlistItems.list(), { 'product_id': product.id })){
-       index = _.findIndex(WishlistItems.list(), { 'product_id': product.id })
-       wishlistItem = WishlistItems.list()[index]
-       $http.delete(backendUrl + 'wishlist_items/' + wishlistItem.id + '.json', {
-       } ).success(function(data){
-        WishlistItems.fetchWishlistItems();
-       });
-    } else {
-      $http.post(backendUrl + 'wishlist_items.json', {wishlist_item: {
-        product_id: product.id
-      }} ).success(function(data){
-        WishlistItems.fetchWishlistItems();
-      });  
-    }
+  // this.wishFor = function(product, userId){
+  //   if (!userId) {
+  //     $('#signInModal').foundation('reveal', 'open');
+  //   } else if (_.some(WishlistItems.list(), { 'product_id': product.id })){
+  //      index = _.findIndex(WishlistItems.list(), { 'product_id': product.id })
+  //      wishlistItem = WishlistItems.list()[index]
+  //      $http.delete(backendUrl + 'wishlist_items/' + wishlistItem.id + '.json', {
+  //      } ).success(function(data){
+  //       WishlistItems.fetchWishlistItems();
+  //      });
+  //   } else {
+  //     $http.post(backendUrl + 'wishlist_items.json', {wishlist_item: {
+  //       product_id: product.id
+  //     }} ).success(function(data){
+  //       WishlistItems.fetchWishlistItems();
+  //     });  
+  //   }
     
-  }; 
+  // }; 
 
-  this.checkIfWishedFor = function(product_id){
-    return _.some(WishlistItems.list(), { 'product_id': product_id });
-  },                           
+  // this.checkIfWishedFor = function(product_id){
+  //   return _.some(WishlistItems.list(), { 'product_id': product_id });
+  // },                           
 
 
   this.openLink = function(product, userId){

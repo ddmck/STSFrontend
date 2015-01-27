@@ -13,13 +13,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .state('welcome', {
       url: '/welcome',
       templateUrl: 'partials/welcome.html',
-      controller: function($scope, localStorageService){
-        window.ls = localStorageService;
+      controller: function($scope, localStorageService, WishlistItems){
         if (localStorageService.get("gender")){
           $scope.msg = "Welcome back!";
         } else {
           $scope.msg = "Fashion Delivered Without the Wait";
-        }
+        };
+        $scope.wishlist = WishlistItems;
       }
     })
 
@@ -31,7 +31,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .state('products.new', {
       url: '/new',
       templateUrl: 'partials/new.html'
-      // controller: function
     })
 
     .state('products.hot', {

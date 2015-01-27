@@ -67,18 +67,31 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   }
 }]);
 
-app.factory('WishlistItems', [ '$http', function($http){
-  var wishlistItems = [];
+app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, localStorageService){
+  if (!localStorageService.get("wishlistItems")){
+    localStorageService.set("wishlistItems", [])
+  };
+  var products = [];
   return {
-    fetchWishlistItems: function(){
-      // $http.get('http://localhost:3000/wishlist_items.json').success(function(data){
-      //   wishlistItems = data;
-      //   console.table(wishlistItems)
-      // });
-      wishlistItems = [];
+    fetchWishlistItemProducts: function(){
+      products = [];
+      var wishlistItems = localStorageService.get("wishlistItems");
+      _.forEach(wishlistItems, function(item){
+        $http.get('http://localhost:3000/products/' + item + '.json').success(function(data){
+          products.push(data);
+        });
+      });
+    },
+    listProducts: function(){
+      return products;
     },
     list: function(){
-      return wishlistItems;
+      return localStorageService.get("wishlistItems");
+    },
+    addToWishlistItems: function(product){
+      var wishlistItems = localStorageService.get("wishlistItems");
+      wishlistItems.push(product.id);
+      localStorageService.set("wishlistItems", wishlistItems);
     }
   }
 }]);
