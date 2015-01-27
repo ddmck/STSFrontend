@@ -261,6 +261,9 @@ app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, l
   };
   var products = [];
   return {
+    update: function(array) {
+      localStorageService.set("wishlistItems", array);
+    },
     fetchWishlistItemProducts: function(){
       products = [];
       var wishlistItems = localStorageService.get("wishlistItems");
@@ -392,6 +395,19 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
     $state.go('productDetail', {productID: product.id})
   };
 
+  this.addToWishlist = function(product){
+    var currWishlist = WishlistItems.list();
+    if (_.indexOf(currWishlist, product.id) != -1) {
+      var currWishlist = _.reject(currWishlist, function(n){
+        return n == product.id
+      });
+      WishlistItems.update(currWishlist);
+    } else {
+      WishlistItems.addToWishlistItems(product);
+    }
+    
+  };
+
   // this.wishFor = function(product, userId){
   //   if (!userId) {
   //     $('#signInModal').foundation('reveal', 'open');
@@ -412,9 +428,9 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
     
   // }; 
 
-  // this.checkIfWishedFor = function(product_id){
-  //   return _.some(WishlistItems.list(), { 'product_id': product_id });
-  // },                           
+  this.checkIfWishedFor = function(product_id){
+    return _.indexOf(WishlistItems.list(), product_id) != -1;
+  },                           
 
 
   this.openLink = function(product, userId){

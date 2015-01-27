@@ -73,6 +73,9 @@ app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, l
   };
   var products = [];
   return {
+    update: function(array) {
+      localStorageService.set("wishlistItems", array);
+    },
     fetchWishlistItemProducts: function(){
       products = [];
       var wishlistItems = localStorageService.get("wishlistItems");
