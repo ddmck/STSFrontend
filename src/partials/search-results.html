@@ -14,7 +14,7 @@
       <label>Categories</label>
       <select ng-controller="CategoryController" ng-model="catId" ng-change="setCategory(catId)">
         <option value="">Categories</option>
-        <option ng-repeat="category in categories.list()" value={{category.id}} ng-selected="filters.getFilters().category === category.id">
+        <option ng-repeat="category in categories.list() | orderBy:'name'" value={{category.id}} ng-selected="filters.getFilters().category === category.id">
           {{category.name}}
         </option>
       </select>
@@ -23,7 +23,7 @@
       <label ng-show="filters.getFilters().category">Sub Categories</label>
       <select ng-model="subCatId" ng-change="setSubCat(subCatId)" ng-show="filters.getFilters().category">
         <option value="">Sub Category</option>
-        <option ng-repeat="subCat in subCategories.availableList()" value={{subCat.id}} ng-selected="filters.getFilters().subCategory === subCat.id">
+        <option ng-repeat="subCat in subCategories.availableList() | orderBy:'name'" value={{subCat.id}} ng-selected="filters.getFilters().subCategory === subCat.id">
           {{ subCat.name }}
         </option>
       </select>
