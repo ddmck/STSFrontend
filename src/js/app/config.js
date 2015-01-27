@@ -1,3 +1,10 @@
+app.config(function (localStorageServiceProvider) {
+  localStorageServiceProvider
+    .setPrefix('FetchMyFashion')
+    .setStorageCookieDomain('')
+    .setNotify(true, true);
+});
+
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     
   $stateProvider
@@ -5,7 +12,15 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     // route to show our landing page (/welcome)
     .state('welcome', {
       url: '/welcome',
-      templateUrl: 'partials/welcome.html'
+      templateUrl: 'partials/welcome.html',
+      controller: function($scope, localStorageService){
+        window.ls = localStorageService;
+        if (localStorageService.get("gender")){
+          $scope.msg = "Welcome back!";
+        } else {
+          $scope.msg = "Fashion Delivered Without the Wait";
+        }
+      }
     })
 
     .state('products', {
@@ -98,3 +113,4 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       apiUrl: backendUrl + 'api'
   });
 })
+

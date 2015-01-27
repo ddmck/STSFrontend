@@ -40,7 +40,8 @@ app.controller('UserRegistrationsController', ['$scope', '$auth', function($scop
 }]);
 
 
-app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', function($http, $state, Filters, Products, WishlistItems){
+app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', 'localStorageService', function($http, $state, Filters, Products, WishlistItems, localStorageService){
+  console.log("Cookie for gender: " + localStorageService.get("gender"))
   this.scrollActive = false;
   var scrollActive = this.scrollActive;
   var productCtrl = this;
@@ -112,7 +113,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   };
 }]);
 
-app.controller('GenderController', ['$scope', 'Filters', 'Products', function($scope, Filters, Products){
+app.controller('GenderController', ['$scope', 'Filters', 'Products', 'localStorageService', function($scope, Filters, Products, localStorageService){
   $scope.setGender = function(gender) {
     if ( gender === "mens") {
       Filters.setFilter("gender", "male");
@@ -121,6 +122,7 @@ app.controller('GenderController', ['$scope', 'Filters', 'Products', function($s
     } else if ( gender === "" ){
       Filters.removeFilter("gender")
     }
+    localStorageService.set("gender", Filters.getFilters().gender)
     Products.resetProducts();
     Products.resetPage()
     Products.fetchProducts();
