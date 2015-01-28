@@ -95,7 +95,17 @@ app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, l
       var wishlistItems = localStorageService.get("wishlistItems");
       wishlistItems.push(product.id);
       localStorageService.set("wishlistItems", wishlistItems);
-    }
+    },
+    removeFromWishlistItems: function(product){
+      var wishlistItems = localStorageService.get("wishlistItems");
+      wishlistItems = _.reject(wishlistItems, function(n){
+        return n == product.id
+      });
+      localStorageService.set("wishlistItems", wishlistItems)
+      products = _.reject(products, function(p){
+        return p === product;
+      })   
+    },
   }
 }]);
 

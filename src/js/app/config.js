@@ -38,6 +38,18 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       templateUrl: 'partials/hot.html'
     })
 
+    .state('products.saved', {
+      url: '/saved',
+      templateUrl: 'partials/saved.html',
+      controller: function($scope, WishlistItems){
+        $scope.wishlist = WishlistItems;
+        WishlistItems.fetchWishlistItemProducts();
+        $scope.removeFromWishlist = function(product){
+          WishlistItems.removeFromWishlistItems(product);
+        };
+      }
+    })
+
     .state('categoryView', {
       url: '/products/:gender/{catID}-{category}',
       templateUrl: 'partials/category-view.html',
