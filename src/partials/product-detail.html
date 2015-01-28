@@ -5,9 +5,10 @@
       <h4>{{product.brand_name}}</h4>
       <h1>{{product.name}}</h1>
       <p>{{ product.display_price | currency : '£' }}</p>
-      <div ng-size-dropdown></div>
+      <div ng-size-dropdown></div>   
+      <button class="button buy-button" target="_blank" ng-show="product.selectedSize" ng-click="addToBasket(product)">Add To Basket</button> 
       <div ng-product-details></div>
-      <a class="button buy-button" target="_blank" ng-href="{{product.url}}">Buy</a> 
+   
     </div>
   </div>  
 </section>

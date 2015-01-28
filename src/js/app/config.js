@@ -69,7 +69,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .state('productDetail', {
       url: '/products/:productID',
       templateUrl: 'partials/product-detail.html',
-      controller: function($scope, $stateParams, $http) {
+      controller: function($scope, $stateParams, $http, Basket) {
         // get the id
         $scope.showMenu = false;
         $scope.id = $stateParams.productID;
@@ -86,7 +86,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
         $scope.selectSize = function(size){
           $scope.size = size;
           $scope.showMenu = false;
-        }
+          $scope.product.selectedSize = size;
+        };
+
+        $scope.addToBasket = function(){
+          Basket.addToBasketItems($scope.product);
+          console.log(Basket.list());
+        };
       }
     })
 
