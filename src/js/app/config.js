@@ -61,6 +61,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     })
 
     .state('products', {
+      abstract: true,
       url: '/products',
       templateUrl: 'partials/products.html'
     })
@@ -161,7 +162,9 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       
   // catch all route
   // send users to the form page 
-  $urlRouterProvider.otherwise('/welcome');
+  $urlRouterProvider
+    .when('/products', 'products/new')
+    .otherwise('/welcome');
   
   $authProvider.configure({
       apiUrl: backendUrl + 'api'
