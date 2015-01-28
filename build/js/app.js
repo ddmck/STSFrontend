@@ -26,6 +26,15 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       }
     })
 
+    .state('basket', {
+      url: '/basket',
+      templateUrl: 'partials/basket.html',
+      controller: function($scope, localStorageService, Basket){
+        $scope.basket = Basket;
+        Basket.fetchBasketItemProducts();
+      }
+    })
+
     .state('products', {
       url: '/products',
       templateUrl: 'partials/products.html'
@@ -328,7 +337,7 @@ app.factory('Basket', [ '$http', 'localStorageService', function($http, localSto
       products = [];
       var basketItems = localStorageService.get("basketItems");
       _.forEach(basketItems, function(item){
-        $http.get('http://localhost:3000/products/' + item + '.json').success(function(data){
+        $http.get('http://localhost:3000/products/' + item.productId + '.json').success(function(data){
           products.push(data);
         });
       });
@@ -338,6 +347,13 @@ app.factory('Basket', [ '$http', 'localStorageService', function($http, localSto
     },
     list: function(){
       return localStorageService.get("basketItems");
+    },
+    total: function(){
+      var result = 0.0;
+      _.forEach(products, function(p){
+        result += parseFloat(p.display_price)
+      });
+      return result
     },
     addToBasketItems: function(product){
       var basketItems = localStorageService.get("basketItems");

@@ -23,6 +23,15 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       }
     })
 
+    .state('basket', {
+      url: '/basket',
+      templateUrl: 'partials/basket.html',
+      controller: function($scope, localStorageService, Basket){
+        $scope.basket = Basket;
+        Basket.fetchBasketItemProducts();
+      }
+    })
+
     .state('products', {
       url: '/products',
       templateUrl: 'partials/products.html'
