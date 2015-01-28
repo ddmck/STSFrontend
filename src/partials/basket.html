@@ -1,5 +1,7 @@
 <h1>Your Shopping Bag</h1>
 <ul>
-  <li ng-repeat="product in basket.listProducts()">{{product.name}}: {{ product.display_price | currency : '£' }}</li>
+  <li ng-repeat="product in basket.listProducts()">{{product.name}}: {{ product.display_price | currency : '£' }} <button ng-click="removeFromBasket(product)">Remove</button></li>
 </ul>
 <p>Total: {{ basket.total() | currency : '£' }}</p>
+
+<button ui-sref="pay">Pay Securely Now</button>

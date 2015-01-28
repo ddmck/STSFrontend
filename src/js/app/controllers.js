@@ -1,11 +1,11 @@
-app.controller('UserSessionsController', ['$scope', function ($scope) {
+app.controller('UserSessionsController', ['$scope', '$state', function ($scope, $state) {
   console.log("Hey from users controller");
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
   });
 
   $scope.$on('auth:login-success', function(ev){
-    $('#signInModal').foundation('reveal', 'close');
+    $state.go('products.new')
   });
   $scope.handleLoginBtnClick = function() {
     $auth.submitLogin($scope.loginForm)

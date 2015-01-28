@@ -152,7 +152,7 @@ app.factory('Basket', [ '$http', 'localStorageService', function($http, localSto
     removeFromBasketItems: function(product){
       var basketItems = localStorageService.get("basketItems");
       basketItems = _.reject(basketItems, function(n){
-        return n == product.id
+        return n.productId == product.id
       });
       localStorageService.set("basketItems", basketItems)
       products = _.reject(products, function(p){

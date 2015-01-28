@@ -29,7 +29,35 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       controller: function($scope, localStorageService, Basket){
         $scope.basket = Basket;
         Basket.fetchBasketItemProducts();
+        $scope.removeFromBasket = function(product){
+          Basket.removeFromBasketItems(product);
+        };
       }
+    })
+
+    .state('pay', {
+      url: '/pay',
+      templateUrl: 'partials/pay.html',
+      controller: function($scope, localStorageService, Basket){
+
+      }
+    })
+
+    .state('account', {
+      url: '/account',
+      templateUrl: 'partials/account.html'
+    })
+
+    .state('account.signIn', {
+      url: '/sign-in',
+      templateUrl: 'partials/sign-in.html',
+      controller: "UserSessionsController"
+    })
+
+    .state('account.signUp', {
+      url: '/sign-up',
+      templateUrl: 'partials/sign-up.html',
+      controller: "UserRegistrationsController"
     })
 
     .state('products', {

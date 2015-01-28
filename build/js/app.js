@@ -32,7 +32,35 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       controller: function($scope, localStorageService, Basket){
         $scope.basket = Basket;
         Basket.fetchBasketItemProducts();
+        $scope.removeFromBasket = function(product){
+          Basket.removeFromBasketItems(product);
+        };
       }
+    })
+
+    .state('pay', {
+      url: '/pay',
+      templateUrl: 'partials/pay.html',
+      controller: function($scope, localStorageService, Basket){
+
+      }
+    })
+
+    .state('account', {
+      url: '/account',
+      templateUrl: 'partials/account.html'
+    })
+
+    .state('account.signIn', {
+      url: '/sign-in',
+      templateUrl: 'partials/sign-in.html',
+      controller: "UserSessionsController"
+    })
+
+    .state('account.signUp', {
+      url: '/sign-up',
+      templateUrl: 'partials/sign-up.html',
+      controller: "UserRegistrationsController"
     })
 
     .state('products', {
@@ -367,7 +395,7 @@ app.factory('Basket', [ '$http', 'localStorageService', function($http, localSto
     removeFromBasketItems: function(product){
       var basketItems = localStorageService.get("basketItems");
       basketItems = _.reject(basketItems, function(n){
-        return n == product.id
+        return n.productId == product.id
       });
       localStorageService.set("basketItems", basketItems)
       products = _.reject(products, function(p){
@@ -416,14 +444,14 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     }
   };
 }]);
-app.controller('UserSessionsController', ['$scope', function ($scope) {
+app.controller('UserSessionsController', ['$scope', '$state', function ($scope, $state) {
   console.log("Hey from users controller");
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
   });
 
   $scope.$on('auth:login-success', function(ev){
-    $('#signInModal').foundation('reveal', 'close');
+    $state.go('products.new')
   });
   $scope.handleLoginBtnClick = function() {
     $auth.submitLogin($scope.loginForm)
