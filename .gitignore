@@ -7,4 +7,7 @@
 bower_components
 node_modules
 npm-debug.log
+build/
+.sass-cache/
 build
+.sass-cache
