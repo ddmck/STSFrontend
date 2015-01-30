@@ -67,18 +67,18 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   }
 }]);
 
-app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, localStorageService){
-  if (!localStorageService.get("wishlistItems")){
-    localStorageService.set("wishlistItems", [])
+app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localStorage){
+  if (!$localStorage.wishlistItems){
+    $localStorage.wishlistItems = [];
   };
   var products = [];
   return {
     update: function(array) {
-      localStorageService.set("wishlistItems", array);
+      $localStorage.wishlistItems = array;
     },
     fetchWishlistItemProducts: function(){
       products = [];
-      var wishlistItems = localStorageService.get("wishlistItems");
+      var wishlistItems = $localStorage.wishlistItems;
       _.forEach(wishlistItems, function(item){
         $http.get('http://localhost:3000/products/' + item + '.json').success(function(data){
           products.push(data);
@@ -89,19 +89,19 @@ app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, l
       return products;
     },
     list: function(){
-      return localStorageService.get("wishlistItems");
+      return $localStorage.wishlistItems;
     },
     addToWishlistItems: function(product){
-      var wishlistItems = localStorageService.get("wishlistItems");
+      var wishlistItems = $localStorage.wishlistItems;
       wishlistItems.push(product.id);
-      localStorageService.set("wishlistItems", wishlistItems);
+      $localStorage.wishlistItems = wishlistItems;
     },
     removeFromWishlistItems: function(product){
-      var wishlistItems = localStorageService.get("wishlistItems");
+      var wishlistItems = $localStorage.wishlistItems;
       wishlistItems = _.reject(wishlistItems, function(n){
         return n == product.id
       });
-      localStorageService.set("wishlistItems", wishlistItems)
+      $localStorage.wishlistItems = wishlistItems;
       products = _.reject(products, function(p){
         return p === product;
       })   
@@ -109,18 +109,18 @@ app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, l
   }
 }]);
 
-app.factory('Basket', [ '$http', 'localStorageService', function($http, localStorageService){
-  if (!localStorageService.get("basketItems")){
-    localStorageService.set("basketItems", [])
+app.factory('Basket', [ '$http', '$localStorage', function($http, $localStorage){
+  if (!$localStorage.basketItems){
+    $localStorage.basketItems = [];
   };
   var products = [];
   return {
     update: function(array) {
-      localStorageService.set("basketItems", array);
+      $localStorage.basketItems = array;
     },
     fetchBasketItemProducts: function(){
       products = [];
-      var basketItems = localStorageService.get("basketItems");
+      var basketItems = $localStorage.basketItems;
       _.forEach(basketItems, function(item){
         $http.get('http://localhost:3000/products/' + item.productId + '.json').success(function(data){
           products.push(data);
@@ -131,7 +131,7 @@ app.factory('Basket', [ '$http', 'localStorageService', function($http, localSto
       return products;
     },
     list: function(){
-      return localStorageService.get("basketItems");
+      return $localStorage.basketItems;
     },
     total: function(){
       var result = 0.0;
@@ -141,20 +141,20 @@ app.factory('Basket', [ '$http', 'localStorageService', function($http, localSto
       return result
     },
     addToBasketItems: function(product){
-      var basketItems = localStorageService.get("basketItems");
+      var basketItems = $localStorage.basketItems;
       var productWithSize = { 
         productId: product.id,
         sizeId: product.selectedSize.id 
       }
       basketItems.push(productWithSize);
-      localStorageService.set("basketItems", basketItems);
+      $localStorage.basketItems = basketItems;
     },
     removeFromBasketItems: function(product){
-      var basketItems = localStorageService.get("basketItems");
+      var basketItems = $localStorage.basketItems;
       basketItems = _.reject(basketItems, function(n){
         return n.productId == product.id
       });
-      localStorageService.set("basketItems", basketItems)
+      $localStorage.basketItems = basketItems;
       products = _.reject(products, function(p){
         return p === product;
       })   

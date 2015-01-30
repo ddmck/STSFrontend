@@ -1,9 +1,3 @@
-app.config(function (localStorageServiceProvider) {
-  localStorageServiceProvider
-    .setPrefix('FetchMyFashion')
-    .setStorageCookieDomain('')
-    .setNotify(true, true);
-});
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     
@@ -13,37 +7,74 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .state('welcome', {
       url: '/welcome',
       templateUrl: 'partials/welcome.html',
-      controller: function($scope, localStorageService, WishlistItems){
-        if (localStorageService.get("gender")){
+      controller: function($scope, $localStorage, WishlistItems){
+        if ($localStorage.gender){
           $scope.msg = "Welcome back!";
         } else {
           $scope.msg = "Fashion Delivered Without the Wait";
         };
-        $scope.wishlist = WishlistItems;
+        $scope.wishlist = $localStorage.wishlistItems;
       }
     })
 
     .state('basket', {
       url: '/basket',
       templateUrl: 'partials/basket.html',
-      controller: function($scope, localStorageService, Basket){
-        $scope.basket = Basket;
-        Basket.fetchBasketItemProducts();
-        $scope.removeFromBasket = function(product){
-          Basket.removeFromBasketItems(product);
-        };
-      }
+      controller: 'BasketController'
     })
 
     .state('pay', {
+      abstract: true,
       url: '/pay',
       templateUrl: 'partials/pay.html',
-      controller: function($scope, localStorageService, Basket){
+      controller: 'PaymentsController'
+    })
 
+    .state('pay.you', {
+      url: '/you',
+      templateUrl: 'partials/you.html'
+    })
+
+    .state('pay.address', {
+      url: '/address',
+      templateUrl: 'partials/address.html', 
+      controller: function($scope, $state, $localStorage){
+        $scope.localStorage = $localStorage;
+        $scope.submitAddress = function(addressForm) {
+          $localStorage.address = addressForm;
+          console.log(addressForm);
+          $state.go('pay.billing')
+        }
+      }
+    })
+
+    .state('pay.billing', {
+      url: '/billing',
+      templateUrl: 'partials/billing.html',
+      controller: function($scope, $state, $localStorage){
+        $scope.localStorage = $localStorage;
+        $scope.handleStripe = function(status, response){
+          if(response.error) {
+            $scope.billingForm.error = response.error;
+          } else {
+            // got stripe token, now charge it or smt
+            $localStorage.token = response.id;
+            $state.go('pay.confirmation')
+          }
+        }
+      }
+    })
+
+    .state('pay.confirmation', {
+      url: '/confirmation',
+      templateUrl: 'partials/confirmation.html',
+      controller: function($scope, $localStorage){
+        $scope.localStorage = $localStorage;
       }
     })
 
     .state('account', {
+      abstract: true,
       url: '/account',
       templateUrl: 'partials/account.html'
     })
@@ -164,10 +195,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
   // send users to the form page 
   $urlRouterProvider
     .when('/products', 'products/new')
+    .when('/account', 'account/sign-in')
+    .when('/pay', 'pay/ypu')
     .otherwise('/welcome');
   
   $authProvider.configure({
-      apiUrl: backendUrl + 'api'
+      apiUrl: backendUrl + 'api',
+      storage: "localStorage"
   });
 })
 

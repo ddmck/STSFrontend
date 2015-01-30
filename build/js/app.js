@@ -1,12 +1,7 @@
-var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'ui.router', 'ng-token-auth', 'ipCookie', 'LocalStorageModule']);
+var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments']);
 var backendUrl = "http://localhost:3000/";
 // var backendUrl = "https://www.shopshopgo.com/";
-app.config(function (localStorageServiceProvider) {
-  localStorageServiceProvider
-    .setPrefix('FetchMyFashion')
-    .setStorageCookieDomain('')
-    .setNotify(true, true);
-});
+Stripe.setPublishableKey('pk_test_mfQJDA4oT57DLFi7l0HYu782');
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     
@@ -16,37 +11,74 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .state('welcome', {
       url: '/welcome',
       templateUrl: 'partials/welcome.html',
-      controller: function($scope, localStorageService, WishlistItems){
-        if (localStorageService.get("gender")){
+      controller: function($scope, $localStorage, WishlistItems){
+        if ($localStorage.gender){
           $scope.msg = "Welcome back!";
         } else {
           $scope.msg = "Fashion Delivered Without the Wait";
         };
-        $scope.wishlist = WishlistItems;
+        $scope.wishlist = $localStorage.wishlistItems;
       }
     })
 
     .state('basket', {
       url: '/basket',
       templateUrl: 'partials/basket.html',
-      controller: function($scope, localStorageService, Basket){
-        $scope.basket = Basket;
-        Basket.fetchBasketItemProducts();
-        $scope.removeFromBasket = function(product){
-          Basket.removeFromBasketItems(product);
-        };
-      }
+      controller: 'BasketController'
     })
 
     .state('pay', {
+      abstract: true,
       url: '/pay',
       templateUrl: 'partials/pay.html',
-      controller: function($scope, localStorageService, Basket){
+      controller: 'PaymentsController'
+    })
 
+    .state('pay.you', {
+      url: '/you',
+      templateUrl: 'partials/you.html'
+    })
+
+    .state('pay.address', {
+      url: '/address',
+      templateUrl: 'partials/address.html', 
+      controller: function($scope, $state, $localStorage){
+        $scope.localStorage = $localStorage;
+        $scope.submitAddress = function(addressForm) {
+          $localStorage.address = addressForm;
+          console.log(addressForm);
+          $state.go('pay.billing')
+        }
+      }
+    })
+
+    .state('pay.billing', {
+      url: '/billing',
+      templateUrl: 'partials/billing.html',
+      controller: function($scope, $state, $localStorage){
+        $scope.localStorage = $localStorage;
+        $scope.handleStripe = function(status, response){
+          if(response.error) {
+            $scope.billingForm.error = response.error;
+          } else {
+            // got stripe token, now charge it or smt
+            $localStorage.token = response.id;
+            $state.go('pay.confirmation')
+          }
+        }
+      }
+    })
+
+    .state('pay.confirmation', {
+      url: '/confirmation',
+      templateUrl: 'partials/confirmation.html',
+      controller: function($scope, $localStorage){
+        $scope.localStorage = $localStorage;
       }
     })
 
     .state('account', {
+      abstract: true,
       url: '/account',
       templateUrl: 'partials/account.html'
     })
@@ -167,10 +199,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
   // send users to the form page 
   $urlRouterProvider
     .when('/products', 'products/new')
+    .when('/account', 'account/sign-in')
+    .when('/pay', 'pay/ypu')
     .otherwise('/welcome');
   
   $authProvider.configure({
-      apiUrl: backendUrl + 'api'
+      apiUrl: backendUrl + 'api',
+      storage: "localStorage"
   });
 })
 
@@ -313,18 +348,18 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   }
 }]);
 
-app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, localStorageService){
-  if (!localStorageService.get("wishlistItems")){
-    localStorageService.set("wishlistItems", [])
+app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localStorage){
+  if (!$localStorage.wishlistItems){
+    $localStorage.wishlistItems = [];
   };
   var products = [];
   return {
     update: function(array) {
-      localStorageService.set("wishlistItems", array);
+      $localStorage.wishlistItems = array;
     },
     fetchWishlistItemProducts: function(){
       products = [];
-      var wishlistItems = localStorageService.get("wishlistItems");
+      var wishlistItems = $localStorage.wishlistItems;
       _.forEach(wishlistItems, function(item){
         $http.get('http://localhost:3000/products/' + item + '.json').success(function(data){
           products.push(data);
@@ -335,19 +370,19 @@ app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, l
       return products;
     },
     list: function(){
-      return localStorageService.get("wishlistItems");
+      return $localStorage.wishlistItems;
     },
     addToWishlistItems: function(product){
-      var wishlistItems = localStorageService.get("wishlistItems");
+      var wishlistItems = $localStorage.wishlistItems;
       wishlistItems.push(product.id);
-      localStorageService.set("wishlistItems", wishlistItems);
+      $localStorage.wishlistItems = wishlistItems;
     },
     removeFromWishlistItems: function(product){
-      var wishlistItems = localStorageService.get("wishlistItems");
+      var wishlistItems = $localStorage.wishlistItems;
       wishlistItems = _.reject(wishlistItems, function(n){
         return n == product.id
       });
-      localStorageService.set("wishlistItems", wishlistItems)
+      $localStorage.wishlistItems = wishlistItems;
       products = _.reject(products, function(p){
         return p === product;
       })   
@@ -355,18 +390,18 @@ app.factory('WishlistItems', [ '$http', 'localStorageService', function($http, l
   }
 }]);
 
-app.factory('Basket', [ '$http', 'localStorageService', function($http, localStorageService){
-  if (!localStorageService.get("basketItems")){
-    localStorageService.set("basketItems", [])
+app.factory('Basket', [ '$http', '$localStorage', function($http, $localStorage){
+  if (!$localStorage.basketItems){
+    $localStorage.basketItems = [];
   };
   var products = [];
   return {
     update: function(array) {
-      localStorageService.set("basketItems", array);
+      $localStorage.basketItems = array;
     },
     fetchBasketItemProducts: function(){
       products = [];
-      var basketItems = localStorageService.get("basketItems");
+      var basketItems = $localStorage.basketItems;
       _.forEach(basketItems, function(item){
         $http.get('http://localhost:3000/products/' + item.productId + '.json').success(function(data){
           products.push(data);
@@ -377,7 +412,7 @@ app.factory('Basket', [ '$http', 'localStorageService', function($http, localSto
       return products;
     },
     list: function(){
-      return localStorageService.get("basketItems");
+      return $localStorage.basketItems;
     },
     total: function(){
       var result = 0.0;
@@ -387,20 +422,20 @@ app.factory('Basket', [ '$http', 'localStorageService', function($http, localSto
       return result
     },
     addToBasketItems: function(product){
-      var basketItems = localStorageService.get("basketItems");
+      var basketItems = $localStorage.basketItems;
       var productWithSize = { 
         productId: product.id,
         sizeId: product.selectedSize.id 
       }
       basketItems.push(productWithSize);
-      localStorageService.set("basketItems", basketItems);
+      $localStorage.basketItems = basketItems;
     },
     removeFromBasketItems: function(product){
-      var basketItems = localStorageService.get("basketItems");
+      var basketItems = $localStorage.basketItems;
       basketItems = _.reject(basketItems, function(n){
         return n.productId == product.id
       });
-      localStorageService.set("basketItems", basketItems)
+      $localStorage.basketItems = basketItems;
       products = _.reject(products, function(p){
         return p === product;
       })   
@@ -447,14 +482,16 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     }
   };
 }]);
-app.controller('UserSessionsController', ['$scope', '$state', function ($scope, $state) {
+app.controller('UserSessionsController', ['$scope', '$state', '$auth', function ($scope, $state, $auth) {
   console.log("Hey from users controller");
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
   });
 
   $scope.$on('auth:login-success', function(ev){
-    $state.go('products.new')
+    // $state.go('products.new');
+    console.log($auth);
+    window.auth = $auth;
   });
   $scope.handleLoginBtnClick = function() {
     $auth.submitLogin($scope.loginForm)
@@ -489,8 +526,8 @@ app.controller('UserRegistrationsController', ['$scope', '$auth', function($scop
 }]);
 
 
-app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', 'localStorageService', function($http, $state, Filters, Products, WishlistItems, localStorageService){
-  console.log("Cookie for gender: " + localStorageService.get("gender"))
+app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
+  console.log("Cookie for gender: " + $localStorage.gender)
   this.scrollActive = false;
   var scrollActive = this.scrollActive;
   var productCtrl = this;
@@ -575,7 +612,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   };
 }]);
 
-app.controller('GenderController', ['$scope', 'Filters', 'Products', 'localStorageService', function($scope, Filters, Products, localStorageService){
+app.controller('GenderController', ['$scope', 'Filters', 'Products', '$localStorage', function($scope, Filters, Products, $localStorage){
   $scope.setGender = function(gender) {
     if ( gender === "mens") {
       Filters.setFilter("gender", "male");
@@ -584,7 +621,7 @@ app.controller('GenderController', ['$scope', 'Filters', 'Products', 'localStora
     } else if ( gender === "" ){
       Filters.removeFilter("gender")
     }
-    localStorageService.set("gender", Filters.getFilters().gender)
+    $localStorage.gender = Filters.getFilters().gender
     Products.resetProducts();
     Products.resetPage()
     Products.fetchProducts();
@@ -670,5 +707,19 @@ app.controller('ToggleController', ['$scope', function($scope){
   $scope.toggle = function(){
     $scope.open = !$scope.open;
   } 
+}]);
+
+app.controller('BasketController', ['$scope', '$localStorage', 'Basket', function($scope, $localStorage, Basket){
+  $scope.basket = Basket;
+  Basket.fetchBasketItemProducts();
+  $scope.removeFromBasket = function(product){
+    Basket.removeFromBasketItems(product);
+  };
+}])
+
+app.controller('PaymentsController', ['$scope', '$auth', '$localStorage', '$state', 'Basket' ,function($scope, $auth, $localStorage, $state, Basket){
+  if ($auth.user.id) {
+    $state.go('pay.address');
+  }
 }]);
 

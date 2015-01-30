@@ -9,7 +9,7 @@ module.exports =
       resolve('jquery.cookie'),
       resolve('angular'),
       resolve('angular-ui-router.min'),
-      resolve('angular-local-storage'),
+      resolve('ngStorage'),
       resolve('angular-sanitize'),
       resolve('angular-cookie'),
       resolve('ng-token-auth'),
@@ -20,6 +20,7 @@ module.exports =
       resolve('ng-infinite-scroll'),
       resolve('lodash.min'),
       resolve('inflection.min'),
+      resolve('angular-payments'),
       resolve('google-analytics')
     ]
   }

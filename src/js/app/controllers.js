@@ -1,11 +1,13 @@
-app.controller('UserSessionsController', ['$scope', '$state', function ($scope, $state) {
+app.controller('UserSessionsController', ['$scope', '$state', '$auth', function ($scope, $state, $auth) {
   console.log("Hey from users controller");
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
   });
 
   $scope.$on('auth:login-success', function(ev){
-    $state.go('products.new')
+    // $state.go('products.new');
+    console.log($auth);
+    window.auth = $auth;
   });
   $scope.handleLoginBtnClick = function() {
     $auth.submitLogin($scope.loginForm)
@@ -40,8 +42,8 @@ app.controller('UserRegistrationsController', ['$scope', '$auth', function($scop
 }]);
 
 
-app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', 'localStorageService', function($http, $state, Filters, Products, WishlistItems, localStorageService){
-  console.log("Cookie for gender: " + localStorageService.get("gender"))
+app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
+  console.log("Cookie for gender: " + $localStorage.gender)
   this.scrollActive = false;
   var scrollActive = this.scrollActive;
   var productCtrl = this;
@@ -126,7 +128,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   };
 }]);
 
-app.controller('GenderController', ['$scope', 'Filters', 'Products', 'localStorageService', function($scope, Filters, Products, localStorageService){
+app.controller('GenderController', ['$scope', 'Filters', 'Products', '$localStorage', function($scope, Filters, Products, $localStorage){
   $scope.setGender = function(gender) {
     if ( gender === "mens") {
       Filters.setFilter("gender", "male");
@@ -135,7 +137,7 @@ app.controller('GenderController', ['$scope', 'Filters', 'Products', 'localStora
     } else if ( gender === "" ){
       Filters.removeFilter("gender")
     }
-    localStorageService.set("gender", Filters.getFilters().gender)
+    $localStorage.gender = Filters.getFilters().gender
     Products.resetProducts();
     Products.resetPage()
     Products.fetchProducts();
@@ -221,4 +223,18 @@ app.controller('ToggleController', ['$scope', function($scope){
   $scope.toggle = function(){
     $scope.open = !$scope.open;
   } 
+}]);
+
+app.controller('BasketController', ['$scope', '$localStorage', 'Basket', function($scope, $localStorage, Basket){
+  $scope.basket = Basket;
+  Basket.fetchBasketItemProducts();
+  $scope.removeFromBasket = function(product){
+    Basket.removeFromBasketItems(product);
+  };
+}])
+
+app.controller('PaymentsController', ['$scope', '$auth', '$localStorage', '$state', 'Basket' ,function($scope, $auth, $localStorage, $state, Basket){
+  if ($auth.user.id) {
+    $state.go('pay.address');
+  }
 }]);
