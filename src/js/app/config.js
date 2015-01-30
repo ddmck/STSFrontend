@@ -61,6 +61,9 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
             $localStorage.token = response.id;
             $state.go('pay.confirmation')
           }
+        };
+        $scope.clear = function(){
+          $localStorage.token = null;
         }
       }
     })
@@ -68,8 +71,17 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .state('pay.confirmation', {
       url: '/confirmation',
       templateUrl: 'partials/confirmation.html',
-      controller: function($scope, $localStorage){
+      controller: function($scope, $localStorage, $http, Basket){
+        $scope.basket = Basket;
+        Basket.fetchBasketItemProducts();
         $scope.localStorage = $localStorage;
+        $scope.submitOrder = function(){
+          $http.post(backendUrl + "order", {params: {
+            token: $localStorage.token,
+            basket: $localStorage.basketItems,
+            address: $localStorage.address
+          }});
+        } 
       }
     })
 

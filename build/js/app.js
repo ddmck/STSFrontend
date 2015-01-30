@@ -1,6 +1,6 @@
 var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments']);
-// var backendUrl = "http://localhost:3000/";
-var backendUrl = "https://www.shopshopgo.com/";
+var backendUrl = "http://localhost:3000/";
+// var backendUrl = "https://www.shopshopgo.com/";
 Stripe.setPublishableKey('pk_test_mfQJDA4oT57DLFi7l0HYu782');
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
@@ -65,6 +65,9 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
             $localStorage.token = response.id;
             $state.go('pay.confirmation')
           }
+        };
+        $scope.clear = function(){
+          $localStorage.token = null;
         }
       }
     })
@@ -72,8 +75,17 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .state('pay.confirmation', {
       url: '/confirmation',
       templateUrl: 'partials/confirmation.html',
-      controller: function($scope, $localStorage){
+      controller: function($scope, $localStorage, $http, Basket){
+        $scope.basket = Basket;
+        Basket.fetchBasketItemProducts();
         $scope.localStorage = $localStorage;
+        $scope.submitOrder = function(){
+          $http.post(backendUrl + "order", {params: {
+            token: $localStorage.token,
+            basket: $localStorage.basketItems,
+            address: $localStorage.address
+          }});
+        } 
       }
     })
 

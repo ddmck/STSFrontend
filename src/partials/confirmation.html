@@ -5,7 +5,7 @@
 <p>{{localStorage.token}}</p>
 
 <h4>Total</h4>
-<p>{{localStorage.basketItems}}</p>
+<p>{{basket.total() | currency : "£"}}</p>
 
 
-<button ng-click="submitOrder">Confirm Order</button>
+<button ng-click="submitOrder()">Confirm Order</button>
