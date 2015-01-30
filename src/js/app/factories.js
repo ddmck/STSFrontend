@@ -123,6 +123,9 @@ app.factory('Basket', [ '$http', '$localStorage', function($http, $localStorage)
       var basketItems = $localStorage.basketItems;
       _.forEach(basketItems, function(item){
         $http.get('http://localhost:3000/products/' + item.productId + '.json').success(function(data){
+          data.selectedSize = _.find(data.sizes, function(size){
+            return size.id === item.sizeId
+          });
           products.push(data);
         });
       });

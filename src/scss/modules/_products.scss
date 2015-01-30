@@ -87,12 +87,14 @@
     font-weight: bold;
     line-height: 1.5em;
     padding: ($base-spacing / 3) ($base-spacing / 2);
+    text-transform: capitalize;
   }
 
   .card-copy {
     font-size: 0.9em;
     line-height: 1.5em;
     padding: ($base-spacing / 2) ($base-spacing / 2);
+    text-transform: capitalize;
 
     p {
       margin: 0 0 ($base-spacing / 2);

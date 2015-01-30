@@ -1,9 +1,21 @@
 <section class="row">
   <h1>Your Shopping Bag</h1>
-  <ul>
-    <li ng-repeat="product in basket.listProducts()">{{product.name}}: {{ product.display_price | currency : '£' }} <button ng-click="removeFromBasket(product)">Remove</button></li>
-  </ul>
-  <p>Total: {{ basket.total() | currency : '£' }}</p>
+</section>
+<section class="row">
+  <div class="comment" ng-repeat="product in basket.listProducts()">
+    <div class="comment-image" ui-sref="productDetail({productID: product.id})">
+      <img ng-src="{{product.image_url}}" alt="Logo image">
+    </div>
+    <div class="comment-content">
+      <h1>{{product.name}}</h1>
+      <p>{{ product.display_price | currency : '£' }}</p>
+      <!-- <p class="comment-detail">{{product.sizes}}</p> -->
+      <p><strong>Size:</strong> {{product.selectedSize.name}}</p>
+      <button ng-click="removeFromBasket(product)">Remove</button>
+    </div>
+  </div>
+
+  <p><strong>Total:</strong> {{ basket.total() | currency : '£' }}</p>
 
   <button ui-sref="pay.you">Pay Securely Now</button>
 </section>

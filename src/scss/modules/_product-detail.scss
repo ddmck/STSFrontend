@@ -1,6 +1,6 @@
 section.row {
   @include outer-container;
-
+  margin-top: 2em;
 }
 
 .side-image {  
@@ -63,6 +63,7 @@ section.row {
 
     h1 {
       margin-bottom: 0.9em;
+      text-transform: capitalize;
     }
 
     h4 {

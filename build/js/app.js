@@ -1,6 +1,6 @@
 var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments']);
-var backendUrl = "http://localhost:3000/";
-// var backendUrl = "https://www.shopshopgo.com/";
+// var backendUrl = "http://localhost:3000/";
+var backendUrl = "https://www.shopshopgo.com/";
 Stripe.setPublishableKey('pk_test_mfQJDA4oT57DLFi7l0HYu782');
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
@@ -404,6 +404,9 @@ app.factory('Basket', [ '$http', '$localStorage', function($http, $localStorage)
       var basketItems = $localStorage.basketItems;
       _.forEach(basketItems, function(item){
         $http.get('http://localhost:3000/products/' + item.productId + '.json').success(function(data){
+          data.selectedSize = _.find(data.sizes, function(size){
+            return size.id === item.sizeId
+          });
           products.push(data);
         });
       });

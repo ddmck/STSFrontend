@@ -744,7 +744,7 @@ header.navigation {
       padding-right: 0; }
       @media screen and (min-width: 53.75em) {
         header.navigation ul.submenu li {
-          line-height: 46.15385px; }
+          line-height: 30px; }
           header.navigation ul.submenu li:first-child > a {
             border-top-left-radius: 3px;
             border-top-right-radius: 3px; }
@@ -753,6 +753,7 @@ header.navigation {
             border-bottom-right-radius: 3px;
             padding-bottom: 0.7em; } }
       header.navigation ul.submenu li a {
+        text-transform: capitalize;
         background-color: #191919;
         display: inline-block;
         text-align: right;
@@ -885,7 +886,8 @@ header.navigation {
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
-  padding-bottom: 3em; }
+  padding-bottom: 3em;
+  margin-bottom: -2em; }
   .hero .hero-logo img {
     height: 4em;
     margin-bottom: 1em; }
@@ -944,6 +946,7 @@ header.navigation {
         cursor: not-allowed; }
 
 .footer {
+  margin-top: 2em;
   background: #212121;
   padding: 3em 1.618em;
   width: 100%;
@@ -1099,11 +1102,13 @@ header.navigation {
     border-radius: 3px 3px 0 0;
     font-weight: bold;
     line-height: 1.5em;
-    padding: 0.5em 0.75em; }
+    padding: 0.5em 0.75em;
+    text-transform: capitalize; }
   .card .card-copy {
     font-size: 0.9em;
     line-height: 1.5em;
-    padding: 0.75em 0.75em; }
+    padding: 0.75em 0.75em;
+    text-transform: capitalize; }
     .card .card-copy p {
       margin: 0 0 0.75em; }
   .card .card-stats {
@@ -1148,7 +1153,8 @@ header.navigation {
 section.row {
   max-width: 68em;
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  margin-top: 2em; }
   section.row::after {
     clear: both;
     content: "";
@@ -1191,7 +1197,8 @@ section.row {
         width: 66.66667%;
         padding: 4em 4em 8em 4em; } }
     .side-image .side-image-content h1 {
-      margin-bottom: 0.9em; }
+      margin-bottom: 0.9em;
+      text-transform: capitalize; }
     .side-image .side-image-content h4 {
       background: #BBB;
       color: white;
@@ -1637,6 +1644,42 @@ form.search-bar {
         border-top-right-radius: 3px;
         border: 1px solid #DDD;
         float: left; } }
+
+.comment {
+  border-bottom: 1px solid rgba(51, 51, 51, 0.1);
+  display: table;
+  margin-bottom: 1.5em;
+  padding-bottom: 1em;
+  width: 100%; }
+  .comment .comment-image,
+  .comment .comment-content {
+    display: table-cell;
+    vertical-align: top; }
+  .comment .comment-image {
+    padding-right: 1.4em; }
+    .comment .comment-image > img {
+      background: white;
+      border-radius: 3px;
+      display: block;
+      height: auto;
+      max-width: none;
+      padding: 0em;
+      width: 6em; }
+    .comment-reverse-order .comment .comment-image {
+      padding-right: 0;
+      padding-left: 10px; }
+  .comment .comment-content {
+    width: 100%; }
+    .comment .comment-content h1 {
+      font-size: 1em;
+      margin: 0 0 0.5em 0; }
+    .comment .comment-content p {
+      line-height: 1.5em;
+      margin-bottom: 0.5em; }
+    .comment .comment-content p.comment-detail {
+      color: rgba(51, 51, 51, 0.5);
+      font-size: 0.9em;
+      font-style: italic; }
 
 body {
   padding-top: 60px; }
