@@ -11,3 +11,4 @@ build/
 .sass-cache/
 build
 .sass-cache
+dist

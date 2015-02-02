@@ -1,6 +1,5 @@
 var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments']);
 var backendUrl = "http://localhost:3000/";
-// var backendUrl = "https://www.shopshopgo.com/";
 Stripe.setPublishableKey('pk_test_mfQJDA4oT57DLFi7l0HYu782');
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
@@ -80,7 +79,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
         Basket.fetchBasketItemProducts();
         $scope.localStorage = $localStorage;
         $scope.submitOrder = function(){
-          $http.post(backendUrl + "order", {params: {
+          $http.post(backendUrl + "api/orders.json", {order: {
             token: $localStorage.token,
             basket: $localStorage.basketItems,
             address: $localStorage.address
@@ -139,9 +138,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       url: '/products/:gender/{catID}-{category}',
       templateUrl: 'partials/category-view.html',
       controller: function($scope, $stateParams, Products, Filters, Categories){
-        console.log($stateParams);
-        console.log(Products);
-        console.log(Filters);
+        $scope.category = $stateParams.category;
         Products.resetProducts();
         Products.resetPage();
         Filters.resetAll();
@@ -216,8 +213,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .otherwise('/welcome');
   
   $authProvider.configure({
-      apiUrl: backendUrl + 'api',
-      storage: "localStorage"
+      apiUrl: backendUrl + 'api'
   });
 })
 
@@ -330,7 +326,7 @@ app.factory('Categories', [ '$http', function($http){
   var categories = [];
   return {
     fetchCategories: function(){
-      $http.get('http://localhost:3000/categories.json', {async: true}).success(function(data){
+      $http.get(backendUrl + 'categories.json', {async: true}).success(function(data){
         categories = data;
       });
     },
@@ -345,7 +341,7 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   var subCategories = [];
   return {
     fetchSubCategories: function(){
-      $http.get('http://localhost:3000/sub_categories.json', {async: true}).success(function(data){
+      $http.get(backendUrl + 'sub_categories.json', {async: true}).success(function(data){
         subCategories = data;
       });
     },
@@ -373,7 +369,7 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
       products = [];
       var wishlistItems = $localStorage.wishlistItems;
       _.forEach(wishlistItems, function(item){
-        $http.get('http://localhost:3000/products/' + item + '.json').success(function(data){
+        $http.get(backendUrl + 'products/' + item + '.json').success(function(data){
           products.push(data);
         });
       });
@@ -415,7 +411,7 @@ app.factory('Basket', [ '$http', '$localStorage', function($http, $localStorage)
       products = [];
       var basketItems = $localStorage.basketItems;
       _.forEach(basketItems, function(item){
-        $http.get('http://localhost:3000/products/' + item.productId + '.json').success(function(data){
+        $http.get(backendUrl + 'products/' + item.productId + '.json').success(function(data){
           data.selectedSize = _.find(data.sizes, function(size){
             return size.id === item.sizeId
           });
@@ -489,7 +485,7 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     },
     fetchProducts: function(){
       searching = true;
-      $http.get('http://localhost:3000/products.json', {async: true, params: {page: page.toString(), gender: Filters.getFilters().gender, category: Filters.getFilters().category, sub_category: Filters.getFilters().subCategory, search_string: Filters.getFilters().searchString}}).success(function(data){
+      $http.get(backendUrl + 'products.json', {async: true, params: {page: page.toString(), gender: Filters.getFilters().gender, category: Filters.getFilters().category, sub_category: Filters.getFilters().subCategory, search_string: Filters.getFilters().searchString}}).success(function(data){
         products = products.concat(data);
         scrollActive = true;
         searching = false;
@@ -542,7 +538,6 @@ app.controller('UserRegistrationsController', ['$scope', '$auth', function($scop
 
 
 app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
-  console.log("Cookie for gender: " + $localStorage.gender)
   this.scrollActive = false;
   var scrollActive = this.scrollActive;
   var productCtrl = this;

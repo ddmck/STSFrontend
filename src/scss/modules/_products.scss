@@ -1,7 +1,7 @@
 .cards {
   @include display(flex);
   @include flex-wrap(wrap);
-  @include justify-content(space-between);
+  @include justify-content(flex-start);
 }
 
 .card {
@@ -28,7 +28,7 @@
   $card-margin: 1em;
 
   @include flex-basis(15em);
-  @include flex-grow(1);
+  @include flex-grow(0);
   @include transition (all 0.2s ease-in-out);
   background-color: $card-background;
   border-radius: $base-border-radius;
@@ -37,7 +37,6 @@
   cursor: pointer;
   margin: 0 $card-margin $base-spacing $card-margin;
   padding-bottom: $card-padding-for-absolute-stats;
-  position: relative;
   position: relative;
 
   .card-image {

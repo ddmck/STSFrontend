@@ -29,7 +29,11 @@
   $expander-toggle-arrow-size: $expander-toggle-size;
   $expander-toggle-margin: 1em;
 
-  width: 60%;
+  width: 100%;
+
+  @include media($large-screen) {
+    width: 60%;
+  }
 
   .expander-trigger {
     @include user-select(none);

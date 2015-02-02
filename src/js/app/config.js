@@ -76,7 +76,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
         Basket.fetchBasketItemProducts();
         $scope.localStorage = $localStorage;
         $scope.submitOrder = function(){
-          $http.post(backendUrl + "order", {params: {
+          $http.post(backendUrl + "api/orders.json", {order: {
             token: $localStorage.token,
             basket: $localStorage.basketItems,
             address: $localStorage.address
@@ -135,9 +135,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       url: '/products/:gender/{catID}-{category}',
       templateUrl: 'partials/category-view.html',
       controller: function($scope, $stateParams, Products, Filters, Categories){
-        console.log($stateParams);
-        console.log(Products);
-        console.log(Filters);
+        $scope.category = $stateParams.category;
         Products.resetProducts();
         Products.resetPage();
         Filters.resetAll();
@@ -212,8 +210,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
     .otherwise('/welcome');
   
   $authProvider.configure({
-      apiUrl: backendUrl + 'api',
-      storage: "localStorage"
+      apiUrl: backendUrl + 'api'
   });
 })
 

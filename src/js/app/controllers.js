@@ -43,7 +43,6 @@ app.controller('UserRegistrationsController', ['$scope', '$auth', function($scop
 
 
 app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
-  console.log("Cookie for gender: " + $localStorage.gender)
   this.scrollActive = false;
   var scrollActive = this.scrollActive;
   var productCtrl = this;

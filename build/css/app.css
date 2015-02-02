@@ -589,6 +589,12 @@ input[type="submit"] {
   vertical-align: middle;
   white-space: nowrap; }
 
+.centered {
+  text-align: center; }
+
+.capitalize {
+  text-transform: capitalize; }
+
 header.navigation {
   background-color: #212121;
   border-bottom: 1px solid #080808;
@@ -881,13 +887,14 @@ header.navigation {
           display: block; } }
 
 .hero {
-  background: url("https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/mountains.png"), linear-gradient(10deg, #20392B, #7F99BE), no-repeat #7F99BE scroll;
+  background: url("https://ununsplash.imgix.net/uploads/14115120538776712c565/a699942a?q=75&fm=jpg&s=5379239231f09deb4570e043e0bec939"), linear-gradient(10deg, #20392B, #7F99BE), no-repeat #7F99BE scroll;
   background-color: #324766;
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
   padding-bottom: 3em;
-  margin-bottom: -2em; }
+  margin-bottom: -2em;
+  height: 100vh; }
   .hero .hero-logo img {
     height: 4em;
     margin-bottom: 1em; }
@@ -895,8 +902,11 @@ header.navigation {
     max-width: 68em;
     margin-left: auto;
     margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     margin: auto;
+    position: relative;
+    top: 2em;
     padding: 3.5em;
     text-align: center; }
     .hero .hero-inner::after {
@@ -1030,24 +1040,24 @@ header.navigation {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  -webkit-box-pack: justify;
-  box-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  -ms-justify-content: space-between;
-  -o-justify-content: space-between;
-  justify-content: space-between;
-  -ms-flex-pack: justify; }
+  -webkit-box-pack: start;
+  box-pack: start;
+  -webkit-justify-content: flex-start;
+  -moz-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  -o-justify-content: flex-start;
+  justify-content: flex-start;
+  -ms-flex-pack: start; }
 
 .card {
   -webkit-flex-basis: 15em;
   flex-basis: 15em;
   -ms-flex-preferred-size: 15em;
-  -webkit-flex-grow: 1;
-  -moz-flex-grow: 1;
-  -webkit-box-flex: 1;
-          flex-grow: 1;
-  -ms-flex-positive: 1;
+  -webkit-flex-grow: 0;
+  -moz-flex-grow: 0;
+  -webkit-box-flex: 0;
+          flex-grow: 0;
+  -ms-flex-positive: 0;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   background-color: #f7f7f7;
@@ -1058,7 +1068,6 @@ header.navigation {
   cursor: pointer;
   margin: 0 1em 1.5em 1em;
   padding-bottom: 1.75em;
-  position: relative;
   position: relative; }
   .card .card-image {
     overflow: hidden;
@@ -1210,7 +1219,7 @@ section.row {
       text-transform: uppercase; }
     .side-image .side-image-content p {
       color: gray;
-      margin-bottom: 3em; }
+      margin-bottom: 1.5em; }
     .side-image .side-image-content button {
       background-color: #477DCA;
       border-radius: 3px;
@@ -1222,7 +1231,8 @@ section.row {
       padding: 7px 18px;
       text-decoration: none;
       background-clip: padding-box;
-      padding: 0.7em 1em; }
+      padding: 0.7em 1em;
+      margin-bottom: 1.5em; }
       .side-image .side-image-content button:hover:not(:disabled) {
         background-color: #578ad4;
         cursor: pointer; }
@@ -1253,7 +1263,7 @@ section.row {
     border-top: 1px solid silver;
     color: #999999;
     float: left;
-    font-size: 0.7em;
+    font-size: 1em;
     line-height: 40px;
     margin: 0;
     padding: 0 0.5em 0 1em; }
@@ -1269,7 +1279,7 @@ section.row {
     border-bottom: 1px solid silver;
     cursor: pointer;
     float: right;
-    font-size: 0.7em;
+    font-size: 1em;
     font-weight: 800;
     line-height: 40px;
     margin: 0;
@@ -1334,7 +1344,7 @@ section.row {
     display: block; }
 
 .expander {
-  width: 60%; }
+  width: 100%; }
   .expander p {
     color: #333;
     line-height: 1.5; }
@@ -1343,6 +1353,9 @@ section.row {
   .expander a {
     color: #477DCA;
     text-decoration: none; }
+  @media screen and (min-width: 53.75em) {
+    .expander {
+      width: 60%; } }
   .expander .expander-trigger {
     -webkit-user-select: none;
     -moz-user-select: none;

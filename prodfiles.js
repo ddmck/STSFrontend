@@ -5,7 +5,7 @@ var resolve = function(file) {
 module.exports = 
   {
     files: [
-      resolve('init-dev'),
+      resolve('init-prod'),
       resolve('config'),
       resolve('directives'),
       resolve('factories'),

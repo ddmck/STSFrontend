@@ -7,10 +7,12 @@ var connect = require('gulp-connect');
 var autoprefixer = require('gulp-autoprefixer');
 var stdlib = require('./stdlib');
 var appfiles = require('./appfiles');
+var prodfiles = require('./prodfiles');
 var plumber = require('gulp-plumber');
 var gutil = require('gulp-util');
 var s3 = require("gulp-s3");
 var fs = require('fs');
+var aws = JSON.parse(fs.readFileSync('./aws.json'));
 var mocha = require('gulp-mocha');
 var rename = require("gulp-rename");
 var gzip = require('gulp-gzip');
@@ -40,6 +42,14 @@ gulp.task('scripts', function() {
     .pipe(connect.reload());
 });
 
+gulp.task('prodScripts', function() {
+    // Single entry point to browserify
+    return gulp.src(prodfiles.files)
+    .pipe(concat('app.js'))
+    .pipe(gulp.dest('./dist/js/'))
+    .pipe(connect.reload());
+});
+
 gulp.task('lib', function(){
   return gulp.src(stdlib.files)
     .pipe(concat('lib.js'))
@@ -61,6 +71,14 @@ gulp.task('site', function(){
   gulp.src('src/templates/*').pipe(gulp.dest('build/templates/'));
 });
 
+gulp.task('moveToDist', function(){
+  gulp.src('src/index.html').pipe(gulp.dest('dist/'));
+  gulp.src('src/partials/*').pipe(gulp.dest('dist/partials/'));
+  gulp.src('src/templates/*').pipe(gulp.dest('dist/templates/'));
+  gulp.src('build/css/*').pipe(gulp.dest('dist/css/'));
+  gulp.src('build/js/lib.js').pipe(gulp.dest('dist/js/'));
+});
+
 gulp.task('watch', ['sass', 'scripts', 'lib', 'site'], function() {
   gulp.watch('src/scss/**/*.scss', ['sass']);
   gulp.watch('src/js/**/*.*', ['scripts']);
@@ -80,4 +98,11 @@ gulp.task('connect', function() {
   });
 });
 
+gulp.task('deploy', function(){
+  gulp.src('./dist/**')
+    .pipe(s3(aws, {headers: {'Cache-Control': 'max-age=315360000, no-transform, public'}}));
+});
+
 gulp.task('default', ['connect', 'watch']);
+
+gulp.task('updateDist', ['prodScripts', 'moveToDist'])

@@ -1,5 +1,11 @@
 <h4>Address Details</h4>
-<p>{{localStorage.address}}</p>
+<p>
+  {{localStorage.address.line1}}<br>
+  {{localStorage.address.line2}}<br ng-show="localStorage.address.line2">
+  {{localStorage.address.city}}<br>
+  {{localStorage.address.country}}<br>
+  {{localStorage.address.postCode}}<br>
+</p>
 
 <h4>Billing Details</h4>
 <p>{{localStorage.token}}</p>
