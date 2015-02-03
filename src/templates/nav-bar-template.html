@@ -10,7 +10,7 @@
         <li class="nav-link" ui-sref-active="active"><a ui-sref="products.saved">Saved Products</a></li>
         <li class="nav-link more" ng-controller="CategoryController"><a href="javascript:void(0)">Mens</a>
           <ul class="submenu">
-            <li ng-repeat="category in categories.list() | orderBy:'name'">
+            <li ng-repeat="category in categories.list() | filter:{ is_female_only: false } | orderBy:'name'">
               <a ui-sref="categoryView({gender: 'male', catID: '{{category.id}}', category: '{{category.name}}'})">
                 {{category.name}}
               </a>
