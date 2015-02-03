@@ -152,6 +152,8 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
         // get the id
         $scope.showMenu = false;
         $scope.id = $stateParams.productID;
+        $scope.basket = Basket;
+        $scope.basket.fetchBasketItemProducts();
         $scope.size = null;
         $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
           $scope.product = data;
@@ -168,9 +170,22 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
           $scope.product.selectedSize = size;
         };
 
-        $scope.addToBasket = function(){
-          Basket.addToBasketItems($scope.product);
-          console.log(Basket.list());
+        $scope.setButtonMsg = function(inBasket){
+          if (!inBasket) {
+            $scope.msg = "Adding to Basket";
+          } else {
+            $scope.msg = "Removing from Basket";
+          }
+        }
+
+        $scope.addToBasket = function(inBasket){
+          if (!inBasket) {
+            Basket.addToBasketItems($scope.product);
+          } else {
+            Basket.removeFromBasketItems($scope.product);
+          }
+          $scope.basket.fetchBasketItemProducts();
+          $scope.msg = null;
         };
       }
     })

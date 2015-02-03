@@ -126,7 +126,7 @@ app.factory('Basket', [ '$http', '$localStorage', function($http, $localStorage)
           data.selectedSize = _.find(data.sizes, function(size){
             return size.id === item.sizeId
           });
-          products.push(data);
+          products.push(data);        
         });
       });
     },
@@ -161,6 +161,9 @@ app.factory('Basket', [ '$http', '$localStorage', function($http, $localStorage)
       products = _.reject(products, function(p){
         return p === product;
       })   
+    }, 
+    inBasketItems: function(productID){
+      return _.some(products, { 'id': productID });
     }
   }
 }]);
