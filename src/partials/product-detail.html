@@ -5,6 +5,9 @@
       <h4>{{product.brand_name}}</h4>
       <h1>{{product.name}}</h1>
       <p>{{ product.display_price | currency : '£' }}</p>
+      <ul><li ng-repeat="img in product.image_urls">
+        <img class="thumb" ng-src="{{img}}"></img>
+      </li></ul>
       <strong>Select a size</strong>
       <div ng-size-dropdown></div>   
       <button class="button buy-button" ng-show="product.selectedSize" ng-mousedown="setButtonMsg(basket.inBasketItems(product.id))" ng-click="addToBasket(basket.inBasketItems(product.id))" ><span ng-show="basket.inBasketItems(product.id)">{{ msg 

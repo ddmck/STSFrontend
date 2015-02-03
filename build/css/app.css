@@ -1220,6 +1220,14 @@ section.row {
     .side-image .side-image-content p {
       color: gray;
       margin-bottom: 1.5em; }
+    .side-image .side-image-content ul {
+      overflow-x: scroll; }
+      .side-image .side-image-content ul li {
+        display: inline-block; }
+        .side-image .side-image-content ul li img.thumb {
+          height: 50px;
+          border: 1px solid #aaa;
+          margin-right: 0.5em; }
     .side-image .side-image-content button {
       background-color: #477DCA;
       border-radius: 3px;

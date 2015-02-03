@@ -82,6 +82,19 @@ section.row {
       margin-bottom: 1.5em;
     }
 
+    ul {
+      overflow-x: scroll;
+      li {
+        display: inline-block;
+        img.thumb {
+          height: 50px;
+          border: 1px solid #aaa;
+          margin-right: 0.5em;
+        }
+      }
+    }
+    
+
     button {
       @include button(flat, $base-accent-color);
       padding: 0.7em 1em;
