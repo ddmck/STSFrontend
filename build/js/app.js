@@ -214,9 +214,19 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       templateUrl: "partials/returns.html"
     })
 
+    .state('about', {
+      url: '/about',
+      templateUrl: "partials/about.html"
+    })
+
     .state('stores-list', {
       url: '/stores-list',
       templateUrl: "partials/stores-list.html"
+    })
+
+    .state('contact', {
+      url: '/contact',
+      templateUrl: "partials/contact.html"
     })
       
   // catch all route
