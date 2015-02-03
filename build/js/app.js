@@ -206,27 +206,50 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
 
     .state('delivery', {
       url: '/delivery',
-      templateUrl: "partials/delivery.html"
+      templateUrl: "partials/delivery.html",
+      onEnter: function(){
+        window.scrollTo(0,0);
+      }
     })
 
     .state('returns', {
       url: '/returns',
-      templateUrl: "partials/returns.html"
+      templateUrl: "partials/returns.html",
+      onEnter: function(){
+        window.scrollTo(0,0);
+      }
     })
 
     .state('about', {
       url: '/about',
-      templateUrl: "partials/about.html"
+      templateUrl: "partials/about.html",
+      onEnter: function(){
+        window.scrollTo(0,0);
+      }
     })
 
     .state('stores-list', {
       url: '/stores-list',
-      templateUrl: "partials/stores-list.html"
+      templateUrl: "partials/stores-list.html",
+      onEnter: function(){
+        window.scrollTo(0,0);
+      }
     })
 
     .state('contact', {
       url: '/contact',
-      templateUrl: "partials/contact.html"
+      templateUrl: "partials/contact.html",
+      onEnter: function(){
+        window.scrollTo(0,0);
+      }
+    })
+
+    .state('terms', {
+      url: '/terms',
+      templateUrl: "partials/terms.html",
+      onEnter: function(){
+        window.scrollTo(0,0);
+      }
     })
       
   // catch all route
