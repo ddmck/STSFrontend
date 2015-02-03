@@ -1,12 +1,12 @@
 <section class="row">
   <div class="side-image">
-    <div class="images-wrapper" ng-style="{'background-image':'url('+ (product.large_image_url || product.image_url) +')'}"></div>
+    <div class="images-wrapper" ng-style="{'background-image':'url('+ currentImg +')'}"></div>
     <div class="side-image-content">
       <h4>{{product.brand_name}}</h4>
       <h1>{{product.name}}</h1>
       <p>{{ product.display_price | currency : '£' }}</p>
       <ul><li ng-repeat="img in product.image_urls">
-        <img class="thumb" ng-src="{{img}}"></img>
+        <img class="thumb" ng-src="{{img}}" ng-click="setProductImg(img)" ng-class="{current: currentImg === img}"></img>
       </li></ul>
       <strong>Select a size</strong>
       <div ng-size-dropdown></div>   

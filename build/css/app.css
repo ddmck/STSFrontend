@@ -1228,6 +1228,8 @@ section.row {
           height: 50px;
           border: 1px solid #aaa;
           margin-right: 0.5em; }
+          .side-image .side-image-content ul li img.thumb.current {
+            border: 2px solid #999; }
     .side-image .side-image-content button {
       background-color: #477DCA;
       border-radius: 3px;

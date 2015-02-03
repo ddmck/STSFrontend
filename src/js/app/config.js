@@ -157,11 +157,16 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
         $scope.size = null;
         $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
           $scope.product = data;
+          $scope.currentImg = data.large_image_url || data.image_url;
           window.scrollTo(0, 0);
         });
 
         $scope.toggleMenu = function(){
           $scope.showMenu = !$scope.showMenu;
+        };
+
+        $scope.setProductImg = function(imgUrl) {
+          $scope.currentImg = imgUrl;
         };
 
         $scope.selectSize = function(size){
