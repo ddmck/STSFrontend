@@ -28,6 +28,15 @@
         </option>
       </select>
     </div>
+    <div class="filter" ng-controller="SortController" style="float:right">
+      <label>Sort by</label>
+      <select ng-model="sort" ng-change="setSort(sort)">
+        <option value="">Sort</option>
+        <option ng-repeat="sorter in sorters" value={{sorter.val}}>
+          {{ sorter.name }}
+        </option>
+      </select>
+    </div>
   </div>
 </section>
 <div ng-product-list></div>

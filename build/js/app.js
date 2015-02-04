@@ -1,5 +1,5 @@
 var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments']);
-var backendUrl = "https://www.shopshopgo.com/";
+var backendUrl = "http://localhost:3000/";
 Stripe.setPublishableKey('pk_test_mfQJDA4oT57DLFi7l0HYu782');
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
@@ -541,7 +541,7 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     },
     fetchProducts: function(){
       searching = true;
-      $http.get(backendUrl + 'products.json', {async: true, params: {page: page.toString(), gender: Filters.getFilters().gender, category: Filters.getFilters().category, sub_category: Filters.getFilters().subCategory, search_string: Filters.getFilters().searchString}}).success(function(data){
+      $http.get(backendUrl + 'products.json', {async: true, params: {page: page.toString(), gender: Filters.getFilters().gender, category: Filters.getFilters().category, sub_category: Filters.getFilters().subCategory, sort: Filters.getFilters().sort, search_string: Filters.getFilters().searchString}}).success(function(data){
         products = products.concat(data);
         scrollActive = true;
         searching = false;
@@ -783,9 +783,38 @@ app.controller('BasketController', ['$scope', '$localStorage', 'Basket', functio
   };
 }])
 
-app.controller('PaymentsController', ['$scope', '$auth', '$localStorage', '$state', 'Basket' ,function($scope, $auth, $localStorage, $state, Basket){
+app.controller('PaymentsController', ['$scope', '$auth', '$localStorage', '$state', 'Basket', function($scope, $auth, $localStorage, $state, Basket){
   if ($auth.user.id) {
     $state.go('pay.address');
   }
 }]);
+app.controller('SortController', ['$scope', 'Filters', 'Products', function($scope, Filters, Products){
+  $scope.Filters = Filters;
+  $scope.sorters = [
+    {
+      name: "Name A-Z",
+      val: "first_letter, asc"
+    },
+    {
+      name: "Name Z-A",
+      val: "first_letter, desc"
+    },
+    {
+      name: "Price Low-High",
+      val: "display_price, asc"
+    },
+    {
+      name: "Price High-Low",
+      val: "display_price, desc"
+    }
+  ];
+
+  $scope.setSort = function(sort){
+    console.log(sort)
+    Filters.setFilter("sort", sort)
+    Products.resetProducts();
+    Products.resetPage();
+    Products.fetchProducts();
+  };
+}])
 

@@ -232,8 +232,37 @@ app.controller('BasketController', ['$scope', '$localStorage', 'Basket', functio
   };
 }])
 
-app.controller('PaymentsController', ['$scope', '$auth', '$localStorage', '$state', 'Basket' ,function($scope, $auth, $localStorage, $state, Basket){
+app.controller('PaymentsController', ['$scope', '$auth', '$localStorage', '$state', 'Basket', function($scope, $auth, $localStorage, $state, Basket){
   if ($auth.user.id) {
     $state.go('pay.address');
   }
 }]);
+app.controller('SortController', ['$scope', 'Filters', 'Products', function($scope, Filters, Products){
+  $scope.Filters = Filters;
+  $scope.sorters = [
+    {
+      name: "Name A-Z",
+      val: "first_letter, asc"
+    },
+    {
+      name: "Name Z-A",
+      val: "first_letter, desc"
+    },
+    {
+      name: "Price Low-High",
+      val: "display_price, asc"
+    },
+    {
+      name: "Price High-Low",
+      val: "display_price, desc"
+    }
+  ];
+
+  $scope.setSort = function(sort){
+    console.log(sort)
+    Filters.setFilter("sort", sort)
+    Products.resetProducts();
+    Products.resetPage();
+    Products.fetchProducts();
+  };
+}])

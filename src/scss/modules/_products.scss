@@ -6,6 +6,7 @@
 
 .card {
   ///////////////////////////////////////////////////////////////////////////////////
+  $large-screen: em(860) !default;
   $base-border-color: gainsboro !default;
   $base-border-radius: 3px !default;
   $base-background-color: white !default;
@@ -28,7 +29,8 @@
   $card-margin: 1em;
 
   @include flex-basis(15em);
-  @include flex-grow(0);
+  @include flex-grow(1);
+
   @include transition (all 0.2s ease-in-out);
   background-color: $card-background;
   border-radius: $base-border-radius;
@@ -38,6 +40,10 @@
   margin: 0 $card-margin $base-spacing $card-margin;
   padding-bottom: $card-padding-for-absolute-stats;
   position: relative;
+
+  @include media($large-screen) {
+    @include flex-grow(0);
+  }
 
   .card-image {
     overflow: hidden;
