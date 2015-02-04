@@ -35,7 +35,17 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
 
     .state('pay.you', {
       url: '/you',
-      templateUrl: 'partials/you.html'
+      templateUrl: 'partials/you.html',
+      controller: function($scope, $state, $localStorage){
+        $scope.goToSignIn = function(){
+          $localStorage.returnTo = "pay.address";
+          $state.go("account.signIn");
+        }, 
+        $scope.goToSignUp = function(){
+          $localStorage.returnTo = "pay.address";
+          $state.go("account.signUp");
+        }
+      }
     })
 
     .state('pay.address', {
@@ -62,6 +72,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
           } else {
             // got stripe token, now charge it or smt
             $localStorage.token = response.id;
+            $localStorage.last4 = $scope.number.slice(-4);
             $state.go('pay.confirmation')
           }
         };
@@ -550,20 +561,25 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     }
   };
 }]);
-app.controller('UserSessionsController', ['$scope', '$state', '$auth', function ($scope, $state, $auth) {
+app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localStorage', function ($scope, $state, $auth, $localStorage) {
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
   });
 
   $scope.$on('auth:login-success', function(ev){
     // $state.go('products.new');
-    console.log($auth);
-    window.auth = $auth;
+    if ($localStorage.returnTo) {
+      $state.go($localStorage.returnTo);
+      delete $localStorage.returnTo;
+    } else {
+      $state.go('new');
+    }
+        
   });
   $scope.handleLoginBtnClick = function() {
     $auth.submitLogin($scope.loginForm)
       .then(function(resp) {
-
+        
       })
       .catch(function(resp) { 
         // handle error response
@@ -571,7 +587,7 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', function 
   };
 }]);
 
-app.controller('UserRegistrationsController', ['$scope', '$auth', function($scope, $auth) {
+app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$localStorage', function($scope, $state, $auth, $localStorage) {
   $scope.$on('auth:registration-email-success', function(ev, message){
     $('#signUpModal').foundation('reveal', 'close');
     console.log(message);
@@ -584,7 +600,12 @@ app.controller('UserRegistrationsController', ['$scope', '$auth', function($scop
   $scope.handleRegBtnClick = function() {
     $auth.submitRegistration($scope.registrationForm)
       .then(function(resp) { 
-        
+        if ($localStorage.returnTo) {
+          $state.go($localStorage.returnTo);
+          delete $localStorage.returnTo;
+        } else {
+          $state.go('new');
+        }
       })
       .catch(function(resp) { 
         

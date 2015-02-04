@@ -32,7 +32,17 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
 
     .state('pay.you', {
       url: '/you',
-      templateUrl: 'partials/you.html'
+      templateUrl: 'partials/you.html',
+      controller: function($scope, $state, $localStorage){
+        $scope.goToSignIn = function(){
+          $localStorage.returnTo = "pay.address";
+          $state.go("account.signIn");
+        }, 
+        $scope.goToSignUp = function(){
+          $localStorage.returnTo = "pay.address";
+          $state.go("account.signUp");
+        }
+      }
     })
 
     .state('pay.address', {
@@ -59,6 +69,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
           } else {
             // got stripe token, now charge it or smt
             $localStorage.token = response.id;
+            $localStorage.last4 = $scope.number.slice(-4);
             $state.go('pay.confirmation')
           }
         };
