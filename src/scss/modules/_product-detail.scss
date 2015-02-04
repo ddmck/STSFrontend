@@ -1,6 +1,25 @@
 section.row {
   @include outer-container;
   margin-top: 2em;
+
+  &.no-top-margin {
+    margin-top: 0em;
+  }
+}
+
+.title {
+  background-color: tint($brand-black, 10);
+  width: 100%;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  section.row {
+    margin-top: 0em;
+    color: #e7e7e7;
+    h1 {
+      text-align: center;
+      text-transform: capitalize;
+    }
+  }
 }
 
 .side-image {  

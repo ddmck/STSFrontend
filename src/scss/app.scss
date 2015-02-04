@@ -19,6 +19,11 @@
 @import "modules/_basket";
 // @import "modules/_callouts";
 
+$large-screen: em(860) !default;
+
 body {
-  padding-top: 60px;
+  padding-top: 120px;
+  @include media($large-screen) {
+    padding-top: 60px;
+  }
 }

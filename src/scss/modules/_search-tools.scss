@@ -37,6 +37,11 @@
   // border: 1px solid $search-tools-border-color;
   padding: $gutter / 2;
 
+  display: none;
+  @include media($large-screen) {
+    display: block;
+  }
+
   .filter {
     margin-bottom: 1em;
     // width: 100%;
