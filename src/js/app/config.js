@@ -141,7 +141,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
         Filters.resetAll();
         Filters.setFilter('category', $stateParams.catID);
         Filters.setFilter('gender', $stateParams.gender);
-        Products.fetchProducts();
       }
     })
 
@@ -203,6 +202,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
         Products.resetProducts();
         Products.resetPage();
         Products.fetchProducts();
+        Products.enumeratePage();
       }
     })
 

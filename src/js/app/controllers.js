@@ -1,5 +1,4 @@
 app.controller('UserSessionsController', ['$scope', '$state', '$auth', function ($scope, $state, $auth) {
-  console.log("Hey from users controller");
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
   });
@@ -54,11 +53,12 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   // Products.fetchProducts();
 
   $http.get(backendUrl + 'products.json', {async: true, params: { 
-                                page: Products.currentPage().toString(), 
+                                page: this.products.currentPage(), 
                                 gender: this.filters.getFilters().gender, 
                                 category: this.filters.getFilters().category,
                                 sub_category: this.filters.getFilters().subCategory, 
-                                search_string: this.filters.getFilters().searchString}
+                                search_string: this.filters.getFilters().searchString,
+                                sort: Filters.getFilters().sort}
                               }).success(function(data){
     productCtrl.products.addProducts(data);
     scrollActive = true;
@@ -115,13 +115,17 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   };
 
   this.nextPage = function(products){
+
     if (scrollActive === true) {
       scrollActive = false;
       Products.enumeratePage();
       
-      $http.get(backendUrl + 'products.json', {async: true, params: {page: Products.currentPage().toString(), gender: this.filters.getFilters().gender, category: this.filters.getFilters().category, sub_category: Filters.getFilters().subCategory, search_string: Filters.getFilters().searchString}}).success(function(data){
-        productCtrl.products.addProducts(data);
-        scrollActive = true;
+      $http.get(backendUrl + 'products.json', {async: true, params: {page: Products.currentPage().toString(), gender: this.filters.getFilters().gender, category: this.filters.getFilters().category, sub_category: Filters.getFilters().subCategory, sort: Filters.getFilters().sort, search_string: Filters.getFilters().searchString}}).success(function(data){
+        if (data.length > 0) {
+          window.data = data;
+          productCtrl.products.addProducts(data);
+          scrollActive = true;
+        }
       });
     }
   };
@@ -149,7 +153,6 @@ app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categori
   Categories.fetchCategories();
   $scope.categories = Categories;
   $scope.filters = Filters;
-  console.log($scope.categories);
   $scope.setCategory = function(cat_id){
     if (cat_id === "") {
       Filters.removeFilter("category");
@@ -187,9 +190,6 @@ app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories
     } else {
       Filters.resetAll();
       Filters.setFilter("searchString", searchString);
-      Products.resetProducts();
-      Products.resetPage();
-      Products.fetchProducts();
       $state.go('search', {searchString: searchString})
     }
   }
