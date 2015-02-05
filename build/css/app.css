@@ -906,9 +906,10 @@ header.navigation {
     color: white;
     margin: auto;
     position: relative;
-    top: 2em;
-    padding: 3.5em;
-    text-align: center; }
+    top: 0em;
+    padding: 3.5em 1em 2em;
+    text-align: center;
+    height: 100vh; }
     .hero .hero-inner::after {
       clear: both;
       content: "";
@@ -917,6 +918,11 @@ header.navigation {
       clear: both;
       content: "";
       display: table; }
+    @media screen and (min-width: 53.75em) {
+      .hero .hero-inner {
+        top: 2em;
+        height: auto;
+        padding: 3.5em; } }
     .hero .hero-inner .hero-copy {
       text-align: center; }
       .hero .hero-inner .hero-copy h1 {
