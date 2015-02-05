@@ -1,4 +1,5 @@
 <h3>Where do you want your items sent?</h3>
+<p>(We currently only deliver to addresses in London)</p>
 
 
 <form ng-submit="submitAddress(addressForm)" role="form" ng-init="addressForm = (localStorage.address || {})">
@@ -19,7 +20,7 @@
     <input type="text" name="postCode" id="postCode" ng-model="addressForm.postCode" ng-required=true class="form-control"> 
   </div>
   <div class="form-group"> 
-    <label for="country">Country (We currently only ship to countries in the UK)</label> 
+    <label for="country">Country</label> 
     <input type="text" name="country" id="country" ng-model="addressForm.country" ng-required=true class="form-control"> 
   </div>
   <button type="submit" class="btn btn-primary btn-lg">Next</button> 
