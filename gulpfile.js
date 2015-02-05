@@ -69,12 +69,14 @@ gulp.task('site', function(){
   gulp.src('src/index.html').pipe(gulp.dest('build/'));
   gulp.src('src/partials/*').pipe(gulp.dest('build/partials/'));
   gulp.src('src/templates/*').pipe(gulp.dest('build/templates/'));
+  gulp.src('src/images/*').pipe(gulp.dest('build/images/'));
 });
 
 gulp.task('moveToDist', function(){
   gulp.src('src/index.html').pipe(gulp.dest('dist/'));
   gulp.src('src/partials/*').pipe(gulp.dest('dist/partials/'));
   gulp.src('src/templates/*').pipe(gulp.dest('dist/templates/'));
+  gulp.src('src/images/*').pipe(gulp.dest('dist/images/'));
   gulp.src('build/css/*').pipe(gulp.dest('dist/css/'));
   gulp.src('build/js/lib.js').pipe(gulp.dest('dist/js/'));
 });
