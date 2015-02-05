@@ -1,5 +1,5 @@
 
-app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
     
   $stateProvider
   
@@ -276,5 +276,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
   $authProvider.configure({
       apiUrl: backendUrl + 'api'
   });
+
+  // $locationProvider.html5Mode({enabled: true});
 })
 

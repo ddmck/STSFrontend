@@ -8,7 +8,7 @@ module.exports =
       resolve('jquery'),
       resolve('jquery.cookie'),
       resolve('angular'),
-      resolve('angular-ui-router.min'),
+      resolve('angular-ui-router'),
       resolve('ngStorage'),
       resolve('angular-sanitize'),
       resolve('angular-cookie'),
