@@ -100,11 +100,13 @@ gulp.task('connect', function() {
   });
 });
 
-gulp.task('deploy', function(){
+gulp.task('pushToS3', function(){
   gulp.src('./dist/**')
     .pipe(s3(aws, {headers: {'Cache-Control': 'max-age=315360000, no-transform, public'}}));
 });
 
 gulp.task('default', ['connect', 'watch']);
 
-gulp.task('updateDist', ['prodScripts', 'moveToDist'])
+gulp.task('updateDist', ['prodScripts', 'moveToDist']);
+
+gulp.task('deploy', ['updateDist', 'pushToS3']);
