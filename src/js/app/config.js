@@ -122,7 +122,12 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('products.new', {
       url: '/new',
-      templateUrl: 'partials/new.html'
+      templateUrl: 'partials/new.html',
+      controller: function(Filters, Products){
+        Products.resetProducts();
+        Products.resetPage();
+        Filters.resetAll();
+      }
     })
 
     .state('products.hot', {
