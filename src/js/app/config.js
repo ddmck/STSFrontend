@@ -30,6 +30,18 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: 'PaymentsController'
     })
 
+    .state('mens', {
+      url: '/mens',
+      templateUrl: 'partials/mobile-mens-categories.html',
+      controller: 'MobileCatController'
+    })
+
+    .state('womens', {
+      url: '/womens',
+      templateUrl: 'partials/mobile-womens-categories.html',
+      controller: 'MobileCatController'
+    })
+
     .state('pay.you', {
       url: '/you',
       templateUrl: 'partials/you.html',

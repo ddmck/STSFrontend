@@ -153,9 +153,11 @@ header.navigation {
 
   li.more.nav-link {
     padding-right: 0;
+    display: none;
 
     @include media($large-screen) {
       padding-right: $navigation-submenu-padding;
+      display: inline;
     }
 
     > ul > li:first-child a  {
@@ -176,8 +178,15 @@ header.navigation {
       color: $navigation-color;
     }
   }
+  
+  li.mob.nav-link {
+    @include media($large-screen) {
+      display: none;
+    }
+  }
 
   li.more {
+    
     overflow: visible;
     padding-right: 0;
 

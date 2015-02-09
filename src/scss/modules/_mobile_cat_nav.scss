@@ -1,0 +1,15 @@
+ul.mobile-cats {
+  width: 100%;
+  li {
+    text-align: center;
+    background: $brand-black;
+    border-bottom: 1px solid lighten($brand-black, 10%);
+    color: #e7e7e7;
+    padding: 1em;
+
+    a {
+      text-transform: capitalize;;
+      color: #e7e7e7;
+    }
+  }
+} 

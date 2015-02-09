@@ -5,6 +5,10 @@ section.row {
   &.no-top-margin {
     margin-top: 0em;
   }
+
+  &.touch-footer {
+    margin-bottom: -2em;
+  }
 }
 
 .title {

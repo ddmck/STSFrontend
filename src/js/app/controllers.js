@@ -193,6 +193,12 @@ app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categ
   };
 }]);
 
+app.controller('MobileCatController', ['$scope', 'Categories', function($scope, Categories){
+  Categories.fetchCategories();
+  $scope.categories = Categories;
+
+}]);
+
 app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories', function($state, Filters, Products, Categories){
   this.updateSearch = function(searchString){
     if (searchString === null || searchString === undefined || searchString === '' || searchString === ' ') {

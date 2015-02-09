@@ -33,6 +33,18 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: 'PaymentsController'
     })
 
+    .state('mens', {
+      url: '/mens',
+      templateUrl: 'partials/mobile-mens-categories.html',
+      controller: 'MobileCatController'
+    })
+
+    .state('womens', {
+      url: '/womens',
+      templateUrl: 'partials/mobile-womens-categories.html',
+      controller: 'MobileCatController'
+    })
+
     .state('pay.you', {
       url: '/you',
       templateUrl: 'partials/you.html',
@@ -304,6 +316,15 @@ app.directive('ngNavBar', function(){
         $('#js-navigation-menu').slideToggle(function(){
           if($('#js-navigation-menu').is(':hidden')) {
             $('#js-navigation-menu').removeAttr('style');
+          }
+        });
+      });
+      $('.nav-link a').on('click', function(e) {
+        e.preventDefault();
+        $('#js-navigation-menu').slideToggle(function(){
+          if($('#js-navigation-menu').is(':hidden')) {
+            $('#js-navigation-menu').removeAttr('style');
+            window.scrollTo(0,0);
           }
         });
       });
@@ -761,6 +782,12 @@ app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categ
     Products.resetPage();
     Products.fetchProducts();
   };
+}]);
+
+app.controller('MobileCatController', ['$scope', 'Categories', function($scope, Categories){
+  Categories.fetchCategories();
+  $scope.categories = Categories;
+
 }]);
 
 app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories', function($state, Filters, Products, Categories){
