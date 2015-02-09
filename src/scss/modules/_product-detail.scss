@@ -1,6 +1,9 @@
 section.row {
   @include outer-container;
-  margin-top: 2em;
+  margin-top: 0em;
+  @include media($large-screen) {
+    margin-top: 2em;
+  }
 
   &.no-top-margin {
     margin-top: 0em;
@@ -14,14 +17,22 @@ section.row {
 .title {
   background-color: tint($brand-black, 10);
   width: 100%;
-  padding-top: 2em;
-  padding-bottom: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  @include media($large-screen) {
+    padding-top: 2em;
+    padding-bottom: 2em;
+  }
   section.row {
     margin-top: 0em;
     color: #e7e7e7;
     h1 {
       text-align: center;
       text-transform: capitalize;
+      font-size: 1.25em;
+      @include media($large-screen) {
+        font-size: $base-font-size * 2.25;
+      }
     }
   }
 }
@@ -47,11 +58,12 @@ section.row {
   $side-image-border: 1px solid darken(transparentize($side-image-background-bottom, 0.8), 30%);
 
   // background: $side-image-content-background;
-  margin-top: 3em;
-  margin-bottom: 3em;
+  margin-bottom: -2em;
   
   @include media($large-screen) {
     @include row(table);
+    margin-top: 3em;
+    margin-bottom: 3em;
   }
 
   .images-wrapper {

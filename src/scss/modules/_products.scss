@@ -37,12 +37,13 @@
   border: $card-border;
   box-shadow: 0 2px 4px darken($base-background-color, 10%);
   cursor: pointer;
-  margin: 0 $card-margin $base-spacing $card-margin;
+  margin: ($base-spacing/2) $card-margin ($base-spacing/2) $card-margin;
   padding-bottom: $card-padding-for-absolute-stats;
   position: relative;
 
   @include media($large-screen) {
     @include flex-grow(0);
+    margin: 0 $card-margin $base-spacing $card-margin;
   }
 
   .card-image {
