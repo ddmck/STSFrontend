@@ -31478,7 +31478,7 @@ angular.module('ng-token-auth', ['ipCookie']).provider('$auth', function() {
                 opts = {};
               }
               if (!this.tokenHasExpired()) {
-                return $http.get(this.apiUrl(opts.config) + this.getConfig(opts.config).tokenValidationPath).success((function(_this) {
+                return $http.get(this.apiUrl(opts.config) + this.getConfig(opts.config).tokenValidationPath, {async: true}).success((function(_this) {
                   return function(resp) {
                     var authData;
                     authData = _this.getConfig(opts.config).handleTokenValidationResponse(resp);

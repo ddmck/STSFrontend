@@ -111,6 +111,12 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       }
     })
 
+    .state('orders', {
+      url: '/orders',
+      templateUrl: 'partials/orders.html',
+      controller: 'OrdersController'
+    })
+
     .state('account', {
       abstract: true,
       url: '/account',
@@ -445,6 +451,21 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
         return subCat.category_id === Filters.getFilters().category
       })
     }
+  }
+}]);
+
+app.factory('Orders', [ '$http', function($http){
+  var orders = [];
+  return {
+    fetchOrders: function(){
+      $http.get(backendUrl + 'api/orders.json', {async: true}).success(function(data){
+        orders = data;
+      });
+    },
+    list: function(){
+      return orders;
+    }
+
   }
 }]);
 
@@ -872,5 +893,12 @@ app.controller('SortController', ['$scope', 'Filters', 'Products', function($sco
     Products.resetPage();
     Products.fetchProducts();
   };
-}])
+}]);
+
+app.controller('OrdersController', ['$scope', 'Orders', function($scope, Orders){
+  Orders.fetchOrders();
+  $scope.orders = Orders;
+}]);
+
+
 

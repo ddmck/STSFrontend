@@ -108,6 +108,12 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       }
     })
 
+    .state('orders', {
+      url: '/orders',
+      templateUrl: 'partials/orders.html',
+      controller: 'OrdersController'
+    })
+
     .state('account', {
       abstract: true,
       url: '/account',

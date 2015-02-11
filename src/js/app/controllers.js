@@ -281,4 +281,11 @@ app.controller('SortController', ['$scope', 'Filters', 'Products', function($sco
     Products.resetPage();
     Products.fetchProducts();
   };
-}])
+}]);
+
+app.controller('OrdersController', ['$scope', 'Orders', function($scope, Orders){
+  Orders.fetchOrders();
+  $scope.orders = Orders;
+}]);
+
+

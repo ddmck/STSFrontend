@@ -67,6 +67,21 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   }
 }]);
 
+app.factory('Orders', [ '$http', function($http){
+  var orders = [];
+  return {
+    fetchOrders: function(){
+      $http.get(backendUrl + 'api/orders.json', {async: true}).success(function(data){
+        orders = data;
+      });
+    },
+    list: function(){
+      return orders;
+    }
+
+  }
+}]);
+
 app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localStorage){
   if (!$localStorage.wishlistItems){
     $localStorage.wishlistItems = [];
