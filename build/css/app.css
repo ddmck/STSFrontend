@@ -907,7 +907,6 @@ header.navigation {
     max-width: 68em;
     margin-left: auto;
     margin-right: auto;
-    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     margin: auto;
     position: relative;
@@ -929,10 +928,11 @@ header.navigation {
         height: auto;
         padding: 3.5em; } }
     .hero .hero-inner .hero-copy {
-      text-align: center; }
+      text-align: center;
+      margin-bottom: 2em; }
       .hero .hero-inner .hero-copy h1 {
         font-size: 1.6em;
-        margin-bottom: 0.5em; }
+        text-shadow: 0 0 25px rgba(33, 33, 33, 0.8); }
         @media screen and (min-width: 53.75em) {
           .hero .hero-inner .hero-copy h1 {
             font-size: 1.8em; } }
@@ -1449,17 +1449,19 @@ form.search-bar {
     -webkit-transition: border-color;
     transition: border-color;
     background-color: white;
-    border-radius: 3px;
-    border-radius: 3px;
+    border-radius: 5px;
+    border-radius: 5px;
     border: 1px solid #DDD;
     color: #212121;
     display: block;
     font-size: 1em;
     font-style: italic;
     margin: 0;
-    padding: 0.5em 0.5em;
+    padding: 0.75em 0.75em;
     position: relative;
-    width: 100%; }
+    width: 100%;
+    -webkit-box-shadow: 0 8px 3px -3px rgba(33, 33, 33, 0.5);
+            box-shadow: 0 8px 3px -3px rgba(33, 33, 33, 0.5); }
   form.search-bar button[type=submit] {
     background-color: #477DCA;
     border-radius: 3px;
@@ -1478,7 +1480,7 @@ form.search-bar {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
     outline: none;
-    padding: 5px 10px; }
+    padding: 10px 20px; }
     form.search-bar button[type=submit]:hover:not(:disabled) {
       background-color: #578ad4;
       cursor: pointer; }

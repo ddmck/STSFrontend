@@ -4,7 +4,6 @@
 " alt="Logo Image"></a>
     <div class="hero-copy">
       <h1>{{msg}} <span ng-show="wishlist.list().length > 1">You know you want them, buy one of your {{wishlist.list().length}} wishlist items now!</span></h1>
-      <p>Personal Fashion Shopping and Same-day Delivery from the best shops in London, we'll even return the items that aren't perfect for you!</p> 
     </div>
     <form class="search-bar" role="search" ng-controller="SearchController as SearchCtrl" ng-submit="SearchCtrl.updateSearch(searchString)">
       <input type="search" ng-model="searchString" placeholder="Enter Search" />

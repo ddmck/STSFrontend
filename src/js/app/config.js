@@ -11,7 +11,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         if ($localStorage.gender){
           $scope.msg = "Welcome back!";
         } else {
-          $scope.msg = "Fashion Delivered Without the Wait";
+          $scope.msg = "The Best Brands - One Basket";
         };
         $scope.wishlist = $localStorage.wishlistItems;
       }
@@ -264,6 +264,14 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       }
     })
 
+    .state('pricePromise', {
+      url: '/price-promise',
+      templateUrl: "partials/price-promise.html",
+      onEnter: function(){
+        window.scrollTo(0,0);
+      }
+    })
+
     .state('stores-list', {
       url: '/stores-list',
       templateUrl: "partials/stores-list.html",
@@ -283,6 +291,14 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .state('terms', {
       url: '/terms',
       templateUrl: "partials/terms.html",
+      onEnter: function(){
+        window.scrollTo(0,0);
+      }
+    })
+
+    .state('privacy', {
+      url: '/privacy',
+      templateUrl: "partials/privacy.html",
       onEnter: function(){
         window.scrollTo(0,0);
       }

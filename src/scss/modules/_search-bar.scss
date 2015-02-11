@@ -1,7 +1,7 @@
 form.search-bar {  
   ///////////////////////////////////////////////////////////////////////////////////
   $base-border-color: gainsboro !default;
-  $base-border-radius: 3px !default;
+  $base-border-radius: 5px;
   $base-line-height: 1.5em !default;
   $base-accent-color: #477DCA !default;
   $dark-gray: #333 !default;
@@ -28,9 +28,10 @@ form.search-bar {
     font-size: 1em;
     font-style: italic;
     margin: 0;
-    padding: ($base-spacing / 3) ($base-spacing / 3);
+    padding: ($base-spacing / 2) ($base-spacing / 2);
     position: relative;
     width: 100%;
+    box-shadow: 0 8px 3px -3px rgba($brand-black, 0.5);
   }
 
   button[type=submit] {
@@ -39,7 +40,7 @@ form.search-bar {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
     outline: none;
-    padding: 5px 10px;
+    padding: 10px 20px;
 
     img {
       height: 12px;
