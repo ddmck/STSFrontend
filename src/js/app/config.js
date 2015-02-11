@@ -11,7 +11,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         if ($localStorage.gender){
           $scope.msg = "Welcome back!";
         } else {
-          $scope.msg = "The Best Brands - One Basket";
+          $scope.msg = "All The Best Stores - One Basket";
         };
         $scope.wishlist = $localStorage.wishlistItems;
       }
