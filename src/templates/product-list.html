@@ -18,5 +18,23 @@
         </ul>
       </div>
     </div>
+    <div class="card" ng-show="products.products.currentlySearching()">
+      <div class="card-image" ng-click="products.viewProduct(product)">
+        <img src="https://33.media.tumblr.com/11a7522dea3324965786756ca555ebdd/tumblr_ncivykjLn11r3gb3zo2_400.gif" alt="">
+      </div>
+      <div class="card-header">
+        Fetching more products
+      </div>
+      <div class="card-copy">
+        <p>Don't go anywhere</p>
+      </div>
+      <div class="card-stats">
+        <ul>
+          <!-- <li>{{ product.display_price | currency : '£' }}</li>
+          <li><a ng-click="products.addToWishlist(product)"><span ng-show="!products.checkIfWishedFor(product.id)">Save</span><span ng-show="products.checkIfWishedFor(product.id)">Saved</span></a></li> -->
+          <!-- <li>{{products.outOfProducts}}<span>Objects</span></li> -->
+        </ul>
+      </div>
+    </div>
   </div>
 </section>

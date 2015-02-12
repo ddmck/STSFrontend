@@ -220,6 +220,9 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
         scrollActive = true;
         searching = false;
       });
+    },
+    currentlySearching: function(){
+      return searching;
     }
   };
 }]);

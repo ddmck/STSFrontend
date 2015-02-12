@@ -650,6 +650,9 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
         scrollActive = true;
         searching = false;
       });
+    },
+    currentlySearching: function(){
+      return searching;
     }
   };
 }]);
@@ -790,7 +793,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
           window.data = data;
           productCtrl.products.addProducts(data);
           scrollActive = true;
-        }
+        } 
       });
     }
   };

@@ -135,7 +135,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
           window.data = data;
           productCtrl.products.addProducts(data);
           scrollActive = true;
-        }
+        } 
       });
     }
   };
