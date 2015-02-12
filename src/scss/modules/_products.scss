@@ -52,7 +52,7 @@
 
     img {
       @include transition (all 0.2s ease-in-out);
-      background: $card-image-background;
+      background: $card-background;
       border-top-left-radius: $base-border-radius;
       border-top-right-radius: $base-border-radius;
       width: 100%;
@@ -136,12 +136,22 @@
         border-right: 0;
       }
 
-      span {
-        color: $base-font-color;
-        display: block;
-        font-size: 0.7em;
-        font-weight: normal;
+      a {
+        @include button(flat, $base-accent-color);
+        // display: inline;
+        // float: right;
+        font-size: 0.8em;
+        margin-top: -1.25em;
+        padding: 0.25em 0.5em 0.1em;
+        // text-transform: uppercase;
       }
+
+      // span {
+      //   color: $base-font-color;
+      //   display: block;
+      //   font-size: 0.7em;
+      //   font-weight: normal;
+      // }
     }
   }
   

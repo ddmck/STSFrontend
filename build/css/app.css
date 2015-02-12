@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url(http://fonts.googleapis.com/css?family=Fira+Sans|Fira+Mono);
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -394,7 +395,7 @@ body {
   -webkit-font-smoothing: antialiased;
   background-color: white;
   color: #333;
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  font-family: "Fira Sans", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 1em;
   line-height: 1.5; }
 
@@ -475,7 +476,7 @@ input,
 label,
 select {
   display: block;
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  font-family: "Fira Sans", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 1em; }
 
 label {
@@ -498,7 +499,7 @@ select[multiple=multiple] {
   border: 1px solid #DDD;
   -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
           box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  font-family: "Fira Sans", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 1em;
   margin-bottom: 0.75em;
   padding: 0.5em 0.5em;
@@ -931,11 +932,39 @@ header.navigation {
       text-align: center;
       margin-bottom: 2em; }
       .hero .hero-inner .hero-copy h1 {
+        font-family: "Fira Mono";
         font-size: 1.6em;
         text-shadow: 0 0 25px rgba(33, 33, 33, 0.8); }
         @media screen and (min-width: 53.75em) {
           .hero .hero-inner .hero-copy h1 {
             font-size: 1.8em; } }
+      .hero .hero-inner .hero-copy .cd-headline.rotate-1 .cd-words-wrapper {
+        display: inline-block;
+        -webkit-perspective: 300px;
+                perspective: 300px; }
+      .hero .hero-inner .hero-copy .cd-headline.rotate-1 b {
+        opacity: 0;
+        -webkit-transform-origin: 50% 100%;
+            -ms-transform-origin: 50% 100%;
+                transform-origin: 50% 100%;
+        -webkit-transform: rotateX(180deg);
+                transform: rotateX(180deg);
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 0; }
+      .hero .hero-inner .hero-copy .cd-headline.rotate-1 b.is-visible {
+        position: relative;
+        opacity: 1;
+        -webkit-transform: rotateX(0deg);
+                transform: rotateX(0deg);
+        -webkit-animation: cd-rotate-1-in 1.2s;
+                animation: cd-rotate-1-in 1.2s; }
+      .hero .hero-inner .hero-copy .cd-headline.rotate-1 b.is-hidden {
+        -webkit-transform: rotateX(180deg);
+                transform: rotateX(180deg);
+        -webkit-animation: cd-rotate-1-out 1.2s;
+                animation: cd-rotate-1-out 1.2s; }
       .hero .hero-inner .hero-copy p {
         font-weight: 200;
         line-height: 1.4em;
@@ -966,6 +995,67 @@ header.navigation {
         opacity: 0.5;
         cursor: not-allowed; }
 
+@-webkit-keyframes cd-rotate-1-in {
+  0% {
+    -webkit-transform: rotateX(180deg);
+            transform: rotateX(180deg);
+    opacity: 0; }
+  35% {
+    -webkit-transform: rotateX(120deg);
+            transform: rotateX(120deg);
+    opacity: 0; }
+  65% {
+    opacity: 0; }
+  100% {
+    -webkit-transform: rotateX(360deg);
+            transform: rotateX(360deg);
+    opacity: 1; } }
+
+@keyframes cd-rotate-1-in {
+  0% {
+    -webkit-transform: rotateX(180deg);
+            transform: rotateX(180deg);
+    opacity: 0; }
+  35% {
+    -webkit-transform: rotateX(120deg);
+            transform: rotateX(120deg);
+    opacity: 0; }
+  65% {
+    opacity: 0; }
+  100% {
+    -webkit-transform: rotateX(360deg);
+            transform: rotateX(360deg);
+    opacity: 1; } }
+@-webkit-keyframes cd-rotate-1-out {
+  0% {
+    -webkit-transform: rotateX(0deg);
+            transform: rotateX(0deg);
+    opacity: 1; }
+  35% {
+    -webkit-transform: rotateX(-40deg);
+            transform: rotateX(-40deg);
+    opacity: 1; }
+  65% {
+    opacity: 0; }
+  100% {
+    -webkit-transform: rotateX(180deg);
+            transform: rotateX(180deg);
+    opacity: 0; } }
+@keyframes cd-rotate-1-out {
+  0% {
+    -webkit-transform: rotateX(0deg);
+            transform: rotateX(0deg);
+    opacity: 1; }
+  35% {
+    -webkit-transform: rotateX(-40deg);
+            transform: rotateX(-40deg);
+    opacity: 1; }
+  65% {
+    opacity: 0; }
+  100% {
+    -webkit-transform: rotateX(180deg);
+            transform: rotateX(180deg);
+    opacity: 0; } }
 .footer {
   margin-top: 2em;
   background: #212121;
@@ -1094,7 +1184,7 @@ header.navigation {
     .card .card-image img {
       -webkit-transition: all 0.2s ease-in-out;
       transition: all 0.2s ease-in-out;
-      background: #DBD199;
+      background: #f7f7f7;
       border-top-left-radius: 3px;
       border-top-right-radius: 3px;
       width: 100%; }
@@ -1162,11 +1252,29 @@ header.navigation {
         padding-left: 0; }
       .card .card-stats li:last-child {
         border-right: 0; }
-      .card .card-stats li span {
-        color: #333;
-        display: block;
-        font-size: 0.7em;
-        font-weight: normal; }
+      .card .card-stats li a {
+        background-color: #477DCA;
+        border-radius: 3px;
+        border: none;
+        color: white;
+        display: inline-block;
+        font-size: inherit;
+        font-weight: bold;
+        padding: 7px 18px;
+        text-decoration: none;
+        background-clip: padding-box;
+        font-size: 0.8em;
+        margin-top: -1.25em;
+        padding: 0.25em 0.5em 0.1em; }
+        .card .card-stats li a:hover:not(:disabled) {
+          background-color: #578ad4;
+          cursor: pointer; }
+        .card .card-stats li a:active:not(:disabled), .card .card-stats li a:focus:not(:disabled) {
+          background-color: #3c71bb;
+          cursor: pointer; }
+        .card .card-stats li a:disabled {
+          opacity: 0.5;
+          cursor: not-allowed; }
   .card:focus, .card:hover {
     background-color: white; }
     .card:focus .card-image img, .card:hover .card-image img {
