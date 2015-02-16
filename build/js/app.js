@@ -211,51 +211,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .state('productDetail', {
       url: '/products/:productID',
       templateUrl: 'partials/product-detail.html',
-      controller: function($scope, $stateParams, $http, Basket) {
-        // get the id
-        $scope.showMenu = false;
-        $scope.id = $stateParams.productID;
-        $scope.basket = Basket;
-        $scope.basket.fetchBasketItemProducts();
-        $scope.size = null;
-        $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
-          $scope.product = data;
-          $scope.currentImg = data.large_image_url || data.image_url;
-          window.scrollTo(0, 0);
-        });
-
-        $scope.toggleMenu = function(){
-          $scope.showMenu = !$scope.showMenu;
-        };
-
-        $scope.setProductImg = function(imgUrl) {
-          $scope.currentImg = imgUrl;
-        };
-
-        $scope.selectSize = function(size){
-          $scope.size = size;
-          $scope.showMenu = false;
-          $scope.product.selectedSize = size;
-        };
-
-        $scope.setButtonMsg = function(inBasket){
-          if (!inBasket) {
-            $scope.msg = "Adding to Basket";
-          } else {
-            $scope.msg = "Removing from Basket";
-          }
-        }
-
-        $scope.addToBasket = function(inBasket){
-          if (!inBasket) {
-            Basket.addToBasketItems($scope.product);
-          } else {
-            Basket.removeFromBasketItems($scope.product);
-          }
-          $scope.basket.fetchBasketItemProducts();
-          $scope.msg = null;
-        };
-      }
+      controller: "ProductDetailController"
     })
 
     .state('search', {
@@ -944,6 +900,60 @@ app.controller('SortController', ['$scope', 'Filters', 'Products', function($sco
 app.controller('OrdersController', ['$scope', 'Orders', function($scope, Orders){
   Orders.fetchOrders();
   $scope.orders = Orders;
+}]);
+
+app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Basket', function($scope, $stateParams, $http, Basket){
+  // get the id
+  $scope.showMenu = false;
+  $scope.id = $stateParams.productID;
+  $scope.basket = Basket;
+  $scope.basket.fetchBasketItemProducts();
+  $scope.size = null;
+
+  $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
+    $scope.product = data;
+    $scope.currentImg = data.large_image_url || data.image_url;
+    $scope.getStoreDetails($scope.product);
+    window.scrollTo(0, 0);
+  });
+
+  $scope.toggleMenu = function(){
+    $scope.showMenu = !$scope.showMenu;
+  };
+
+  $scope.setProductImg = function(imgUrl) {
+    $scope.currentImg = imgUrl;
+  };
+
+  $scope.selectSize = function(size){
+    $scope.size = size;
+    $scope.showMenu = false;
+    $scope.product.selectedSize = size;
+  };
+
+  $scope.setButtonMsg = function(inBasket){
+    if (!inBasket) {
+      $scope.msg = "Adding to Basket";
+    } else {
+      $scope.msg = "Removing from Basket";
+    }
+  };
+
+  $scope.addToBasket = function(inBasket){
+    if (!inBasket) {
+      Basket.addToBasketItems($scope.product);
+    } else {
+      Basket.removeFromBasketItems($scope.product);
+    }
+    $scope.basket.fetchBasketItemProducts();
+    $scope.msg = null;
+  };
+
+  $scope.getStoreDetails = function(product){
+    $http.get(backendUrl + 'stores/' + product.store_id + '.json', {async: true}).success(function(data){
+      $scope.storeDetails = data
+    })
+  };
 }]);
 
 

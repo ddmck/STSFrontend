@@ -8,13 +8,13 @@
   <div class="expander" ng-controller="ToggleController">
     <a href="javascript:void(0)" ng-class="{'expander-hidden': !open}" class="expander-trigger" ng-click="toggle()">Delivery</a>
     <div class="expander-content">
-      <p>FetchMyFashion offers a shopping service that allows you to add mutliple items from different stores into one basket and check out in one go. The delivery fees vary between stores, and we offer an estimate of the total delivery price at checkout. If the actual delivery fee is more than our estimate, we will email you to confirm that you are happy to proceed with your order. If the delivery fee is less than the estimated amount, we will only charge your card for the actual delivery amount.</p>
+      <p>{{storeDetails.delivery_copy}}</p>
     </div>
   </div>
   <div class="expander" ng-controller="ToggleController">
     <a href="javascript:void(0)" ng-class="{'expander-hidden': !open}" class="expander-trigger" ng-click="toggle()">Returns</a>
     <div class="expander-content">
-      <p>14 day free returns</p>
+      <p>{{storeDetails.returns_copy}}</p>
     </div>
   </div>
 </div>
