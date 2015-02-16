@@ -11,6 +11,8 @@ module.exports =
       resolve('angular-ui-router'),
       resolve('ngStorage'),
       resolve('angular-sanitize'),
+      resolve('showdown'),
+      resolve('markdown'),
       resolve('angular-cookie'),
       resolve('ng-token-auth'),
       resolve('fastclick'),
