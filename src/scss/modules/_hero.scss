@@ -9,11 +9,12 @@
   $hero-background-bottom: #20392B;
   $hero-color: white;
   $gradient-angle: 10deg;
-  $hero-image: '/images/cover.jpeg';//'https://unsplash.imgix.net/photo-1416838375725-e834a83f62b7?q=75&fm=jpg&s=fc628c231023b391f54f10f92b859a0c';
-
-  @include background(url($hero-image), linear-gradient($gradient-angle, $hero-background-bottom, $hero-background-top), no-repeat $hero-background-top scroll);
+  @include background(url('/images/cover.jpeg'));
+  @include media($large-screen) {
+    @include background(url('/images/coverbricklarge.jpg'));
+  }
   background-color: #324766;
-  background-position: top;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   padding-bottom: 3em;
