@@ -227,9 +227,7 @@ app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories
         });
       }
     });
-    
   };
-
 }]);
 
 app.controller('ToggleController', ['$scope', function($scope){
@@ -240,12 +238,17 @@ app.controller('ToggleController', ['$scope', function($scope){
   } 
 }]);
 
-app.controller('BasketController', ['$scope', '$localStorage', 'Basket', function($scope, $localStorage, Basket){
+app.controller('BasketController', ['$scope', '$localStorage', 'Basket', 'Stores', 'Deliveries', function($scope, $localStorage, Basket, Stores, Deliveries){
   $scope.basket = Basket;
+  $scope.stores = Stores;
   Basket.fetchBasketItemProducts();
+  Stores.fetchStores();
   $scope.removeFromBasket = function(product){
     Basket.removeFromBasketItems(product);
   };
+  $scope.setDelivery = function(delivery, store){
+    Deliveries.addDelivery(delivery, store);
+  }
 }])
 
 app.controller('PaymentsController', ['$scope', '$auth', '$localStorage', '$state', 'Basket', function($scope, $auth, $localStorage, $state, Basket){

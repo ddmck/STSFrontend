@@ -48,6 +48,66 @@ app.factory('Categories', [ '$http', function($http){
   }
 }]);
 
+app.factory('Stores', [ '$http', function($http){
+  var stores = [];
+  return {
+    fetchStores: function(){
+      $http.get(backendUrl + 'stores.json', {async: true}).success(function(data){
+        stores = data;
+      });
+    },
+    list: function(){
+      return stores;
+    },
+    listStoresForProducts: function(products){
+      var storeIDs = _.map(products, function(p){
+        return p.store_id
+      });
+      storeIDs = _.uniq(storeIDs);
+      var s = _.filter(stores, function(str){
+        return (_.indexOf(storeIDs, str.id) > -1)
+      });
+      return s;
+    },
+    calcStdDeliveryPrice: function(store, products){
+      var productsForStore = _.filter(products, function(p){
+        return (p.store_id === store.id)
+      });
+      var totalSpendForStore = 0;
+      _.forEach(productsForStore, function(p){
+        totalSpendForStore += parseFloat(p.display_price);
+      });
+      if (parseFloat(store.free_delivery_threshold) < totalSpendForStore){
+        return 0
+      } else {
+        return store.standard_price
+      }
+    }
+  }
+}]);
+
+app.factory('Deliveries', ['$localStorage', function($localStorage){
+  if (!$localStorage.deliveries){
+    $localStorage.deliveries = [];
+  };
+  return {
+    list: function(){
+      return $localStorage.deliveries
+    },
+    addDelivery: function(delivery, store){
+      delivery = JSON.parse('{' + delivery + '}');
+      var holdingArr = _.reject($localStorage.deliveries, function(d){
+        return (d.store == store.id);
+      });
+      if (delivery.type) {
+        holdingArr.push(delivery);
+      }
+      $localStorage.deliveries = holdingArr;
+    }
+  }
+}])
+
+
 app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   var subCategories = [];
   return {
@@ -147,6 +207,9 @@ app.factory('Basket', [ '$http', '$localStorage', function($http, $localStorage)
     },
     listProducts: function(){
       return products;
+    },
+    listStores: function(){
+      return stores;
     },
     list: function(){
       return $localStorage.basketItems;
