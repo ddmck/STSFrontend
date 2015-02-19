@@ -132,6 +132,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
           $http.post(backendUrl + "api/orders.json", {order: {
             token: $localStorage.token,
             basket: $localStorage.basketItems,
+            deliveries: $localStorage.deliveries,
             address: $localStorage.address
           }});
         } 
@@ -489,6 +490,9 @@ app.factory('Deliveries', ['$localStorage', function($localStorage){
         holdingArr.push(delivery);
       }
       $localStorage.deliveries = holdingArr;
+    }, 
+    reset: function(){
+      $localStorage.deliveries = [];
     }
   }
 }])
@@ -918,6 +922,8 @@ app.controller('ToggleController', ['$scope', function($scope){
 app.controller('BasketController', ['$scope', '$localStorage', 'Basket', 'Stores', 'Deliveries', function($scope, $localStorage, Basket, Stores, Deliveries){
   $scope.basket = Basket;
   $scope.stores = Stores;
+  $scope.deliveries = Deliveries;
+  Deliveries.reset();
   Basket.fetchBasketItemProducts();
   Stores.fetchStores();
   $scope.removeFromBasket = function(product){
@@ -926,6 +932,16 @@ app.controller('BasketController', ['$scope', '$localStorage', 'Basket', 'Stores
   $scope.setDelivery = function(delivery, store){
     Deliveries.addDelivery(delivery, store);
   }
+  $scope.valid = function(){
+    console.log("stores.length: " + $scope.stores.listStoresForProducts($scope.basket.listProducts()).length);
+    console.log("deliveries.length: " +  $scope.deliveries.list().length);
+    var numbersMatch = ($scope.stores.listStoresForProducts($scope.basket.listProducts()).length === $scope.deliveries.list().length);
+    console.log("numbers match: " + numbersMatch);
+    var gtZero = ($scope.deliveries.list().length > 0);
+    console.log("greater than zero?: " + gtZero);
+    return !(numbersMatch && gtZero)
+  }
+
 }])
 
 app.controller('PaymentsController', ['$scope', '$auth', '$localStorage', '$state', 'Basket', function($scope, $auth, $localStorage, $state, Basket){

@@ -103,6 +103,9 @@ app.factory('Deliveries', ['$localStorage', function($localStorage){
         holdingArr.push(delivery);
       }
       $localStorage.deliveries = holdingArr;
+    }, 
+    reset: function(){
+      $localStorage.deliveries = [];
     }
   }
 }])

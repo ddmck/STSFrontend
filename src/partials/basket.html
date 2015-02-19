@@ -29,7 +29,7 @@
   </ul>
   <p><strong>Total:</strong> {{ basket.total() | currency : '£' }}</p>
 
-  <button ui-sref="pay.you">Pay Securely Now</button>
+  <button ng-disabled="valid()" ui-sref="pay.you">Pay Securely Now</button>
 </section>
 
 <section class="row" ng-show="basket.list().length === 0">

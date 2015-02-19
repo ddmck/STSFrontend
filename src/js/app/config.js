@@ -129,6 +129,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
           $http.post(backendUrl + "api/orders.json", {order: {
             token: $localStorage.token,
             basket: $localStorage.basketItems,
+            deliveries: $localStorage.deliveries,
             address: $localStorage.address
           }});
         } 
