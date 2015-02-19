@@ -1,5 +1,6 @@
 var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'btford.markdown', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments']);
 var backendUrl = "http://localhost:3000/";
+var assetUrl = 'http://www.fetchmyfashion.com/';
 Stripe.setPublishableKey('pk_test_mfQJDA4oT57DLFi7l0HYu782');
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
@@ -304,7 +305,8 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       apiUrl: backendUrl + 'api'
   });
 
-  // $locationProvider.html5Mode({enabled: true});
+  $locationProvider.html5Mode(true);
+  $locationProvider.hashPrefix('!');
 })
 
 
@@ -503,7 +505,7 @@ app.factory('Deliveries', ['$localStorage', function($localStorage){
         });
         return total;
       } else {
-        return "0";
+        return 0;
       }
       
     }

@@ -301,6 +301,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       apiUrl: backendUrl + 'api'
   });
 
-  // $locationProvider.html5Mode({enabled: true});
+  $locationProvider.html5Mode(true);
+  $locationProvider.hashPrefix('!');
 })
 

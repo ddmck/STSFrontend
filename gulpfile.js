@@ -46,7 +46,7 @@ gulp.task('prodScripts', function() {
     // Single entry point to browserify
     return gulp.src(prodfiles.files)
     .pipe(concat('app.js'))
-    .pipe(gulp.dest('./dist/js/'))
+    .pipe(gulp.dest('../fmfserver/public/js/'))
     .pipe(connect.reload());
 });
 
@@ -66,19 +66,18 @@ gulp.task('rev', ['sass', 'scripts'], function() {
 });
 
 gulp.task('site', function(){
-  gulp.src('src/index.html').pipe(gulp.dest('build/'));
-  gulp.src('src/partials/*').pipe(gulp.dest('build/partials/'));
-  gulp.src('src/templates/*').pipe(gulp.dest('build/templates/'));
-  gulp.src('src/images/*').pipe(gulp.dest('build/images/'));
+  gulp.src('src/index.html').pipe(gulp.dest('build/public/'));
+  gulp.src('src/partials/*').pipe(gulp.dest('build/public/partials/'));
+  gulp.src('src/templates/*').pipe(gulp.dest('build/public/templates/'));
+  gulp.src('src/images/*').pipe(gulp.dest('build/public/images/'));
 });
 
 gulp.task('moveToDist', function(){
-  gulp.src('src/index.html').pipe(gulp.dest('dist/'));
-  gulp.src('src/partials/*').pipe(gulp.dest('dist/partials/'));
-  gulp.src('src/templates/*').pipe(gulp.dest('dist/templates/'));
-  gulp.src('src/images/*').pipe(gulp.dest('dist/images/'));
-  gulp.src('build/css/*').pipe(gulp.dest('dist/css/'));
-  gulp.src('build/js/lib.js').pipe(gulp.dest('dist/js/'));
+  gulp.src('src/index.html').pipe(gulp.dest('../fmfserver/public/'));
+  gulp.src('src/partials/*').pipe(gulp.dest('../fmfserver/public/partials/'));
+  gulp.src('src/templates/*').pipe(gulp.dest('../fmfserver/public/templates/'));
+  gulp.src('src/images/*').pipe(gulp.dest('../fmfserver/public/images/'));
+  gulp.src('build/css/*').pipe(gulp.dest('../fmfserver/public/css/'));
 });
 
 gulp.task('watch', ['sass', 'scripts', 'lib', 'site'], function() {

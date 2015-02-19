@@ -115,7 +115,7 @@ app.factory('Deliveries', ['$localStorage', function($localStorage){
         });
         return total;
       } else {
-        return "0";
+        return 0;
       }
       
     }
