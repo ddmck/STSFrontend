@@ -252,12 +252,8 @@ app.controller('BasketController', ['$scope', '$localStorage', 'Basket', 'Stores
     Deliveries.addDelivery(delivery, store);
   }
   $scope.valid = function(){
-    console.log("stores.length: " + $scope.stores.listStoresForProducts($scope.basket.listProducts()).length);
-    console.log("deliveries.length: " +  $scope.deliveries.list().length);
     var numbersMatch = ($scope.stores.listStoresForProducts($scope.basket.listProducts()).length === $scope.deliveries.list().length);
-    console.log("numbers match: " + numbersMatch);
     var gtZero = ($scope.deliveries.list().length > 0);
-    console.log("greater than zero?: " + gtZero);
     return !(numbersMatch && gtZero)
   }
 

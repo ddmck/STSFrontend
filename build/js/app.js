@@ -124,8 +124,9 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .state('pay.confirmation', {
       url: '/confirmation',
       templateUrl: 'partials/confirmation.html',
-      controller: function($scope, $localStorage, $http, Basket){
+      controller: function($scope, $localStorage, $http, Basket, Deliveries){
         $scope.basket = Basket;
+        $scope.deliveries = Deliveries;      
         Basket.fetchBasketItemProducts();
         $scope.localStorage = $localStorage;
         $scope.submitOrder = function(){
@@ -493,6 +494,18 @@ app.factory('Deliveries', ['$localStorage', function($localStorage){
     }, 
     reset: function(){
       $localStorage.deliveries = [];
+    },
+    total: function(){
+      if ($localStorage.deliveries.length > 0) {
+        var total = 0;
+         _.forEach($localStorage.deliveries, function(n) { 
+          total += n.price; 
+        });
+        return total;
+      } else {
+        return "0";
+      }
+      
     }
   }
 }])
@@ -933,12 +946,8 @@ app.controller('BasketController', ['$scope', '$localStorage', 'Basket', 'Stores
     Deliveries.addDelivery(delivery, store);
   }
   $scope.valid = function(){
-    console.log("stores.length: " + $scope.stores.listStoresForProducts($scope.basket.listProducts()).length);
-    console.log("deliveries.length: " +  $scope.deliveries.list().length);
     var numbersMatch = ($scope.stores.listStoresForProducts($scope.basket.listProducts()).length === $scope.deliveries.list().length);
-    console.log("numbers match: " + numbersMatch);
     var gtZero = ($scope.deliveries.list().length > 0);
-    console.log("greater than zero?: " + gtZero);
     return !(numbersMatch && gtZero)
   }
 

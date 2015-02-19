@@ -106,6 +106,18 @@ app.factory('Deliveries', ['$localStorage', function($localStorage){
     }, 
     reset: function(){
       $localStorage.deliveries = [];
+    },
+    total: function(){
+      if ($localStorage.deliveries.length > 0) {
+        var total = 0;
+         _.forEach($localStorage.deliveries, function(n) { 
+          total += n.price; 
+        });
+        return total;
+      } else {
+        return "0";
+      }
+      
     }
   }
 }])

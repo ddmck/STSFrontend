@@ -121,8 +121,9 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .state('pay.confirmation', {
       url: '/confirmation',
       templateUrl: 'partials/confirmation.html',
-      controller: function($scope, $localStorage, $http, Basket){
+      controller: function($scope, $localStorage, $http, Basket, Deliveries){
         $scope.basket = Basket;
+        $scope.deliveries = Deliveries;      
         Basket.fetchBasketItemProducts();
         $scope.localStorage = $localStorage;
         $scope.submitOrder = function(){

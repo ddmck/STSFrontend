@@ -27,7 +27,11 @@
       </select>
     </li>
   </ul>
-  <p><strong>Total:</strong> {{ basket.total() | currency : '£' }}</p>
+  <p>
+    <strong>Subtotal:</strong> {{ basket.total() | currency : '£' }}<br>
+    <strong>Delivery:</strong> {{ deliveries.total() | currency : '£' }}</br>
+    <strong>Total:</strong> {{ basket.total() + deliveries.total() | currency : '£' }}
+  </p>
 
   <button ng-disabled="valid()" ui-sref="pay.you">Pay Securely Now</button>
 </section>

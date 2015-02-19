@@ -11,7 +11,10 @@
 <p>Card Ending: {{localStorage.last4}}</p>
 
 <h4>Total</h4>
-<p>{{basket.total() | currency : "£"}}</p>
+<p><strong>Subtotal:</strong> {{ basket.total() | currency : '£' }}<br>
+    <strong>Delivery:</strong> {{ deliveries.total() | currency : '£' }}</br>
+    <strong>Total:</strong> {{ basket.total() + deliveries.total() | currency : '£' }}
+  </p>
 
 
 <button ng-click="submitOrder()">Confirm Order</button>
