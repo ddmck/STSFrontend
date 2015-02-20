@@ -311,3 +311,8 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
   $locationProvider.hashPrefix('!');
 })
 
+app.run(function($rootScope, $location) {
+  $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+    ga('send', 'pageview', $location.path());
+  });
+})
