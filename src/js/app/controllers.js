@@ -36,12 +36,13 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
 
   $scope.handleRegBtnClick = function() {
     $auth.submitRegistration($scope.registrationForm)
-      .then(function(resp) { 
+      .then(function(resp) {
+        ga('send', 'event', 'users', 'signUp'); 
         if ($localStorage.returnTo) {
           $state.go($localStorage.returnTo);
           delete $localStorage.returnTo;
         } else {
-          $state.go('new');
+          $state.go('products.new');
         }
       })
       .catch(function(resp) { 
@@ -87,6 +88,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
       WishlistItems.update(currWishlist);
     } else {
       WishlistItems.addToWishlistItems(product);
+      ga('send', 'event', 'products', 'save', product.name);
     }
     
   };
@@ -206,7 +208,8 @@ app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories
     } else {
       Filters.resetAll();
       Filters.setFilter("searchString", searchString);
-      $state.go('search', {searchString: searchString})
+      $state.go('search', {searchString: searchString});
+      ga('send', 'event', 'products', 'search', searchString);
     }
   }
 
