@@ -1,7 +1,7 @@
 app.directive('ngNavBar', function(){
   return {
     restrict: 'A',
-    templateUrl: 'templates/nav-bar-template.html',
+    templateUrl: assetsUrl + 'templates/nav-bar-template.html',
     replace: true,
     transclude: true,
     compile: function() {
@@ -32,7 +32,7 @@ app.directive('ngNavBar', function(){
 app.directive('ngCallouts', function(){
   return {
     restrict: 'A',
-    templateUrl: 'templates/callouts-template.html',
+    templateUrl: assetsUrl + 'templates/callouts-template.html',
     replace: true,
     transclude: true,
     compile: function(){
@@ -44,7 +44,7 @@ app.directive('ngCallouts', function(){
 app.directive('ngFooter', function(){
   return {
     restrict: 'A',
-    templateUrl: 'templates/footer-template.html',
+    templateUrl: assetsUrl + 'templates/footer-template.html',
     replace: true,
     transclude: true
   }
@@ -53,7 +53,7 @@ app.directive('ngFooter', function(){
 app.directive('ngSizeDropdown', function(){
   return {
     restrict: 'A',
-    templateUrl: 'templates/size-dropdown.html',
+    templateUrl: assetsUrl + 'templates/size-dropdown.html',
     replace: true,
     transclude: true
   }
@@ -62,7 +62,7 @@ app.directive('ngSizeDropdown', function(){
 app.directive('ngProductDetails', function(){
   return {
     restrict: 'A',
-    templateUrl: 'templates/product-details.html',
+    templateUrl: assetsUrl + 'templates/product-details.html',
     replace: true,
     transclude: true
   }
@@ -71,7 +71,7 @@ app.directive('ngProductDetails', function(){
 app.directive('ngProductList', function(){
   return {
     restrict: "A",
-    templateUrl: 'templates/product-list.html',
+    templateUrl: assetsUrl + 'templates/product-list.html',
     replace: true,
     transclude: true
   }

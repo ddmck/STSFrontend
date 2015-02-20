@@ -1,7 +1,7 @@
 <header class="navigation" role="banner">
   <div>
     <a href="javascript:void(0)" ui-sref="welcome" class="logo">
-      <img src="images/fmflogowhite.png"></img>
+      <img src="https://d3imwl936vm0nt.cloudfront.net/images/fmflogowhite.png"></img>
     </a>
     <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">MENU</a>
     <nav role="navigation">
@@ -40,7 +40,8 @@
           </button>
         </form>
       </div>
-      <a href="javascript:void(0)" ng-controller="UserSessionsController" class="sign-up" ui-sref="account.signUp">{{user.id}} Sign Up</a>
+      <a href="javascript:void(0)" ng-controller="UserSessionsController" class="sign-up" ng-hide="user.id" ui-sref="account.signUp">Sign Up</a>
+      <a class="sign-up" ng-show="user.id" ng-click='signOut()'>Sign out</a>
     </div>
   </div>
 </header>

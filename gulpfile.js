@@ -24,7 +24,7 @@ var onError = function (err) {
 };
 
 gulp.task('sass', function() {
-  gulp.src('src/scss/app.scss')
+  gulp.src('src/scss/dev.scss')
     .pipe(plumber({
       errorHandler: onError
     }))
@@ -66,10 +66,10 @@ gulp.task('rev', ['sass', 'scripts'], function() {
 });
 
 gulp.task('site', function(){
-  gulp.src('src/index.html').pipe(gulp.dest('build/public/'));
-  gulp.src('src/partials/*').pipe(gulp.dest('build/public/partials/'));
-  gulp.src('src/templates/*').pipe(gulp.dest('build/public/templates/'));
-  gulp.src('src/images/*').pipe(gulp.dest('build/public/images/'));
+  gulp.src('src/index.html').pipe(gulp.dest('build/'));
+  gulp.src('src/partials/*').pipe(gulp.dest('build/partials/'));
+  gulp.src('src/templates/*').pipe(gulp.dest('build/templates/'));
+  gulp.src('src/images/*').pipe(gulp.dest('build/images/'));
 });
 
 gulp.task('moveToDist', function(){
@@ -80,12 +80,23 @@ gulp.task('moveToDist', function(){
   gulp.src('build/css/*').pipe(gulp.dest('../fmfserver/public/css/'));
 });
 
-gulp.task('watch', ['sass', 'scripts', 'lib', 'site'], function() {
+gulp.task('watch', ['sass', 'scripts', 'lib', 'site', 'updateDist'], function() {
   gulp.watch('src/scss/**/*.scss', ['sass']);
   gulp.watch('src/js/**/*.*', ['scripts']);
   gulp.watch(['src/index.html', 'src/partials/*', 'src/templates/*'], ['site']);
   gulp.watch('./stdlib.js', ['lib']);
+  gulp.watch('/build/css/*.css', ['renameFile']);
+  gulp.watch('*', ['updateDist']);
   // gulp.watch()
+});
+
+gulp.task('renameFile', function(){
+  gulp.src('./build/css/dev.css')
+    .pipe(plumber({
+      errorHandler: onError
+    }))
+    .pipe(rename('app.css'))
+    .pipe(gulp.dest('./build/css'))
 });
 
 gulp.task('connect', function() {
@@ -95,7 +106,23 @@ gulp.task('connect', function() {
       enabled: true,
       port: 35727
     },
-    port: 9000
+    port: 9000,
+    middleware: function(connect, options) {
+      return [
+        function(req, res, next) {
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+          res.setHeader('Access-Control-Allow-Headers', 'Content-Type,If-Modified-Since');
+
+          // don't just call next() return it
+          return next();
+        }
+
+        // add other middlewares here 
+        // connect.static(require('path').resolve('.'))
+
+      ];
+    }
   });
 });
 

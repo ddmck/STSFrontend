@@ -1,12 +1,18 @@
 
-app.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
-    
+app.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider, $sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    // Allow same origin resource loads.
+    'self',
+    // Allow loading from outer templates domain.
+    assetsUrl + '**'
+  ]);
+
   $stateProvider
   
     // route to show our landing page (/welcome)
     .state('welcome', {
       url: '/welcome',
-      templateUrl: 'partials/welcome.html',
+      templateUrl: assetsUrl + 'partials/welcome.html',
       controller: function($scope, $localStorage, WishlistItems){
         if ($localStorage.gender){
           $scope.msg = "Welcome back!";
@@ -46,32 +52,32 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('basket', {
       url: '/basket',
-      templateUrl: 'partials/basket.html',
+      templateUrl: assetsUrl + 'partials/basket.html',
       controller: 'BasketController'
     })
 
     .state('pay', {
       abstract: true,
       url: '/pay',
-      templateUrl: 'partials/pay.html',
+      templateUrl: assetsUrl + 'partials/pay.html',
       controller: 'PaymentsController'
     })
 
     .state('mens', {
       url: '/mens',
-      templateUrl: 'partials/mobile-mens-categories.html',
+      templateUrl: assetsUrl + 'partials/mobile-mens-categories.html',
       controller: 'MobileCatController'
     })
 
     .state('womens', {
       url: '/womens',
-      templateUrl: 'partials/mobile-womens-categories.html',
+      templateUrl: assetsUrl + 'partials/mobile-womens-categories.html',
       controller: 'MobileCatController'
     })
 
     .state('pay.you', {
       url: '/you',
-      templateUrl: 'partials/you.html',
+      templateUrl: assetsUrl + 'partials/you.html',
       controller: function($scope, $state, $localStorage){
         $scope.goToSignIn = function(){
           $localStorage.returnTo = "pay.address";
@@ -86,7 +92,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('pay.address', {
       url: '/address',
-      templateUrl: 'partials/address.html', 
+      templateUrl: assetsUrl + 'partials/address.html', 
       controller: function($scope, $state, $localStorage){
         $scope.localStorage = $localStorage;
         $scope.submitAddress = function(addressForm) {
@@ -99,7 +105,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('pay.billing', {
       url: '/billing',
-      templateUrl: 'partials/billing.html',
+      templateUrl: assetsUrl + 'partials/billing.html',
       controller: function($scope, $state, $localStorage){
         $scope.localStorage = $localStorage;
         $scope.handleStripe = function(status, response){
@@ -120,7 +126,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('pay.confirmation', {
       url: '/confirmation',
-      templateUrl: 'partials/confirmation.html',
+      templateUrl: assetsUrl + 'partials/confirmation.html',
       controller: function($scope, $localStorage, $http, Basket, Deliveries){
         $scope.basket = Basket;
         $scope.deliveries = Deliveries;      
@@ -139,37 +145,37 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('orders', {
       url: '/orders',
-      templateUrl: 'partials/orders.html',
+      templateUrl: assetsUrl + 'partials/orders.html',
       controller: 'OrdersController'
     })
 
     .state('account', {
       abstract: true,
       url: '/account',
-      templateUrl: 'partials/account.html'
+      templateUrl: assetsUrl + 'partials/account.html'
     })
 
     .state('account.signIn', {
       url: '/sign-in',
-      templateUrl: 'partials/sign-in.html',
+      templateUrl: assetsUrl + 'partials/sign-in.html',
       controller: "UserSessionsController"
     })
 
     .state('account.signUp', {
       url: '/sign-up',
-      templateUrl: 'partials/sign-up.html',
+      templateUrl: assetsUrl + 'partials/sign-up.html',
       controller: "UserRegistrationsController"
     })
 
     .state('products', {
       abstract: true,
       url: '/products',
-      templateUrl: 'partials/products.html'
+      templateUrl: assetsUrl + 'partials/products.html'
     })
 
     .state('products.new', {
       url: '/new',
-      templateUrl: 'partials/new.html',
+      templateUrl: assetsUrl + 'partials/new.html',
       controller: function(Filters, Products){
         Products.resetProducts();
         Products.resetPage();
@@ -179,12 +185,12 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('products.hot', {
       url: '/hot',
-      templateUrl: 'partials/hot.html'
+      templateUrl: assetsUrl + 'partials/hot.html'
     })
 
     .state('products.saved', {
       url: '/saved',
-      templateUrl: 'partials/saved.html',
+      templateUrl: assetsUrl + 'partials/saved.html',
       controller: function($scope, WishlistItems){
         $scope.wishlist = WishlistItems;
         WishlistItems.fetchWishlistItemProducts();
@@ -196,7 +202,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('categoryView', {
       url: '/products/:gender/{catID}-{category}',
-      templateUrl: 'partials/category-view.html',
+      templateUrl: assetsUrl + 'partials/category-view.html',
       controller: function($scope, $stateParams, Products, Filters, Categories){
         $scope.category = $stateParams.category;
         Products.resetProducts();
@@ -209,13 +215,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('productDetail', {
       url: '/products/:productID',
-      templateUrl: 'partials/product-detail.html',
+      templateUrl: assetsUrl + 'partials/product-detail.html',
       controller: "ProductDetailController"
     })
 
     .state('search', {
       url: '/search?searchString&category',
-      templateUrl: "partials/search-results.html",
+      templateUrl: assetsUrl + "partials/search-results.html",
       controller: function($scope, $stateParams, Products){
         $scope.searchString = $stateParams.searchString;
         Products.resetProducts();
@@ -227,7 +233,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('delivery', {
       url: '/delivery',
-      templateUrl: "partials/delivery.html",
+      templateUrl: assetsUrl + "partials/delivery.html",
       onEnter: function(){
         window.scrollTo(0,0);
       }
@@ -235,7 +241,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('returns', {
       url: '/returns',
-      templateUrl: "partials/returns.html",
+      templateUrl: assetsUrl + "partials/returns.html",
       onEnter: function(){
         window.scrollTo(0,0);
       }
@@ -243,7 +249,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('about', {
       url: '/about',
-      templateUrl: "partials/about.html",
+      templateUrl: assetsUrl + "partials/about.html",
       onEnter: function(){
         window.scrollTo(0,0);
       }
@@ -251,7 +257,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('pricePromise', {
       url: '/price-promise',
-      templateUrl: "partials/price-promise.html",
+      templateUrl: assetsUrl + "partials/price-promise.html",
       onEnter: function(){
         window.scrollTo(0,0);
       }
@@ -259,7 +265,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('stores-list', {
       url: '/stores-list',
-      templateUrl: "partials/stores-list.html",
+      templateUrl: assetsUrl + "partials/stores-list.html",
       onEnter: function(){
         window.scrollTo(0,0);
       }
@@ -267,7 +273,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('contact', {
       url: '/contact',
-      templateUrl: "partials/contact.html",
+      templateUrl: assetsUrl + "partials/contact.html",
       onEnter: function(){
         window.scrollTo(0,0);
       }
@@ -275,7 +281,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('terms', {
       url: '/terms',
-      templateUrl: "partials/terms.html",
+      templateUrl: assetsUrl + "partials/terms.html",
       onEnter: function(){
         window.scrollTo(0,0);
       }
@@ -283,7 +289,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 
     .state('privacy', {
       url: '/privacy',
-      templateUrl: "partials/privacy.html",
+      templateUrl: assetsUrl + "partials/privacy.html",
       onEnter: function(){
         window.scrollTo(0,0);
       }
