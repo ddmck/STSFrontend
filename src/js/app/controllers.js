@@ -27,7 +27,6 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
 app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$localStorage', function($scope, $state, $auth, $localStorage) {
   $scope.$on('auth:registration-email-error', function(ev, reason) { 
     $scope.error = reason.errors.full_messages[0];
-    console.log(reason); 
   });
 
   $scope.$on('auth:registration-email-success', function(ev, message){
