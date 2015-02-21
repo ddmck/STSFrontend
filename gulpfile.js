@@ -111,7 +111,7 @@ gulp.task('renameFile', function(){
 });
 
 gulp.task('renameProd', function(){
-  gulp.src('./dist/css/dev.css')
+  gulp.src('./dist/css/prod.css')
     .pipe(plumber({
       errorHandler: onError
     }))
