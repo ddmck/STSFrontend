@@ -302,7 +302,7 @@ app.controller('OrdersController', ['$scope', 'Orders', function($scope, Orders)
   $scope.orders = Orders;
 }]);
 
-app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Basket', function($scope, $stateParams, $http, Basket){
+app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Basket', 'Meta', function($scope, $stateParams, $http, Basket, Meta){
   // get the id
   $scope.showMenu = false;
   $scope.id = $stateParams.productID;
@@ -310,8 +310,11 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
   $scope.basket.fetchBasketItemProducts();
   $scope.size = null;
 
+
   $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
     $scope.product = data;
+    Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Fetch My Fashion");
+    Meta.set("description", "Shop " + $scope.product.name + " by " + $scope.product.brand_name + " at Fetch My Fashion, All Your Favourite Stores In One Place");
     $scope.currentImg = data.large_image_url || data.image_url;
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
