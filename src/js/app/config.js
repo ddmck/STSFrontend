@@ -19,7 +19,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         } else {
           $scope.msg = "All The Best Stores - One Basket";
         };
-        Meta.set.title = "Welcome";
+        Meta.set("title", "Welcome");
         $scope.wishlist = $localStorage.wishlistItems;
         var animationDelay = 2500;
  
