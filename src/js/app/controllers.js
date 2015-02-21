@@ -342,6 +342,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
   $scope.addToBasket = function(inBasket){
     if (!inBasket) {
       Basket.addToBasketItems($scope.product);
+      ga('send', 'event', 'products', 'addToBasket', $scope.product.name);
     } else {
       Basket.removeFromBasketItems($scope.product);
     }
@@ -355,5 +356,9 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     })
   };
 }]);
+
+app.controller("HeadController", ["Meta", "$scope", function(Meta, $scope){
+  $scope.meta = Meta;
+}])
 
 

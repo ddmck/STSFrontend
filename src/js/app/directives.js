@@ -76,3 +76,21 @@ app.directive('ngProductList', function(){
     transclude: true
   }
 });
+
+app.directive('ngMetaTitle', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/meta-title.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaDescription', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/meta-description.html',
+    replace: true,
+    transclude: true
+  }
+});

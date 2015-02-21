@@ -17,12 +17,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .state('welcome', {
       url: '/welcome',
       templateUrl: assetsUrl + 'partials/welcome.html',
-      controller: function($scope, $localStorage, WishlistItems){
+      controller: function($scope, $localStorage, WishlistItems, Meta){
         if ($localStorage.gender){
           $scope.msg = "Welcome back!";
         } else {
           $scope.msg = "All The Best Stores - One Basket";
         };
+        Meta.set.title = "Welcome";
         $scope.wishlist = $localStorage.wishlistItems;
         var animationDelay = 2500;
  
@@ -399,6 +400,24 @@ app.directive('ngProductList', function(){
     transclude: true
   }
 });
+
+app.directive('ngMetaTitle', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/meta-title.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaDescription', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/meta-description.html',
+    replace: true,
+    transclude: true
+  }
+});
 app.factory('Filters', ['$location', function($location){
   // Hacky way to prevent location being set to empty string causing refresh
   var filters = {};
@@ -705,6 +724,19 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     }
   };
 }]);
+
+app.factory('Meta', function(){
+  content = {};
+  return {
+    content: function(){
+      return content;
+    },
+    set: function(setter, value){
+      content[setter] = value;
+    }
+  }
+});
+
 app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localStorage', function ($scope, $state, $auth, $localStorage) {
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
@@ -1049,6 +1081,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
   $scope.addToBasket = function(inBasket){
     if (!inBasket) {
       Basket.addToBasketItems($scope.product);
+      ga('send', 'event', 'products', 'addToBasket', $scope.product.name);
     } else {
       Basket.removeFromBasketItems($scope.product);
     }
@@ -1062,6 +1095,10 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     })
   };
 }]);
+
+app.controller("HeadController", ["Meta", "$scope", function(Meta, $scope){
+  $scope.meta = Meta;
+}])
 
 
 

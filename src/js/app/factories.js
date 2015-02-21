@@ -304,3 +304,15 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     }
   };
 }]);
+
+app.factory('Meta', function(){
+  content = {};
+  return {
+    content: function(){
+      return content;
+    },
+    set: function(setter, value){
+      content[setter] = value;
+    }
+  }
+});

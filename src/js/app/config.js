@@ -13,12 +13,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .state('welcome', {
       url: '/welcome',
       templateUrl: assetsUrl + 'partials/welcome.html',
-      controller: function($scope, $localStorage, WishlistItems){
+      controller: function($scope, $localStorage, WishlistItems, Meta){
         if ($localStorage.gender){
           $scope.msg = "Welcome back!";
         } else {
           $scope.msg = "All The Best Stores - One Basket";
         };
+        Meta.set.title = "Welcome";
         $scope.wishlist = $localStorage.wishlistItems;
         var animationDelay = 2500;
  
