@@ -127,20 +127,28 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .state('pay.confirmation', {
       url: '/confirmation',
       templateUrl: assetsUrl + 'partials/confirmation.html',
-      controller: function($scope, $localStorage, $http, Basket, Deliveries){
+      controller: function($scope, $localStorage, $state, $http, Basket, Deliveries){
         $scope.basket = Basket;
         $scope.deliveries = Deliveries;      
         Basket.fetchBasketItemProducts();
         $scope.localStorage = $localStorage;
         $scope.submitOrder = function(){
+          $scope.disabled = true;
           $http.post(backendUrl + "api/orders.json", {order: {
             token: $localStorage.token,
             basket: $localStorage.basketItems,
             deliveries: $localStorage.deliveries,
             address: $localStorage.address
-          }});
+          }}).success(function(){
+            $state.go("pay.confirmed")
+          });
         } 
       }
+    })
+
+    .state('pay.confirmed', {
+      url: "/confirmed",
+      templateUrl: assetsUrl + 'partials/confirmed.html'
     })
 
     .state('orders', {
