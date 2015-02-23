@@ -50,6 +50,7 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
         }
       })
       .catch(function(resp) { 
+        //$scope.error = resp
       });
     };
 
