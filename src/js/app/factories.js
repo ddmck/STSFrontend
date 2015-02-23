@@ -136,7 +136,7 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
     },
     availableList: function(){
       return _.filter(subCategories, function(subCat){
-        return subCat.category_id === Filters.getFilters().category
+        return subCat.category_id == Filters.getFilters().category
       })
     }
   }
@@ -153,7 +153,6 @@ app.factory('Orders', [ '$http', function($http){
     list: function(){
       return orders;
     }
-
   }
 }]);
 

@@ -182,7 +182,6 @@ app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categ
   $scope.subCategories = SubCategories;
   $scope.subCategories.fetchSubCategories();
   $scope.filters = Filters;
-
   $scope.setSubCat = function(sub_cat_id){
     if (sub_cat_id === "") {
       Filters.removeFilter("subCategory");
