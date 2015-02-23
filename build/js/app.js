@@ -764,12 +764,16 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
         
       })
       .catch(function(resp) { 
-        // handle error response
+       //$scope.error = resp;
       });
   };
 }]);
 
 app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$localStorage', function($scope, $state, $auth, $localStorage) {
+  $scope.$on('auth:registration-email-error', function(ev, reason) { 
+    $scope.error = reason.errors.full_messages[0];
+  });
+
   $scope.$on('auth:registration-email-success', function(ev, message){
     $('#signUpModal').foundation('reveal', 'close');
     console.log(message);
@@ -791,9 +795,16 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
         }
       })
       .catch(function(resp) { 
-        
+        //$scope.error = resp
       });
     };
+
+  $scope.buttonClick = function() {
+    $scope.submitted = true;
+    if ($scope.registration.$valid){
+      $scope.handleRegBtnClick();
+    }
+  };
 }]);
 
 
