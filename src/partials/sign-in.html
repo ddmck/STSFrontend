@@ -2,14 +2,16 @@
   {{error}} 
 </div>
 
-<form ng-submit="submitLogin(loginForm)" role="form" ng-init="loginForm = {}">
+<form ng-submit="loginClick()" name="login" role="form" ng-init="loginForm = {}" novalidate>
   <div class="form-group"> 
-    <label for="email">Email</label> 
-    <input type="email" name="email" id="email" ng-model="loginForm.email" required="required" class="form-control"> 
+    <label>Email</label> 
+    <input type="email" name="email" id="email" ng-model="loginForm.email" required="required" class="form-control">
+    <p ng-show="login.email.$invalid && !login.email.$pristine && submit">Enter a valid Email.</p> 
   </div> 
   <div class="form-group"> 
-    <label for="password">Password</label> 
-    <input type="password" name="password" id="password" ng-model="loginForm.password" required="required" class="form-control"> 
+    <label>Password</label> 
+    <input type="password" ng-minlength="8" name="password" id="password" ng-model="loginForm.password" required="required" class="form-control">
+    <p ng-show="login.password.$error.minlength && submit">Password is too short.</p>
   </div> 
   <button type="submit" class="btn btn-primary btn-lg">Sign in</button> 
 </form>
