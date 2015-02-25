@@ -312,7 +312,7 @@ app.controller('OrdersController', ['$scope', 'Orders', function($scope, Orders)
   $scope.orders = Orders;
 }]);
 
-app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Basket', 'Meta', function($scope, $stateParams, $http, Basket, Meta){
+app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Basket', 'Meta', 'WishlistItems', function($scope, $stateParams, $http, Basket, Meta, WishlistItems){
   // get the id
   $scope.showMenu = false;
   $scope.id = $stateParams.productID;
@@ -329,6 +329,24 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
   });
+
+  $scope.addToWishlist = function(){
+    var currWishlist = WishlistItems.list();
+    if (_.indexOf(currWishlist, $scope.product.id) != -1) {
+      var currWishlist = _.reject(currWishlist, function(n){
+        return n == $scope.product.id
+      });
+      WishlistItems.update(currWishlist);
+    } else {
+      WishlistItems.addToWishlistItems($scope.product);
+      ga('send', 'event', 'products', 'save', $scope.product.name);
+    }
+    
+  };
+
+  $scope.checkIfWishedFor = function(){
+    return _.indexOf(WishlistItems.list(), $scope.product.id) != -1;
+  };  
 
   $scope.toggleMenu = function(){
     $scope.showMenu = !$scope.showMenu;

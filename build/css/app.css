@@ -1413,7 +1413,8 @@ section.row {
         cursor: not-allowed; }
 
 .dropdown {
-  line-height: 1.5; }
+  line-height: 1.5;
+  margin-bottom: 1em; }
   .dropdown ul {
     padding: 0;
     margin: 0; }
@@ -1423,7 +1424,7 @@ section.row {
     display: inline-block;
     position: relative;
     text-align: center; }
-  .dropdown .dropdown-description {
+  .dropdown p.dropdown-description {
     background: white;
     border-bottom-left-radius: 3px;
     border-bottom: 1px solid silver;
@@ -1435,29 +1436,28 @@ section.row {
     font-size: 1em;
     line-height: 40px;
     margin: 0;
-    padding: 0 0.5em 0 1em; }
+    padding: 0 0.5em 0 1em;
+    margin-bottom: 0; }
     @media screen and (min-width: 53.75em) {
-      .dropdown .dropdown-description {
+      .dropdown p.dropdown-description {
         font-size: 1em; } }
-  .dropdown .dropdown-button {
+  .dropdown p.dropdown-button {
     background: white;
-    border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
     border-top: 1px solid silver;
-    border-right: 1px solid silver;
+    border-left: 1px solid silver;
     border-bottom: 1px solid silver;
     cursor: pointer;
-    float: right;
+    float: left;
     font-size: 1em;
     font-weight: 800;
     line-height: 40px;
     margin: 0;
-    padding: 0 2.5em 0 0.5em;
+    padding: 0 2.5em 0 1em;
     position: relative; }
     @media screen and (min-width: 53.75em) {
-      .dropdown .dropdown-button {
+      .dropdown p.dropdown-button {
         font-size: 1em;
-        padding: 0 2.5em 0 0.5em; } }
+        padding: 0 2.5em 0 1em; } }
   .dropdown .dropdown-button:hover {
     background-color: #f7f7f7; }
   .dropdown .dropdown-button:after {
@@ -1467,6 +1467,35 @@ section.row {
     position: absolute;
     right: 1em;
     top: 0; }
+  .dropdown p.dropdown-submit-button {
+    background: #477DCA;
+    color: white;
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    border: 1px solid silver;
+    cursor: pointer;
+    float: right;
+    font-size: 1em;
+    font-weight: 800;
+    line-height: 40px;
+    margin: 0;
+    padding: 0 0.5em 0 0.5em;
+    position: relative; }
+    @media screen and (min-width: 53.75em) {
+      .dropdown p.dropdown-submit-button {
+        font-size: 1em;
+        padding: 0 1em 0 1em; } }
+    .dropdown p.dropdown-submit-button.disabled {
+      background: #777;
+      cursor: not-allowed; }
+    .dropdown p.dropdown-submit-button.danger {
+      background: #F03A47; }
+  .dropdown .dropdown-submit-button:hover {
+    background-color: #3b75c7; }
+    .dropdown .dropdown-submit-button:hover.disabled {
+      background-color: #6f6f6f; }
+    .dropdown .dropdown-submit-button:hover.danger {
+      background-color: #ef2c3a; }
   .dropdown .dropdown-menu {
     -webkit-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
@@ -1480,7 +1509,7 @@ section.row {
     display: none;
     overflow: show;
     position: absolute;
-    right: 0;
+    left: 0;
     top: 50px;
     width: 228px;
     z-index: 99999; }
@@ -1900,6 +1929,48 @@ ul.mobile-cats {
   100% {
     transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
     -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg); } }
+.tooltip-item {
+  display: inline-block;
+  position: relative; }
+  .tooltip-item:focus, .tooltip-item:hover .tooltip {
+    opacity: 1;
+    visibility: visible; }
+  .tooltip-item .tooltip {
+    position: absolute;
+    top: 3em;
+    right: 0;
+    left: 0;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    background-color: white;
+    background: #fff;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 2px 2px silver;
+            box-shadow: 0 2px 2px silver;
+    color: #333;
+    font-size: 0.9em;
+    line-height: 1.5em;
+    margin: 0 auto;
+    max-width: 16em;
+    opacity: 0;
+    padding: 1em;
+    text-align: center;
+    visibility: hidden;
+    z-index: 10; }
+    .tooltip-item .tooltip p {
+      margin-bottom: 0; }
+    .tooltip-item .tooltip:after {
+      position: absolute;
+      right: 0;
+      left: 0;
+      border: 8px solid transparent;
+      top: -1em;
+      color: white;
+      content: '▲';
+      font-size: 1.4em;
+      margin-left: -8px;
+      text-align: center; }
+
 #main-view {
   padding-top: 120px; }
   @media screen and (min-width: 53.75em) {

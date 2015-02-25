@@ -95,9 +95,9 @@ gulp.task('watch', ['sass', 'scripts', 'lib', 'site', 'updateDist'], function() 
   gulp.watch('src/js/**/*.*', ['scripts']);
   gulp.watch(['src/index.html', 'src/partials/*', 'src/templates/*'], ['site']);
   gulp.watch('./stdlib.js', ['lib']);
-  gulp.watch('/build/css/*.css', ['renameFile']);
+  gulp.watch('build/css/dev.css', ['renameFile']);
   gulp.watch('*', ['updateDist']);
-  gulp.watch('dist/css/*', ['renameProd']);
+  gulp.watch('dist/css/prod.css', ['renameProd']);
   // gulp.watch()
 });
 

@@ -9,7 +9,7 @@
   $base-font-color: $dark-gray !default;
   
   line-height: $base-line-height;
-
+  margin-bottom: 1em;
   ul {
     padding: 0;
     margin: 0;
@@ -31,13 +31,14 @@
   $dropdown-distance-from-menu: 50px;
   $dropdown-arrow-top-distance: 0;
 
+
   .dropdown-container {
     display: inline-block;
     position: relative;
     text-align: center;
   }
 
-  .dropdown-description {
+  p.dropdown-description {
     background: $dropdown-background;
     border-bottom-left-radius: $base-border-radius;
     border-bottom: $dropdown-border;
@@ -50,31 +51,31 @@
     line-height: $dropdown-height;
     margin: 0;
     padding: 0 ($dropdown-padding / 2) 0 $dropdown-padding;
+    margin-bottom: 0;
 
     @include media($large-screen) {
       font-size: 1em;
     }
+
   }
 
-  .dropdown-button {
+  p.dropdown-button {
     background: $dropdown-background;
-    border-bottom-right-radius: $base-border-radius;
-    border-top-right-radius: $base-border-radius;
     border-top: $dropdown-border;
-    border-right: $dropdown-border;
+    border-left: $dropdown-border;
     border-bottom: $dropdown-border;
     cursor: pointer;
-    float: right;
+    float: left;
     font-size: 1em;
     font-weight: 800;
     line-height: $dropdown-height;
     margin: 0;
-    padding: 0 ($dropdown-padding * 2.5) 0 ($dropdown-padding / 2);
+    padding: 0 ($dropdown-padding * 2.5) 0 ($dropdown-padding);
     position: relative;
 
     @include media($large-screen) {
       font-size: 1em;
-      padding: 0 ($dropdown-padding * 2.5) 0 ($dropdown-padding / 2);
+      padding: 0 ($dropdown-padding * 2.5) 0 ($dropdown-padding);
     }
   }
 
@@ -91,6 +92,48 @@
     top: $dropdown-arrow-top-distance;
   }
 
+  p.dropdown-submit-button {
+    background: $blue;
+    color: white;
+    border-bottom-right-radius: $base-border-radius;
+    border-top-right-radius: $base-border-radius;
+    border: $dropdown-border;
+    cursor: pointer;
+    float: right;
+    font-size: 1em;
+    font-weight: 800;
+    line-height: $dropdown-height;
+    margin: 0;
+    padding: 0 ($dropdown-padding / 2) 0 ($dropdown-padding / 2);
+    position: relative;
+
+    @include media($large-screen) {
+      font-size: 1em;
+      padding: 0 ($dropdown-padding) 0 ($dropdown-padding);
+    }
+
+    &.disabled {
+      background: #777;
+      cursor: not-allowed; 
+    }
+
+    &.danger {
+      background: $red;
+    }
+  }
+
+  .dropdown-submit-button:hover {
+    background-color: darken($blue, 3%);
+
+    &.disabled {
+      background-color: darken(#777, 3%);
+    }
+
+    &.danger {
+      background-color: darken($red, 3%);
+    }
+  }
+
   .dropdown-menu {
     @include transition (all 0.2s ease-in-out);
     background: $dropdown-background;
@@ -102,7 +145,7 @@
     display: none;
     overflow: show;
     position: absolute;
-    right: 0;
+    left: 0;
     top: $dropdown-distance-from-menu;
     width: 228px;
     z-index: 99999;
