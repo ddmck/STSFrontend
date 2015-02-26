@@ -749,7 +749,6 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
   });
 
   $scope.$on('auth:login-success', function(ev){
-    // $state.go('products.new');
     if ($localStorage.returnTo) {
       $state.go($localStorage.returnTo);
       delete $localStorage.returnTo;
@@ -787,12 +786,6 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
     $auth.submitRegistration($scope.registrationForm)
       .then(function(resp) {
         ga('send', 'event', 'users', 'signUp'); 
-        if ($localStorage.returnTo) {
-          $state.go($localStorage.returnTo);
-          delete $localStorage.returnTo;
-        } else {
-          $state.go('products.new');
-        }
       })
       .catch(function(resp) { 
         //$scope.error = resp
