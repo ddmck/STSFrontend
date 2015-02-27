@@ -390,6 +390,8 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
   
   $http.get(backendUrl + 'brands/' + $stateParams.brandId + '.json', {async: true}).success(function(data){
     $scope.brand = data;
+    Meta.set("title", $scope.brand.name + " at Fetch My Fashion");
+    Meta.set("description", "Shop " + $scope.brand.name + " at Fetch My Fashion, All Your Favourite Stores In One Place");
   })
 
   Products.resetProducts();
