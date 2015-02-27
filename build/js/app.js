@@ -225,6 +225,12 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       }
     })
 
+    .state('brandView', {
+      url: '/brands/:brandId',
+      templateUrl: assetsUrl + "partials/brands-view.html",
+      controller: "BrandController"
+    })
+
     .state('productDetail', {
       url: '/products/:productID',
       templateUrl: assetsUrl + 'partials/product-detail.html',
@@ -306,6 +312,8 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         window.scrollTo(0,0);
       }
     })
+
+    
       
   // catch all route
   // send users to the form page 
@@ -719,7 +727,16 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     fetchProducts: function(){
       console.log("Page: " + page);
       searching = true;
-      $http.get(backendUrl + 'products.json', {async: true, params: {page: page.toString(), gender: Filters.getFilters().gender, category: Filters.getFilters().category, sub_category: Filters.getFilters().subCategory, sort: Filters.getFilters().sort, search_string: Filters.getFilters().searchString}}).success(function(data){
+      $http.get(backendUrl + 'products.json', { async: true, 
+                                                params: {
+                                                  page: page.toString(), 
+                                                  gender: Filters.getFilters().gender, 
+                                                  category: Filters.getFilters().category, 
+                                                  sub_category: Filters.getFilters().subCategory, 
+                                                  sort: Filters.getFilters().sort, 
+                                                  search_string: Filters.getFilters().searchString,
+                                                  brand: Filters.getFilters().brand
+                                                }}).success(function(data){
         products = products.concat(data);
         scrollActive = true;
         searching = false;
@@ -814,7 +831,8 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
 
   $http.get(backendUrl + 'products.json', {async: true, params: { 
                                 page: this.products.currentPage(), 
-                                gender: this.filters.getFilters().gender, 
+                                gender: this.filters.getFilters().gender,
+                                brand: this.filters.getFilters().brand, 
                                 category: this.filters.getFilters().category,
                                 sub_category: this.filters.getFilters().subCategory, 
                                 search_string: this.filters.getFilters().searchString,
@@ -881,7 +899,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
       scrollActive = false;
       Products.enumeratePage();
       
-      $http.get(backendUrl + 'products.json', {async: true, params: {page: Products.currentPage().toString(), gender: this.filters.getFilters().gender, category: this.filters.getFilters().category, sub_category: Filters.getFilters().subCategory, sort: Filters.getFilters().sort, search_string: Filters.getFilters().searchString}}).success(function(data){
+      $http.get(backendUrl + 'products.json', {async: true, params: {page: Products.currentPage().toString(), gender: this.filters.getFilters().gender, brand: this.filters.getFilters().brand, category: this.filters.getFilters().category, sub_category: Filters.getFilters().subCategory, sort: Filters.getFilters().sort, search_string: Filters.getFilters().searchString}}).success(function(data){
         if (data.length > 0) {
           window.data = data;
           productCtrl.products.addProducts(data);
@@ -1128,7 +1146,21 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
 
 app.controller("HeadController", ["Meta", "$scope", function(Meta, $scope){
   $scope.meta = Meta;
-}])
+}]);
+
+app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "Products", "Filters", function(Meta, $scope, $http, $stateParams, Products, Filters){
+  
+  $http.get(backendUrl + 'brands/' + $stateParams.brandId + '.json', {async: true}).success(function(data){
+    $scope.brand = data;
+  })
+
+  Products.resetProducts();
+  Products.resetPage();
+  Filters.resetAll();
+  Filters.setFilter('brand', $stateParams.brandId);
+  console.log("In brand controller" + $stateParams.brandId);
+  console.log("")
+}]);
 
 
 

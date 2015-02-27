@@ -221,6 +221,12 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       }
     })
 
+    .state('brandView', {
+      url: '/brands/:brandId',
+      templateUrl: assetsUrl + "partials/brands-view.html",
+      controller: "BrandController"
+    })
+
     .state('productDetail', {
       url: '/products/:productID',
       templateUrl: assetsUrl + 'partials/product-detail.html',
@@ -302,6 +308,8 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         window.scrollTo(0,0);
       }
     })
+
+    
       
   // catch all route
   // send users to the form page 

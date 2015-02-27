@@ -292,7 +292,16 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     fetchProducts: function(){
       console.log("Page: " + page);
       searching = true;
-      $http.get(backendUrl + 'products.json', {async: true, params: {page: page.toString(), gender: Filters.getFilters().gender, category: Filters.getFilters().category, sub_category: Filters.getFilters().subCategory, sort: Filters.getFilters().sort, search_string: Filters.getFilters().searchString}}).success(function(data){
+      $http.get(backendUrl + 'products.json', { async: true, 
+                                                params: {
+                                                  page: page.toString(), 
+                                                  gender: Filters.getFilters().gender, 
+                                                  category: Filters.getFilters().category, 
+                                                  sub_category: Filters.getFilters().subCategory, 
+                                                  sort: Filters.getFilters().sort, 
+                                                  search_string: Filters.getFilters().searchString,
+                                                  brand: Filters.getFilters().brand
+                                                }}).success(function(data){
         products = products.concat(data);
         scrollActive = true;
         searching = false;
