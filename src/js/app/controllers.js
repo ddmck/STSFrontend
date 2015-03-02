@@ -69,10 +69,12 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
 
   $http.get(backendUrl + 'products.json', {async: true, params: { 
                                 page: this.products.currentPage(), 
-                                gender: this.filters.getFilters().gender,
-                                brand: this.filters.getFilters().brand, 
-                                category: this.filters.getFilters().category,
-                                sub_category: this.filters.getFilters().subCategory, 
+                                filters: {
+                                  gender_id: this.filters.getFilters().gender,
+                                  brand_id: this.filters.getFilters().brand, 
+                                  category_id: this.filters.getFilters().category,
+                                  sub_category_id: this.filters.getFilters().subCategory
+                                }, 
                                 search_string: this.filters.getFilters().searchString,
                                 sort: Filters.getFilters().sort}
                               }).success(function(data){
@@ -137,7 +139,19 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
       scrollActive = false;
       Products.enumeratePage();
       
-      $http.get(backendUrl + 'products.json', {async: true, params: {page: Products.currentPage().toString(), gender: this.filters.getFilters().gender, brand: this.filters.getFilters().brand, category: this.filters.getFilters().category, sub_category: Filters.getFilters().subCategory, sort: Filters.getFilters().sort, search_string: Filters.getFilters().searchString}}).success(function(data){
+      $http.get(backendUrl + 'products.json', {async: true, 
+                                                params: {
+                                                  page: Products.currentPage().toString(), 
+                                                  filters: {
+                                                    gender_id: this.filters.getFilters().gender, 
+                                                    brand_id: this.filters.getFilters().brand, 
+                                                    category_id: this.filters.getFilters().category, 
+                                                    sub_category_id: Filters.getFilters().subCategory
+                                                  }, 
+                                                  sort: Filters.getFilters().sort, 
+                                                  search_string: Filters.getFilters().searchString
+                                                }
+                                              }).success(function(data){
         if (data.length > 0) {
           window.data = data;
           productCtrl.products.addProducts(data);
@@ -151,9 +165,9 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
 app.controller('GenderController', ['$scope', 'Filters', 'Products', '$localStorage', function($scope, Filters, Products, $localStorage){
   $scope.setGender = function(gender) {
     if ( gender === "mens") {
-      Filters.setFilter("gender", "male");
+      Filters.setFilter("gender", "1");
     } else if ( gender === "womens") {
-      Filters.setFilter("gender", "female");
+      Filters.setFilter("gender", "2");
     } else if ( gender === "" ){
       Filters.removeFilter("gender")
     }

@@ -212,12 +212,18 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       url: '/products/:gender/{catID}-{category}',
       templateUrl: assetsUrl + 'partials/category-view.html',
       controller: function($scope, $stateParams, Products, Filters, Categories){
+        var genderVar;
+        if ( $stateParams.gender === "male") {
+          genderVar = "1";
+        } else if ( $stateParams.gender === "female") {
+          genderVar = "2";
+        }
         $scope.category = $stateParams.category;
         Products.resetProducts();
         Products.resetPage();
         Filters.resetAll();
         Filters.setFilter('category', $stateParams.catID);
-        Filters.setFilter('gender', $stateParams.gender);
+        Filters.setFilter('gender', genderVar);
       }
     })
 
