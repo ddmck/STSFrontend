@@ -4,7 +4,7 @@
   </section>
 </div>
 
-<section class="row" ng-hide="basket.list().length === 0">
+<section class="row mobile-padding" ng-hide="basket.list().length === 0">
   <div class="comment"  ng-repeat="product in basket.listProducts()">
     <div class="comment-image" ui-sref="productDetail({productID: product.id})">
       <img ng-src="{{product.image_url}}" alt="Logo image">

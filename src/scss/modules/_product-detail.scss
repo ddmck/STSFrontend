@@ -1,4 +1,5 @@
 section.row {
+  $large-screen: em(860) !default;
   @include outer-container;
   margin-top: 0em;
   @include media($large-screen) {
@@ -7,6 +8,13 @@ section.row {
 
   &.no-top-margin {
     margin-top: 0em;
+  }
+
+  &.mobile-padding {
+    padding: 1em;
+    @include media($large-screen) {
+      padding: 0;
+    }
   }
 
   &.touch-footer {

@@ -4,13 +4,10 @@
   </section>
 </div>
 
-<section class="row">
+<section class="row mobile-padding">
   <p ng-show="localStorage.token">Perfect, you're almost good to go</p>
   <button ng-show="localStorage.token" ui-sref="pay.confirmation">Continue</button> <a ng-show="localStorage.token" ng-click="clear()">Clear</a>
-  <p ng-hide="localStorage.token">
-    We use Stripe to process payments securely and maintain PCI compliance.<br>
-    We only take money from your account when we have checked that your items are available to be delivered.
-  </p>
+  
   <form ng-hide="localStorage.token" stripe-form="handleStripe" role="form" ng-init="billingForm = {}">
     {{billingForm.error.message}}
     <div class="form-group"> 
@@ -28,4 +25,10 @@
    
     <button type="submit" class="btn btn-primary btn-lg">Next</button> 
   </form>
+  <p ng-hide="localStorage.token">
+    We use Stripe to process payments, a Validated Level 1 PCI DSS Compliant Service provider, which means — the highest level of security there is. You can find out more about Stripe <a href="">here</a>
+
+    Because of this, we never actually see your credit card number.
+    We only take money from your account when we have checked that your items are available to be delivered.
+  </p>
 </section>
