@@ -227,6 +227,16 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       }
     })
 
+    .state('brands', {
+      url: '/brands',
+      templateUrl: assetsUrl + "partials/brands-index.html",
+      controller: function($scope, Brands){
+        $scope.brands = Brands;
+        $scope.brands.fetchBrands();
+      }
+
+    })
+
     .state('brandView', {
       url: '/brands/:brandId',
       templateUrl: assetsUrl + "partials/brands-view.html",

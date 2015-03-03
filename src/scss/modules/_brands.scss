@@ -1,0 +1,12 @@
+ul.brands {
+  $large-screen: em(860) !default;
+  columns: 1;
+  -webkit-columns: 1;
+  -moz-columns: 1;
+  @include media($large-screen) {
+    columns: 3;
+    -webkit-columns: 3;
+    -moz-columns: 3;
+  }
+  
+}

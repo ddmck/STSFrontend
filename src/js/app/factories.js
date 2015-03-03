@@ -316,6 +316,25 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
   };
 }]);
 
+app.factory('Brands', ['$http', function($http){
+  var o = {}
+  o.brands = [];
+  o.fetchBrands = function(){
+    $http.get(backendUrl + 'brands.json', { async: true }).success(function(data){
+      o.brands = _.groupBy(data, function(br){
+        return br.name[0];
+      });
+      console.log(o.brands)
+    });
+  }
+
+  o.list = function(){
+    return o.brands;
+  }
+
+  return o
+}])
+
 app.factory('Meta', function(){
   content = {};
   return {

@@ -2,7 +2,9 @@
   <div class="side-image">
     <div class="images-wrapper" ng-style="{'background-image':'url('+ currentImg +')'}"></div>
     <div class="side-image-content">
-      <h4>{{product.brand_name}}</h4>
+      <a ui-sref="brandView({brandId: product.brand_id})">
+        <h4>{{product.brand_name}}</h4>
+      </a>
       <h1>{{product.name}}</h1>
       <p>{{ product.display_price | currency : '£' }}</p>
       <ul class="additional-images"><li ng-repeat="img in product.image_urls">

@@ -1,0 +1,19 @@
+<div class="title">
+  <section class="row">
+    <h1>The Hottest Brands</h1>
+  </section>
+</div>
+<section class="row mobile-padding">
+  <ul class="brands">
+    <li ng-repeat="letter in brands.list() ">
+      <strong>{{letter[0].name[0].toUpperCase()}}</strong>
+
+      <ul>
+        <li ng-repeat="brand in letter | orderBy:'name' ">
+          <a ui-sref="brandView({brandId: '{{brand.id}}'})">{{brand.name}}</a>
+        </li>
+      </ul>
+      <br>  
+    </li>
+  </ul>
+</section>
