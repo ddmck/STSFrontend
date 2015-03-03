@@ -322,7 +322,7 @@ app.factory('Brands', ['$http', function($http){
   o.fetchBrands = function(){
     $http.get(backendUrl + 'brands.json', { async: true }).success(function(data){
       o.brands = _.groupBy(data, function(br){
-        return br.name[0];
+        return br.name[0].toLowerCase();
       });
       console.log(o.brands)
     });
