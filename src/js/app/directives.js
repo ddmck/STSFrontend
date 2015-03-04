@@ -116,7 +116,7 @@ app.directive('ngMetaTwitterSite', function(){
 app.directive('ngMetaTwitterTitle', function(){
   return {
     restrict: "A",
-    template: '<meta name="twitter:title" content="{{ meta.content().title || "Fetch My Fashion | All Your Shopping On One Site" }}">',
+    templateUrl: assetsUrl + 'templates/meta-twitter-title.html',
     replace: true,
     transclude: true
   }
