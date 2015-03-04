@@ -11,8 +11,8 @@
         <img class="thumb" ng-src="{{img}}" ng-click="setProductImg(img)" ng-class="{current: currentImg === img}"></img>
       </li></ul>
       
-      <strong style="display: block">Select a size</strong>
-      <div ng-size-dropdown></div> 
+      <strong ng-show="product && product.sizes.length > 0" style="display: block">Select a size</strong>
+      <div ng-show="product && product.sizes.length > 0" ng-size-dropdown></div> 
 
       <button ui-sref="basket" ng-show="basket.inBasketItems(product.id)" class="button">View basket ({{basket.list().length}} <ng-pluralize count="basket.list().length" when="{
         '1': 'item',
