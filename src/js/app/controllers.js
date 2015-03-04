@@ -341,6 +341,9 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Fetch My Fashion");
     Meta.set("description", "Shop " + $scope.product.name + " by " + $scope.product.brand_name + " at Fetch My Fashion, All Your Favourite Stores In One Place");
     $scope.currentImg = data.large_image_url || data.image_url;
+    Meta.set("imageUrl", $scope.currentImg);
+    Meta.set("displayPrice", $scope.product.display_price);
+    Meta.set("id", $scope.product.id);
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
   });
