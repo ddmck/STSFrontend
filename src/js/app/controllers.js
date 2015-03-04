@@ -21,6 +21,13 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
        //$scope.error = resp;
       });
   };
+
+  $scope.loginClick = function() {
+    $scope.submit = true;
+    if ($scope.login.$valid){
+      $scope.handleLoginBtnClick();
+    }
+  };
 }]);
 
 app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$localStorage', function($scope, $state, $auth, $localStorage) {
