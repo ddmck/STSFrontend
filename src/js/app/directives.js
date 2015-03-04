@@ -94,3 +94,75 @@ app.directive('ngMetaDescription', function(){
     transclude: true
   }
 });
+
+app.directive('ngMetaTwitterCard', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:card" content="product">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterSite', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:site" content="@FetchMyFashion">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterTitle', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:title" content="{{ meta.content().title || "Fetch My Fashion | All Your Shopping On One Site" }}">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterDescription', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:description" content="{{ meta.content().description || "Shop all of your favourite brands at Fetch My Fashion" }}">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterCreator', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:creator" content="@FetchMyFashion">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterImage', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:image" content="{{ meta.content().imageUrl }}">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterPrice', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:data1" content="{{ meta.content().displayPrice }}">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterPriceLabel', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:label1" content="Price">',
+    replace: true,
+    transclude: true
+  }
+});
