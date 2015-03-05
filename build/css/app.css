@@ -1393,7 +1393,8 @@ section.row {
           border: 1px solid #aaa;
           margin-right: 0.5em; }
           .side-image .side-image-content ul.additional-images li img.thumb.current {
-            border: 2px solid #999; }
+            -webkit-box-shadow: 0 3px 2px -2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 3px 2px -2px rgba(0, 0, 0, 0.5); }
     .side-image .side-image-content button {
       background-color: #477DCA;
       border-radius: 3px;
