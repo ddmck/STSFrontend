@@ -179,7 +179,7 @@ app.directive('ngMetaSchemaName', function(){
 app.directive('ngMetaSchemaDescription', function(){
   return {
     restrict: "A",
-    templateUrl: assetsUrl + 'templates/meta-schema-description',
+    templateUrl: assetsUrl + 'templates/meta-schema-description.html',
     replace: true,
     transclude: true
   }
