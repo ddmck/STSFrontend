@@ -125,7 +125,7 @@ app.directive('ngMetaTwitterTitle', function(){
 app.directive('ngMetaTwitterDescription', function(){
   return {
     restrict: "A",
-    template: '<meta name="twitter:description" content="{{ meta.content().description || "Shop all of your favourite brands at Fetch My Fashion" }}">',
+    templateUrl: assetsUrl + 'templates/meta-twitter-description.html',
     replace: true,
     transclude: true
   }
@@ -170,7 +170,7 @@ app.directive('ngMetaTwitterPriceLabel', function(){
 app.directive('ngMetaSchemaName', function(){
   return {
     restrict: "A",
-    template: '<meta itemprop="name" content="{{ meta.content().title || "Fetch My Fashion | All Your Shopping On One Site" }}">',
+    templateUrl: assetsUrl + 'templates/meta-schema-name.html',
     replace: true,
     transclude: true
   }
@@ -179,7 +179,7 @@ app.directive('ngMetaSchemaName', function(){
 app.directive('ngMetaSchemaDescription', function(){
   return {
     restrict: "A",
-    template: '<meta itemprop="description" content="{{ meta.content().description || "Shop all of your favourite brands at Fetch My Fashion" }}">',
+    templateUrl: assetsUrl + 'templates/meta-schema-description',
     replace: true,
     transclude: true
   }
@@ -215,7 +215,7 @@ app.directive('ngMetaOgType', function(){
 app.directive('ngMetaOgUrl', function(){
   return {
     restrict: "A",
-    template: '<meta property="og:url" content="{{ {{ "https://fetchmyfashion.com/products/" + meta.content().id }} }}" />',
+    templateUrl: assetsUrl + 'templates/meta-og-url.html',
     replace: true,
     transclude: true
   }
