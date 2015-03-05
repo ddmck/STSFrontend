@@ -250,6 +250,11 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .state('productDetail', {
       url: '/products/:productID',
       templateUrl: assetsUrl + 'partials/product-detail.html',
+      onEnter: function($stateParams, $state){
+        if ($stateParams.productID === "") {
+          $state.go('products.new');
+        }
+      },
       controller: "ProductDetailController"
     })
 
@@ -445,6 +450,177 @@ app.directive('ngMetaDescription', function(){
   return {
     restrict: "A",
     templateUrl: assetsUrl + 'templates/meta-description.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterCard', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:card" content="product">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterSite', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:site" content="@FetchMyFashion">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterTitle', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/meta-twitter-title.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterDescription', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/meta-twitter-description.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterCreator', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:creator" content="@FetchMyFashion">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterImage', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:image" content="{{ meta.content().imageUrl }}">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterPrice', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:data1" content="{{ meta.content().displayPrice }}">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterPriceLabel', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:label1" content="Price">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaSchemaName', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/meta-schema-name.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaSchemaDescription', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/meta-schema-description.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaSchemaImage', function(){
+  return {
+    restrict: "A",
+    template: '<meta itemprop="image" content="{{ meta.content().imageUrl }}">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaOgTitle', function(){
+  return {
+    restrict: "A",
+    template: '<meta property="og:title" content="{{ meta.content().title }}" />',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaOgType', function(){
+  return {
+    restrict: "A",
+    template: '<meta property="og:type" content="product" />',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaOgUrl', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/meta-og-url.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaOgImage', function(){
+  return {
+    restrict: "A",
+    template: '<meta property="og:image" content="{{ meta.content().imageUrl }}" />',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaOgDescription', function(){
+  return {
+    restrict: "A",
+    template: '<meta property="og:description" content="{{ meta.content().description }}" />',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaOgSiteName', function(){
+  return {
+    restrict: "A",
+    template: '<meta property="og:site_name" content="Fetch my Fashion" />',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaOgPriceAmount', function(){
+  return {
+    restrict: "A",
+    template: '<meta property="og:price:amount" content="{{ meta.content().display_price }}" />',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaPriceCurrency', function(){
+  return {
+    restrict: "A",
+    template: '<meta property="og:price:currency" content="GBP" />',
     replace: true,
     transclude: true
   }
@@ -821,6 +997,13 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
        //$scope.error = resp;
       });
   };
+
+  $scope.loginClick = function() {
+    $scope.submit = true;
+    if ($scope.login.$valid){
+      $scope.handleLoginBtnClick();
+    }
+  };
 }]);
 
 app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$localStorage', function($scope, $state, $auth, $localStorage) {
@@ -1134,6 +1317,9 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Fetch My Fashion");
     Meta.set("description", "Shop " + $scope.product.name + " by " + $scope.product.brand_name + " at Fetch My Fashion, All Your Favourite Stores In One Place");
     $scope.currentImg = data.large_image_url || data.image_url;
+    Meta.set("imageUrl", $scope.currentImg);
+    Meta.set("displayPrice", $scope.product.display_price);
+    Meta.set("id", $scope.product.id);
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
   });
