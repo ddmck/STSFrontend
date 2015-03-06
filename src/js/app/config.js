@@ -56,6 +56,12 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: 'BasketController'
     })
 
+    .state('trends', {
+      url: '/trends',
+      templateUrl: assetsUrl + 'partials/trends.html',
+      controller: 'TrendsController'
+    })
+
     .state('pay', {
       abstract: true,
       url: '/pay',
