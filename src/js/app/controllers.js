@@ -55,14 +55,24 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
   };
 }]);
 
-app.controller('TrendsController', ['$state', '$scope', 'Trends', function($state, $scope, Trends){
+app.controller('TrendsController', ['$state', '$scope', 'Trends','Filters', function($state, $scope, Trends, Filters){
   $scope.trends = []
   Trends.fetchTrends();
   $scope.trends = Trends;
+  $scope.trend = Trends.list();
   console.log($scope.trends.list());
+  console.log($scope.trends)
+  console.log($scope.trend)
 
-  $scope.doSomething = function(something) {
-    return something
+  $scope.updateSearch = function(searchString){
+    if (searchString === null || searchString === undefined || searchString === '' || searchString === ' ') {
+      return
+    } else {
+      Filters.resetAll();
+      Filters.setFilter("searchString", searchString);
+      $state.go('search', {searchString: searchString});
+      ga('send', 'event', 'products', 'search', searchString);
+    }
   };
 }]);
 
