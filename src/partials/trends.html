@@ -6,11 +6,15 @@
 <section class="row">
   <div class="cards">
     <div class="card" ng-repeat="trend in trends.list()">
+      <div class="card-image" ng-click="updateSearch(trend.searchString)">
+        <img ng-src="{{trend.image_url}}" alt="">
+      </div>
       <div class="card-header">
         {{ trend.name }}
       </div>
       <div class="card-copy">
         {{ trend.description }}
+        {{ trend.searchString }}
       </div>
     </div>
   </div>
