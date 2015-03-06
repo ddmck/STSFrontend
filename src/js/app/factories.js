@@ -33,6 +33,19 @@ app.factory('Filters', ['$location', function($location){
   };
 }]);
 
+app.factory('Trends', [ '$http', function($http){
+  var trends = [];
+  return {
+    fetchTrends: function(){
+      trends = ["test","trend","anotherTest"];
+    },
+    list: function(){
+      return trends;
+    }
+  }
+}]);
+
+
 app.factory('Categories', [ '$http', function($http){
   var categories = [];
   return {
