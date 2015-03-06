@@ -62,6 +62,17 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
   };
 }]);
 
+app.controller('TrendsController', ['$state', '$scope', 'Trends', function($state, $scope, Trends){
+  $scope.trends = []
+  Trends.fetchTrends();
+  $scope.trends = Trends;
+  console.log($scope.trends.list());
+
+  $scope.doSomething = function(something) {
+    return something
+  };
+}]);
+
 
 app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
   this.scrollActive = false;
