@@ -4,7 +4,14 @@
   </section>
 </div>
 <section class="row">
-  <span ng-repeat="trend in trends.list()">
-    {{trend}}</br>
-  </span>
+  <div class="cards">
+    <div class="card" ng-repeat="trend in trends.list()">
+      <div class="card-header">
+        {{ trend.name }}
+      </div>
+      <div class="card-copy">
+        {{ trend.description }}
+      </div>
+    </div>
+  </div>
 </section>
