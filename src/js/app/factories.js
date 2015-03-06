@@ -37,7 +37,14 @@ app.factory('Trends', [ '$http', function($http){
   var trends = [];
   return {
     fetchTrends: function(){
-      trends = ["test","trend","anotherTest"];
+      trends = {
+                    "trend": {
+                      "name": "hipster",
+                      "description": "edgy obv",
+                      "searchString": "Shoes",
+                      "image_url": "http://static.comicvine.com/uploads/original/11120/111207460/4363670-hipster.jpg"
+                    }
+                  }
     },
     list: function(){
       return trends;
