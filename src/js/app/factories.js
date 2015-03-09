@@ -33,18 +33,13 @@ app.factory('Filters', ['$location', function($location){
   };
 }]);
 
-app.factory('Trends', [ '$http', function($http){
+app.factory('Trends', [ '$http', 'Products', 'Filters', function($http, Products, Filters){
   var trends = [];
   return {
     fetchTrends: function(){
-      trends = {
-                    "trend": {
-                      "name": "hipster",
-                      "description": "edgy obv",
-                      "searchString": "Shoes",
-                      "image_url": "http://static.comicvine.com/uploads/original/11120/111207460/4363670-hipster.jpg"
-                    }
-                  }
+      $http.get(backendUrl + 'features.json', {async: true}).success(function(data){
+        trends = data;
+      });
     },
     list: function(){
       return trends;
