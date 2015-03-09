@@ -21,6 +21,7 @@ app.factory('Filters', ['$location', function($location){
   };
 }]);
 
+
 app.factory('Trends', [ '$http', 'Products', 'Filters', function($http, Products, Filters){
   var trends = [];
   return {

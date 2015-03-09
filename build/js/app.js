@@ -60,6 +60,18 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: 'BasketController'
     })
 
+    .state('trends', {
+      url: '/trends',
+      templateUrl: assetsUrl + 'partials/trends.html',
+      controller: 'TrendsController'
+    })
+
+    .state('trendView', {
+      url: '/trends/:slug',
+      templateUrl: assetsUrl + 'partials/trend-view.html',
+      controller: 'TrendController'
+    })
+
     .state('pay', {
       abstract: true,
       url: '/pay',
@@ -192,6 +204,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         Products.resetProducts();
         Products.resetPage();
         Filters.resetAll();
+        Products.fetchProducts();
       }
     })
 
@@ -228,6 +241,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         Filters.resetAll();
         Filters.setFilter('category', $stateParams.catID);
         Filters.setFilter('gender', genderVar);
+        Products.fetchProducts();
       }
     })
 
@@ -635,30 +649,33 @@ app.factory('Filters', ['$location', function($location){
     },
     setFilter: function(name, value){
       filters[name] = value;
-      // $location.search(name, value);
     },
     removeFilter: function(name){
       delete filters[name];
-      if (_.isEmpty(filters)) {
-        $location.url($location.path())
-      } else {
-        $location.search(name, null);
-      }
     },
     useQuery: function(query){
       filters = query;
-      if (_.isEmpty(filters)) {
-        $location.url($location.path())
-      } else {
-        $location.search(filters);
-      }
     },
     resetAll: function(){
       filters = {};
-      $location.url($location.path())
     }         
   };
 }]);
+
+app.factory('Trends', [ '$http', 'Products', 'Filters', function($http, Products, Filters){
+  var trends = [];
+  return {
+    fetchTrends: function(){
+      $http.get(backendUrl + 'features.json', {async: true}).success(function(data){
+        trends = data;
+      });
+    },
+    list: function(){
+      return trends;
+    }
+  }
+}]);
+
 
 app.factory('Categories', [ '$http', function($http){
   var categories = [];
@@ -894,7 +911,14 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
   var products = [];
   var page = 1;
   var searching = true;
+  var scrollActive = false;
   return {
+    scrollActive: function(){
+      return scrollActive;
+    },
+    setScrollActive: function(val){
+      scrollActive = val;
+    },
     getProducts: function(){
       return products;
     },
@@ -1038,9 +1062,47 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
   };
 }]);
 
+app.controller('TrendsController', ['$state', '$scope', 'Trends','Filters', function($state, $scope, Trends, Filters){
+  $scope.trends = []
+  Trends.fetchTrends();
+  $scope.trends = Trends;
+  $scope.trend = Trends.list();
+  console.log($scope.trends.list());
+  console.log($scope.trends)
+  console.log($scope.trend)
+
+  $scope.updateSearch = function(searchString){
+    if (searchString === null || searchString === undefined || searchString === '' || searchString === ' ') {
+      return
+    } else {
+      Filters.resetAll();
+      Filters.setFilter("searchString", searchString);
+      $state.go('search', {searchString: searchString});
+      ga('send', 'event', 'products', 'search', searchString);
+    }
+  };
+}]);
+
+app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products', 'Filters', function($http, $stateParams, $scope, Products, Filters){
+  $scope.trend;
+  $http.get(backendUrl + 'features/' + $stateParams.slug + '.json').success(function(data){
+    $scope.trend = data;
+    console.log(data)
+    Products.resetProducts();
+    Products.resetPage();
+    Filters.resetAll();
+    if ($scope.trend.gender_id) Filters.setFilter("gender", $scope.trend.gender_id);
+    if ($scope.trend.search_string) Filters.setFilter("searchString", $scope.trend.search_string);
+    if ($scope.trend.category_id) Filters.setFilter("category", $scope.trend.category_id);
+    console.log(Filters.getFilters());
+    Products.fetchProducts();
+  });
+  
+}]);
+
 
 app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
-  this.scrollActive = false;
+  // this.scrollActive = true;
   var scrollActive = this.scrollActive;
   var productCtrl = this;
   productCtrl.products = Products;
@@ -1050,20 +1112,20 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   
   // Products.fetchProducts();
 
-  $http.get(backendUrl + 'products.json', {async: true, params: { 
-                                page: this.products.currentPage(), 
-                                filters: {
-                                  gender_id: this.filters.getFilters().gender,
-                                  brand_id: this.filters.getFilters().brand, 
-                                  category_id: this.filters.getFilters().category,
-                                  sub_category_id: this.filters.getFilters().subCategory
-                                }, 
-                                search_string: this.filters.getFilters().searchString,
-                                sort: Filters.getFilters().sort}
-                              }).success(function(data){
-    productCtrl.products.addProducts(data);
-    scrollActive = true;
-  });
+  // $http.get(backendUrl + 'products.json', {async: true, params: { 
+  //                               page: this.products.currentPage(), 
+  //                               filters: {
+  //                                 gender_id: this.filters.getFilters().gender,
+  //                                 brand_id: this.filters.getFilters().brand, 
+  //                                 category_id: this.filters.getFilters().category,
+  //                                 sub_category_id: this.filters.getFilters().subCategory
+  //                               }, 
+  //                               search_string: this.filters.getFilters().searchString,
+  //                               sort: Filters.getFilters().sort}
+  //                             }).success(function(data){
+  //   productCtrl.products.addProducts(data);
+  //   scrollActive = true;
+  // });
 
   this.viewProduct = function(product) {
     $state.go('productDetail', {productID: product.id})
@@ -1118,8 +1180,8 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
 
   this.nextPage = function(products){
 
-    if (scrollActive === true) {
-      scrollActive = false;
+    if (Products.scrollActive() === true) {
+      Products.setScrollActive(false);
       Products.enumeratePage();
       
       $http.get(backendUrl + 'products.json', {async: true, 
@@ -1138,7 +1200,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
         if (data.length > 0) {
           window.data = data;
           productCtrl.products.addProducts(data);
-          scrollActive = true;
+          Products.setScrollActive(true);
         } 
       });
     }
@@ -1399,7 +1461,7 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
   Filters.resetAll();
   Filters.setFilter('brand', $stateParams.brandId);
   console.log("In brand controller" + $stateParams.brandId);
-  console.log("")
+  Products.fetchProducts()
 }]);
 
 

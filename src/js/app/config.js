@@ -62,11 +62,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: 'TrendsController'
     })
 
+
     .state('trendView', {
       url: '/trends/:slug',
       templateUrl: assetsUrl + 'partials/trend-view.html',
       controller: 'TrendController'
     })
+
 
     .state('pay', {
       abstract: true,

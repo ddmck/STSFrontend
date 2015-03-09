@@ -100,7 +100,6 @@ app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products'
   
 }]);
 
-
 app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
   // this.scrollActive = true;
   var scrollActive = this.scrollActive;
