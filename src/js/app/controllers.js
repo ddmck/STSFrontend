@@ -97,23 +97,6 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   // WishlistItems.fetchWishlistItems();
 
   this.filters = Filters;
-  
-  // Products.fetchProducts();
-
-  // $http.get(backendUrl + 'products.json', {async: true, params: { 
-  //                               page: this.products.currentPage(), 
-  //                               filters: {
-  //                                 gender_id: this.filters.getFilters().gender,
-  //                                 brand_id: this.filters.getFilters().brand, 
-  //                                 category_id: this.filters.getFilters().category,
-  //                                 sub_category_id: this.filters.getFilters().subCategory
-  //                               }, 
-  //                               search_string: this.filters.getFilters().searchString,
-  //                               sort: Filters.getFilters().sort}
-  //                             }).success(function(data){
-  //   productCtrl.products.addProducts(data);
-  //   scrollActive = true;
-  // });
 
   this.viewProduct = function(product) {
     $state.go('productDetail', {productID: product.id})
@@ -132,26 +115,6 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
     }
     
   };
-
-  // this.wishFor = function(product, userId){
-  //   if (!userId) {
-  //     $('#signInModal').foundation('reveal', 'open');
-  //   } else if (_.some(WishlistItems.list(), { 'product_id': product.id })){
-  //      index = _.findIndex(WishlistItems.list(), { 'product_id': product.id })
-  //      wishlistItem = WishlistItems.list()[index]
-  //      $http.delete(backendUrl + 'wishlist_items/' + wishlistItem.id + '.json', {
-  //      } ).success(function(data){
-  //       WishlistItems.fetchWishlistItems();
-  //      });
-  //   } else {
-  //     $http.post(backendUrl + 'wishlist_items.json', {wishlist_item: {
-  //       product_id: product.id
-  //     }} ).success(function(data){
-  //       WishlistItems.fetchWishlistItems();
-  //     });  
-  //   }
-    
-  // }; 
 
   this.checkIfWishedFor = function(product_id){
     return _.indexOf(WishlistItems.list(), product_id) != -1;
