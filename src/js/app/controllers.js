@@ -72,12 +72,13 @@ app.controller('TrendsController', ['$state', '$scope', 'Trends','Filters', func
 
 app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products', 'Filters', 'Trends', 'Meta', function($http, $stateParams, $scope, Products, Filters, Trends, Meta){
   $scope.trend;
+  Products.resetProducts();
+  Products.resetPage();
+  Filters.resetAll();
   $http.get(backendUrl + 'features/' + $stateParams.slug + '.json').success(function(data){
     $scope.trend = data;
-    Products.resetProducts();
-    Products.resetPage();
-    Filters.resetAll();
     if ($scope.trend.gender_id) Filters.setFilter("gender", $scope.trend.gender_id);
+    if ($scope.trend.brand_id) Filters.setFilter("brand", $scope.trend.brand_id);
     if ($scope.trend.search_string) Filters.setFilter("searchString", $scope.trend.search_string);
     if ($scope.trend.category_id) Filters.setFilter("category", $scope.trend.category_id);
     Meta.set("title", "Check out " + data.title + " and other trends at Fetch my Fashion");
@@ -398,19 +399,16 @@ app.controller("HeadController", ["Meta", "$scope", function(Meta, $scope){
 }]);
 
 app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "Products", "Filters", function(Meta, $scope, $http, $stateParams, Products, Filters){
-  
+  Products.resetProducts();
+  Products.resetPage();
+  Filters.resetAll();
+  Filters.setFilter('brand', $stateParams.brandId);
+  Products.fetchProducts()
   $http.get(backendUrl + 'brands/' + $stateParams.brandId + '.json', {async: true}).success(function(data){
     $scope.brand = data;
     Meta.set("title", $scope.brand.name + " at Fetch My Fashion");
     Meta.set("description", "Shop " + $scope.brand.name + " at Fetch My Fashion, All Your Favourite Stores In One Place");
   })
-
-  Products.resetProducts();
-  Products.resetPage();
-  Filters.resetAll();
-  Filters.setFilter('brand', $stateParams.brandId);
-  console.log("In brand controller" + $stateParams.brandId);
-  Products.fetchProducts()
 }]);
 
 
