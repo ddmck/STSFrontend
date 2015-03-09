@@ -83,9 +83,26 @@ app.controller('TrendsController', ['$state', '$scope', 'Trends','Filters', func
   };
 }]);
 
+app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products', 'Filters', function($http, $stateParams, $scope, Products, Filters){
+  $scope.trend;
+  $http.get(backendUrl + 'features/' + $stateParams.slug + '.json').success(function(data){
+    $scope.trend = data;
+    console.log(data)
+    Products.resetProducts();
+    Products.resetPage();
+    Filters.resetAll();
+    if ($scope.trend.gender_id) Filters.setFilter("gender", $scope.trend.gender_id);
+    if ($scope.trend.search_string) Filters.setFilter("searchString", $scope.trend.search_string);
+    if ($scope.trend.category_id) Filters.setFilter("category", $scope.trend.category_id);
+    console.log(Filters.getFilters());
+    Products.fetchProducts();
+  });
+  
+}]);
+
 
 app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
-  this.scrollActive = false;
+  this.scrollActive = true;
   var scrollActive = this.scrollActive;
   var productCtrl = this;
   productCtrl.products = Products;
@@ -95,20 +112,20 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   
   // Products.fetchProducts();
 
-  $http.get(backendUrl + 'products.json', {async: true, params: { 
-                                page: this.products.currentPage(), 
-                                filters: {
-                                  gender_id: this.filters.getFilters().gender,
-                                  brand_id: this.filters.getFilters().brand, 
-                                  category_id: this.filters.getFilters().category,
-                                  sub_category_id: this.filters.getFilters().subCategory
-                                }, 
-                                search_string: this.filters.getFilters().searchString,
-                                sort: Filters.getFilters().sort}
-                              }).success(function(data){
-    productCtrl.products.addProducts(data);
-    scrollActive = true;
-  });
+  // $http.get(backendUrl + 'products.json', {async: true, params: { 
+  //                               page: this.products.currentPage(), 
+  //                               filters: {
+  //                                 gender_id: this.filters.getFilters().gender,
+  //                                 brand_id: this.filters.getFilters().brand, 
+  //                                 category_id: this.filters.getFilters().category,
+  //                                 sub_category_id: this.filters.getFilters().subCategory
+  //                               }, 
+  //                               search_string: this.filters.getFilters().searchString,
+  //                               sort: Filters.getFilters().sort}
+  //                             }).success(function(data){
+  //   productCtrl.products.addProducts(data);
+  //   scrollActive = true;
+  // });
 
   this.viewProduct = function(product) {
     $state.go('productDetail', {productID: product.id})
@@ -444,7 +461,7 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
   Filters.resetAll();
   Filters.setFilter('brand', $stateParams.brandId);
   console.log("In brand controller" + $stateParams.brandId);
-  console.log("")
+  Products.fetchProducts()
 }]);
 
 
