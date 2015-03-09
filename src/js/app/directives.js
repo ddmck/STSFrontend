@@ -77,6 +77,15 @@ app.directive('ngProductList', function(){
   }
 });
 
+app.directive('ngFilters', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/filters.html',
+    replace: true,
+    transclude: true
+  }
+});
+
 app.directive('ngMetaTitle', function(){
   return {
     restrict: "A",

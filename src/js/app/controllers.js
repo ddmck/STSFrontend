@@ -80,8 +80,6 @@ app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products'
     if ($scope.trend.gender_id) Filters.setFilter("gender", $scope.trend.gender_id);
     if ($scope.trend.search_string) Filters.setFilter("searchString", $scope.trend.search_string);
     if ($scope.trend.category_id) Filters.setFilter("category", $scope.trend.category_id);
-
-    $scope.trend = Trends.list();
     Meta.set("title", "Check out " + data.title + " and other trends at Fetch my Fashion");
     Meta.set("description", data.copy);
     Meta.set("imageUrl", data.image_url);
