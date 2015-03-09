@@ -161,7 +161,7 @@ header.navigation {
     }
 
     > ul > li:first-child a  {
-      padding-top: 1em;
+      // padding-top: 1em;
     }
 
     a {
@@ -222,10 +222,11 @@ header.navigation {
   }
 
   ul.submenu {
-
-    // columns: 3;
-    // -webkit-columns: 3;
-    // -moz-columns: 3;
+    margin-top: 1em;
+    background-color: $navigation-background;
+    columns: 3;
+    -webkit-columns: 3;
+    -moz-columns: 3;
 
     display: none;
     padding-left: 0;

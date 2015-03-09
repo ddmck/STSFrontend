@@ -700,8 +700,6 @@ header.navigation {
       header.navigation li.more.nav-link {
         padding-right: 1em;
         display: inline; } }
-    header.navigation li.more.nav-link > ul > li:first-child a {
-      padding-top: 1em; }
     header.navigation li.more.nav-link a {
       margin-right: 1em; }
     header.navigation li.more.nav-link > a {
@@ -740,6 +738,11 @@ header.navigation {
         padding-right: 0.8em;
         position: relative; } }
   header.navigation ul.submenu {
+    margin-top: 1em;
+    background-color: #212121;
+    columns: 3;
+    -webkit-columns: 3;
+    -moz-columns: 3;
     display: none;
     padding-left: 0; }
     @media screen and (min-width: 53.75em) {
