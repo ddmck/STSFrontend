@@ -102,7 +102,7 @@ app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products'
 
 
 app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
-  this.scrollActive = true;
+  // this.scrollActive = true;
   var scrollActive = this.scrollActive;
   var productCtrl = this;
   productCtrl.products = Products;
@@ -180,8 +180,8 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
 
   this.nextPage = function(products){
 
-    if (scrollActive === true) {
-      scrollActive = false;
+    if (Products.scrollActive() === true) {
+      Products.setScrollActive(false);
       Products.enumeratePage();
       
       $http.get(backendUrl + 'products.json', {async: true, 
@@ -200,7 +200,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
         if (data.length > 0) {
           window.data = data;
           productCtrl.products.addProducts(data);
-          scrollActive = true;
+          Products.setScrollActive(true);
         } 
       });
     }
