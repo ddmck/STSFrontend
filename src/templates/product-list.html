@@ -1,5 +1,5 @@
 <section class="row">
-  <div class="cards" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="1" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
+  <div class="cards" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="1" infinite-scroll-immediate-check='{{ products.products.scrollActive() }}'>
     <div class="card" ng-repeat="product in products.products.getProducts() track by $index" >
       <div class="card-image" ng-click="products.viewProduct(product)">
         <img ng-src="{{product.image_url}}" alt="">

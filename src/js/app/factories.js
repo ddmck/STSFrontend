@@ -8,30 +8,34 @@ app.factory('Filters', ['$location', function($location){
     },
     setFilter: function(name, value){
       filters[name] = value;
-      // $location.search(name, value);
     },
     removeFilter: function(name){
       delete filters[name];
-      if (_.isEmpty(filters)) {
-        $location.url($location.path())
-      } else {
-        $location.search(name, null);
-      }
     },
     useQuery: function(query){
       filters = query;
-      if (_.isEmpty(filters)) {
-        $location.url($location.path())
-      } else {
-        $location.search(filters);
-      }
     },
     resetAll: function(){
       filters = {};
-      $location.url($location.path())
     }         
   };
 }]);
+
+
+app.factory('Trends', [ '$http', 'Products', 'Filters', function($http, Products, Filters){
+  var trends = [];
+  return {
+    fetchTrends: function(){
+      $http.get(backendUrl + 'features.json', {async: true}).success(function(data){
+        trends = data;
+      });
+    },
+    list: function(){
+      return trends;
+    }
+  }
+}]);
+
 
 app.factory('Categories', [ '$http', function($http){
   var categories = [];
@@ -267,7 +271,14 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
   var products = [];
   var page = 1;
   var searching = true;
+  var scrollActive = false;
   return {
+    scrollActive: function(){
+      return scrollActive;
+    },
+    setScrollActive: function(val){
+      scrollActive = val;
+    },
     getProducts: function(){
       return products;
     },

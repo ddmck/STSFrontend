@@ -1,0 +1,20 @@
+<div class="title">
+  <section class="row">
+    <h1>Trends</h1>
+  </section>
+</div>
+<section class="row">
+  <div class="cards">
+    <div class="card" ng-repeat="trend in trends.list()">
+      <div class="card-image" ui-sref="trendView({slug: trend.slug})">
+        <img ng-src="{{trend.image_url}}" alt="">
+      </div>
+      <div class="card-header">
+        {{ trend.title }}
+      </div>
+      <div class="card-copy">
+        {{ trend.copy }}
+      </div>
+    </div>
+  </div>
+</section>

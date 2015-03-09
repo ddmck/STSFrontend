@@ -56,6 +56,20 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: 'BasketController'
     })
 
+    .state('trends', {
+      url: '/trends',
+      templateUrl: assetsUrl + 'partials/trends.html',
+      controller: 'TrendsController'
+    })
+
+
+    .state('trendView', {
+      url: '/trends/:slug',
+      templateUrl: assetsUrl + 'partials/trend-view.html',
+      controller: 'TrendController'
+    })
+
+
     .state('pay', {
       abstract: true,
       url: '/pay',
@@ -188,6 +202,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         Products.resetProducts();
         Products.resetPage();
         Filters.resetAll();
+        Products.fetchProducts();
       }
     })
 
@@ -224,6 +239,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         Filters.resetAll();
         Filters.setFilter('category', $stateParams.catID);
         Filters.setFilter('gender', genderVar);
+        Products.fetchProducts();
       }
     })
 
