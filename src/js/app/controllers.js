@@ -67,37 +67,26 @@ app.controller('TrendsController', ['$state', '$scope', 'Trends','Filters', func
   Trends.fetchTrends();
   $scope.trends = Trends;
   $scope.trend = Trends.list();
-  console.log($scope.trends.list());
-  console.log($scope.trends)
-  console.log($scope.trend)
 
-  $scope.updateSearch = function(searchString){
-    if (searchString === null || searchString === undefined || searchString === '' || searchString === ' ') {
-      return
-    } else {
-      Filters.resetAll();
-      Filters.setFilter("searchString", searchString);
-      $state.go('search', {searchString: searchString});
-      ga('send', 'event', 'products', 'search', searchString);
-    }
-  };
 }]);
 
-app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products', 'Filters', function($http, $stateParams, $scope, Products, Filters){
+app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products', 'Filters', 'Trends', 'Meta', function($http, $stateParams, $scope, Products, Filters, Trends, Meta){
   $scope.trend;
   $http.get(backendUrl + 'features/' + $stateParams.slug + '.json').success(function(data){
     $scope.trend = data;
-    console.log(data)
     Products.resetProducts();
     Products.resetPage();
     Filters.resetAll();
     if ($scope.trend.gender_id) Filters.setFilter("gender", $scope.trend.gender_id);
     if ($scope.trend.search_string) Filters.setFilter("searchString", $scope.trend.search_string);
     if ($scope.trend.category_id) Filters.setFilter("category", $scope.trend.category_id);
-    console.log(Filters.getFilters());
+
+    $scope.trend = Trends.list();
+    Meta.set("title", "Check out " + data.title + " and other trends at Fetch my Fashion");
+    Meta.set("description", data.copy);
+    Meta.set("imageUrl", data.image_url);
     Products.fetchProducts();
   });
-  
 }]);
 
 app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
