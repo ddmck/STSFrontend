@@ -258,7 +258,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     })
 
     .state('productDetail', {
-      url: '/products/:productID',
+      url: '/products/{productID}-{slug}',
       templateUrl: assetsUrl + 'partials/product-detail.html',
       onEnter: function($stateParams, $state){
         if ($stateParams.productID === "") {

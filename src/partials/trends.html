@@ -5,16 +5,24 @@
 </div>
 <section class="row">
   <div class="cards">
-    <div class="card" ng-repeat="trend in trends.list()">
-      <div class="card-image" ui-sref="trendView({slug: trend.slug})">
-        <img ng-src="{{trend.image_url}}" alt="">
+    
+      <div class="card" ng-repeat="trend in trends.list()">
+        <div class="card-image">
+          <a ui-sref="trendView({slug: trend.slug})" >
+            <img ng-src="{{trend.image_url}}" alt="">
+          </a>
+        </div>
+        <div class="card-header">
+          <a ui-sref="trendView({slug: trend.slug})" >
+            <p>{{ trend.title }}</p>
+          </a>
+        </div>
+        <div class="card-copy">
+          <a ui-sref="trendView({slug: trend.slug})" >
+            <p>{{ trend.copy }}</p>
+          </a>
+        </div>
       </div>
-      <div class="card-header">
-        {{ trend.title }}
-      </div>
-      <div class="card-copy">
-        {{ trend.copy }}
-      </div>
-    </div>
+    </a>
   </div>
 </section>

@@ -1173,7 +1173,6 @@ header.navigation {
   border: 1px solid #DDD;
   -webkit-box-shadow: 0 2px 4px #e6e6e6;
           box-shadow: 0 2px 4px #e6e6e6;
-  cursor: pointer;
   margin: 0.75em 1em 0.75em 1em;
   padding-bottom: 1.75em;
   position: relative; }
@@ -1235,6 +1234,7 @@ header.navigation {
     padding: 0.75em 0.75em;
     text-transform: capitalize; }
     .card .card-copy p {
+      color: #333;
       margin: 0 0 0.75em; }
   .card .card-stats {
     -webkit-align-self: flex-end;

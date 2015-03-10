@@ -36,7 +36,7 @@
   border-radius: $base-border-radius;
   border: $card-border;
   box-shadow: 0 2px 4px darken($base-background-color, 10%);
-  cursor: pointer;
+  // cursor: pointer;
   margin: ($base-spacing/2) $card-margin ($base-spacing/2) $card-margin;
   padding-bottom: $card-padding-for-absolute-stats;
   position: relative;
@@ -103,6 +103,7 @@
     text-transform: capitalize;
 
     p {
+      color: $base-font-color;
       margin: 0 0 ($base-spacing / 2);
     }
   }
