@@ -111,7 +111,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         $scope.localStorage = $localStorage;
         $scope.submitAddress = function(addressForm) {
           $localStorage.address = addressForm;
-          console.log(addressForm);
           $state.go('pay.billing')
         }
       }
@@ -278,7 +277,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         Products.resetProducts();
         Products.resetPage();
         Products.fetchProducts();
-        Products.enumeratePage();
       }
     })
 

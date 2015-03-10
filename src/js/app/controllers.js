@@ -71,7 +71,6 @@ app.controller('TrendsController', ['$state', '$scope', 'Trends','Filters', func
 }]);
 
 app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products', 'Filters', 'Trends', 'Meta', function($http, $stateParams, $scope, Products, Filters, Trends, Meta){
-  $scope.trend;
   Products.resetProducts();
   Products.resetPage();
   Filters.resetAll();
@@ -89,8 +88,6 @@ app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products'
 }]);
 
 app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
-  // this.scrollActive = true;
-  var scrollActive = this.scrollActive;
   var productCtrl = this;
   productCtrl.products = Products;
   // WishlistItems.fetchWishlistItems();
@@ -132,27 +129,7 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
 
     if (Products.scrollActive() === true) {
       Products.setScrollActive(false);
-      Products.enumeratePage();
-      
-      $http.get(backendUrl + 'products.json', {async: true, 
-                                                params: {
-                                                  page: Products.currentPage().toString(), 
-                                                  filters: {
-                                                    gender_id: this.filters.getFilters().gender, 
-                                                    brand_id: this.filters.getFilters().brand, 
-                                                    category_id: this.filters.getFilters().category, 
-                                                    sub_category_id: Filters.getFilters().subCategory
-                                                  }, 
-                                                  sort: Filters.getFilters().sort, 
-                                                  search_string: Filters.getFilters().searchString
-                                                }
-                                              }).success(function(data){
-        if (data.length > 0) {
-          window.data = data;
-          productCtrl.products.addProducts(data);
-          Products.setScrollActive(true);
-        } 
-      });
+      Products.fetchProducts()
     }
   };
 }]);
@@ -236,6 +213,7 @@ app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories
           if (Filters.getFilters().category === undefined) {
             if (category.name === word){
               Filters.setFilter("category", parseInt(category.id));
+              Filters.setFilter("category", parseInt(category.id));
             } else if (category.name.substring(0, category.name.length - 1) === word) {
               Filters.setFilter("category", parseInt(category.id));
             }
@@ -302,7 +280,6 @@ app.controller('SortController', ['$scope', 'Filters', 'Products', function($sco
   ];
 
   $scope.setSort = function(sort){
-    console.log(sort)
     Filters.setFilter("sort", sort)
     Products.resetProducts();
     Products.resetPage();

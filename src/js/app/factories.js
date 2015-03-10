@@ -293,6 +293,7 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     },
     resetProducts: function(){
       products = [];
+      scrollActive = false;
     },
     resetPage: function(){
       page = 1;
@@ -301,7 +302,7 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
       products = products.concat(newProducts);
     },
     fetchProducts: function(){
-      console.log("Page: " + page);
+      // console.log("Page: " + page);
       searching = true;
       $http.get(backendUrl + 'products.json', { async: true, 
                                                 params: {
@@ -316,9 +317,16 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
                                                   search_string: Filters.getFilters().searchString
                                                   
                                                 }}).success(function(data){
-        products = products.concat(data);
-        scrollActive = true;
-        searching = false;
+                                                  if (data.length > 0) {
+                                                    products = products.concat(data);
+                                                    page += 1;
+                                                    scrollActive = true;
+                                                    searching = false;
+                                                  } else {
+                                                    scrollActive = false;
+                                                    searching = false;
+                                                  }
+       
       });
     },
     currentlySearching: function(){
@@ -335,7 +343,6 @@ app.factory('Brands', ['$http', function($http){
       o.brands = _.groupBy(data, function(br){
         return br.name[0].toLowerCase();
       });
-      console.log(o.brands)
     });
   }
 
