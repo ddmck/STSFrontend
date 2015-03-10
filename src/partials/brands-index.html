@@ -10,7 +10,7 @@
 
       <ul>
         <li ng-repeat="brand in letter | orderBy:'name' ">
-          <a ui-sref="brandView({brandId: '{{brand.id}}'})">{{brand.name}}</a>
+          <a ui-sref="brandView({brandId: '{{brand.slug}}', id: '{{brand.id}}'})">{{brand.name}}</a>
         </li>
       </ul>
       <br>  

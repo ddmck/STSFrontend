@@ -253,11 +253,10 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         $scope.brands = Brands;
         $scope.brands.fetchBrands();
       }
-
     })
 
     .state('brandView', {
-      url: '/brands/:brandId',
+      url: '/brands/{id}-{brandId}',
       templateUrl: assetsUrl + "partials/brands-view.html",
       controller: "BrandController"
     })
@@ -1396,7 +1395,8 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
   Products.resetProducts();
   Products.resetPage();
   Filters.resetAll();
-  Filters.setFilter('brand', $stateParams.brandId);
+  Filters.setFilter('brand', $stateParams.id);
+  console.log(Filters.getFilters());
   Products.fetchProducts()
   $http.get(backendUrl + 'brands/' + $stateParams.brandId + '.json', {async: true}).success(function(data){
     $scope.brand = data;

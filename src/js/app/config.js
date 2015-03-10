@@ -249,11 +249,10 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         $scope.brands = Brands;
         $scope.brands.fetchBrands();
       }
-
     })
 
     .state('brandView', {
-      url: '/brands/:brandId',
+      url: '/brands/{id}-{brandId}',
       templateUrl: assetsUrl + "partials/brands-view.html",
       controller: "BrandController"
     })
