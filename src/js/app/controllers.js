@@ -327,6 +327,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     Meta.set("imageUrl", $scope.currentImg);
     Meta.set("displayPrice", $scope.product.display_price);
     Meta.set("id", $scope.product.id);
+    Meta.set("slug", $scope.product.slug);
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
   });
