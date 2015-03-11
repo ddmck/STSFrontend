@@ -185,6 +185,24 @@ app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categ
   };
 }]);
 
+app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', function($scope, Filters, Products, Colors){
+  
+  $scope.colors = [];
+  Colors.fetchColors();
+  $scope.colors = Colors;
+  $scope.filters = Filters;
+  $scope.setColor = function(cat_id){
+    if (cat_id === "") {
+      Filters.removeFilter("color");
+    } else {
+      Filters.setFilter("color", parseInt(cat_id));
+    }
+    Products.resetProducts();
+    Products.resetPage();
+    Products.fetchProducts();
+  };
+}]);
+
 app.controller('MobileCatController', ['$scope', 'Categories', function($scope, Categories){
   Categories.fetchCategories();
   $scope.categories = Categories;
