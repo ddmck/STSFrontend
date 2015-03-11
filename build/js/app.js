@@ -534,7 +534,7 @@ app.directive('ngMetaTwitterImage', function(){
 app.directive('ngMetaTwitterPrice', function(){
   return {
     restrict: "A",
-    template: '<meta name="twitter:data1" content="{{ meta.content().displayPrice }}">',
+    template: '<meta name="twitter:data1" content="£{{ meta.content().displayPrice }}">',
     replace: true,
     transclude: true
   }
@@ -544,6 +544,24 @@ app.directive('ngMetaTwitterPriceLabel', function(){
   return {
     restrict: "A",
     template: '<meta name="twitter:label1" content="Price">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterData', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:data2" content="Buy it">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterDataLabel', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:label2" content="Now">',
     replace: true,
     transclude: true
   }
@@ -1359,6 +1377,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     Meta.set("imageUrl", $scope.currentImg);
     Meta.set("displayPrice", $scope.product.display_price);
     Meta.set("id", $scope.product.id);
+    Meta.set("slug", $scope.product.slug);
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
   });

@@ -161,7 +161,7 @@ app.directive('ngMetaTwitterImage', function(){
 app.directive('ngMetaTwitterPrice', function(){
   return {
     restrict: "A",
-    template: '<meta name="twitter:data1" content="{{ meta.content().displayPrice }}">',
+    template: '<meta name="twitter:data1" content="£{{ meta.content().displayPrice }}">',
     replace: true,
     transclude: true
   }
