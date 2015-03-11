@@ -176,6 +176,24 @@ app.directive('ngMetaTwitterPriceLabel', function(){
   }
 });
 
+app.directive('ngMetaTwitterData', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:data2" content="Buy it">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterDataLabel', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:label2" content="Now">',
+    replace: true,
+    transclude: true
+  }
+});
+
 app.directive('ngMetaSchemaName', function(){
   return {
     restrict: "A",
