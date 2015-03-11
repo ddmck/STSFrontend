@@ -701,6 +701,21 @@ app.factory('Categories', [ '$http', function($http){
   }
 }]);
 
+app.factory('Colors', [ '$http', function($http){
+  var colors = [];
+  return {
+    fetchColors: function(){
+      $http.get(backendUrl + 'colors.json', {async: true}).success(function(data){
+        colors = data;
+      });
+    },
+    list: function(){
+      return colors;
+    }
+
+  }
+}]);
+
 app.factory('Stores', [ '$http', function($http){
   var stores = [];
   return {
@@ -960,7 +975,8 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
                                                     gender_id: Filters.getFilters().gender,
                                                     brand_id: Filters.getFilters().brand, 
                                                     category_id: Filters.getFilters().category, 
-                                                    sub_category_id: Filters.getFilters().subCategory
+                                                    sub_category_id: Filters.getFilters().subCategory,
+                                                    color_id: Filters.getFilters().color
                                                   }, 
                                                   sort: Filters.getFilters().sort, 
                                                   search_string: Filters.getFilters().searchString
@@ -1194,6 +1210,24 @@ app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categ
       Filters.removeFilter("subCategory");
     } else {
       Filters.setFilter("subCategory", parseInt(sub_cat_id));
+    }
+    Products.resetProducts();
+    Products.resetPage();
+    Products.fetchProducts();
+  };
+}]);
+
+app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', function($scope, Filters, Products, Colors){
+  
+  $scope.colors = [];
+  Colors.fetchColors();
+  $scope.colors = Colors;
+  $scope.filters = Filters;
+  $scope.setColor = function(cat_id){
+    if (cat_id === "") {
+      Filters.removeFilter("color");
+    } else {
+      Filters.setFilter("color", parseInt(cat_id));
     }
     Products.resetProducts();
     Products.resetPage();
