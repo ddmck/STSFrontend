@@ -5,6 +5,9 @@
  */
 
 .btf-modal {
+  $modal-padding: 2em;
+  $modal-background: white;
+  $modal-close-color: rgba($brand-black, 0.3);
   position: fixed;
   top: 50%;
   left: 50%;
@@ -17,12 +20,40 @@
   -moz-transform: translateX(-50%) translateY(-50%);
   -ms-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
-  background: white;
-  padding: 2em;
+  background: $modal-background;
+  padding: $modal-padding;
+  border-radius: 3px;
 
   -webkit-box-shadow: 0 0 0 2000px rgba(0, 0, 0, .5);
   -moz-box-shadow: 0 0 0 2000px rgba(0, 0, 0, .5);
   box-shadow: 0 0 0 2000px rgba(0, 0, 0, .5);
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding-box;
+
+  .modal-close {
+    @include position(absolute, ($modal-padding /2) ($modal-padding /2) null null);
+    @include size(1.5em);
+    background: $modal-background;
+    cursor: pointer;
+
+    &:after,
+    &:before {
+      @include position(absolute, 3px 3px 0 50%);
+      @include transform(rotate(45deg));
+      @include size(0.15em 1.5em);
+      background: $modal-close-color;
+      content: '';
+      display: block;
+      margin: -3px 0 0 -1px;
+    }
+
+    &:hover:after,
+    &:hover:before {
+      background: darken($modal-close-color, 10%);
+    }
+
+    &:before {
+      @include transform(rotate(-45deg));
+    }
+  }
 }

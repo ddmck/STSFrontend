@@ -2053,10 +2053,40 @@ ul.brands {
   transform: translateX(-50%) translateY(-50%);
   background: white;
   padding: 2em;
+  border-radius: 3px;
   -webkit-box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.5);
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding-box; }
+  .btf-modal .modal-close {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    height: 1.5em;
+    width: 1.5em;
+    background: white;
+    cursor: pointer; }
+    .btf-modal .modal-close:after, .btf-modal .modal-close:before {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      bottom: 0;
+      left: 50%;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+      height: 1.5em;
+      width: 0.15em;
+      background: rgba(33, 33, 33, 0.3);
+      content: '';
+      display: block;
+      margin: -3px 0 0 -1px; }
+    .btf-modal .modal-close:hover:after, .btf-modal .modal-close:hover:before {
+      background: rgba(8, 8, 8, 0.3); }
+    .btf-modal .modal-close:before {
+      -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+      transform: rotate(-45deg); }
 
 #main-view {
   padding-top: 120px; }
