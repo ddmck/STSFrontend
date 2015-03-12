@@ -319,6 +319,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
   $scope.size = null;
 
 
+
   $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
     $scope.product = data;
     Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Fetch My Fashion");
@@ -328,6 +329,8 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     Meta.set("displayPrice", $scope.product.display_price);
     Meta.set("id", $scope.product.id);
     Meta.set("slug", $scope.product.slug);
+    var sizes = _.map($scope.product.sizes, function(size){ return size.name }).join(" | ");
+    Meta.set("sizes", sizes);
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
   });

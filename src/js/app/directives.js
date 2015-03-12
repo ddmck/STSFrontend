@@ -161,7 +161,7 @@ app.directive('ngMetaTwitterImage', function(){
 app.directive('ngMetaTwitterPrice', function(){
   return {
     restrict: "A",
-    template: '<meta name="twitter:data1" content="£{{ meta.content().displayPrice }}">',
+    templateUrl: assetsUrl + 'templates/meta-twitter-price.html',
     replace: true,
     transclude: true
   }
@@ -179,7 +179,7 @@ app.directive('ngMetaTwitterPriceLabel', function(){
 app.directive('ngMetaTwitterData', function(){
   return {
     restrict: "A",
-    template: '<meta name="twitter:data2" content="Buy it">',
+    template: '<meta name="twitter:data2" content="{{ meta.content().sizes }}">',
     replace: true,
     transclude: true
   }
@@ -188,7 +188,7 @@ app.directive('ngMetaTwitterData', function(){
 app.directive('ngMetaTwitterDataLabel', function(){
   return {
     restrict: "A",
-    template: '<meta name="twitter:label2" content="Now">',
+    template: '<meta name="twitter:label2" content="Sizes">',
     replace: true,
     transclude: true
   }
@@ -278,7 +278,7 @@ app.directive('ngMetaOgSiteName', function(){
 app.directive('ngMetaOgPriceAmount', function(){
   return {
     restrict: "A",
-    template: '<meta property="og:price:amount" content="{{ meta.content().display_price }}" />',
+    templateUrl: assetsUrl + 'templates/meta-og-price-amount.html',
     replace: true,
     transclude: true
   }
