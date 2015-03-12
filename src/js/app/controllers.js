@@ -329,7 +329,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     Meta.set("displayPrice", $scope.product.display_price);
     Meta.set("id", $scope.product.id);
     Meta.set("slug", $scope.product.slug);
-    var sizes = _.reduce($scope.product.sizes, function(totalSizes, size){ return totalSizes + ' ' + size.name }, '');
+    var sizes = _.map($scope.product.sizes, function(size){ return size.name }).join(" | ");
     Meta.set("sizes", sizes);
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
