@@ -319,6 +319,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
   $scope.size = null;
 
 
+
   $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
     $scope.product = data;
     Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Fetch My Fashion");
