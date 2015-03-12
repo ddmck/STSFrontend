@@ -1,4 +1,77 @@
 <div class="btf-modal">
-  <h3>Sup</h3>
-  <p><a href ng-click="modal.closeMe()">Close Me</a></p>
+  <ul class="accordion-tabs-minimal">
+  <li class="tab-header-and-content">
+    <a href="#" class="tab-link is-active">Sign In</a>
+    <div class="tab-content" ng-controller="UserSessionsController">
+      <div class="alert alert-danger" role="alert" ng-show="error">
+        {{error}} 
+      </div>
+
+      <form ng-submit="loginClick()" name="login" role="form" ng-init="loginForm = {}" novalidate>
+        <div class="form-group"> 
+          <label>Email</label> 
+          <input type="email" name="email" id="email" ng-model="loginForm.email" required="required" class="form-control">
+          <p ng-show="login.email.$invalid && !login.email.$pristine && submit">Enter a valid Email.</p> 
+        </div> 
+        <div class="form-group"> 
+          <label>Password</label> 
+          <input type="password" ng-minlength="8" name="password" id="password" ng-model="loginForm.password" required="required" class="form-control">
+          <p ng-show="login.password.$error.minlength && submit">Password is too short.</p>
+        </div> 
+        <button type="submit" class="btn btn-primary btn-lg">Sign in</button> 
+      </form>
+    </div>
+  </li>
+  <li class="tab-header-and-content">
+    <a href="#" class="tab-link">Sign Up</a>
+    <div class="tab-content" ng-controller="UserRegistrationsController">
+      <div class="alert alert-danger" role="alert" ng-show="error">
+        {{error}} 
+      </div>
+      <form ng-submit="buttonClick()" role="form" name="registration" ng-init="registrationForm = {}" novalidate>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" ng-model="registrationForm.email" required="required" class="form-control"/>
+          <p ng-show="registration.email.$invalid && !registration.email.$pristine && submitted">Enter a valid Email.</p>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" ng-minlength="8" name="password" ng-model="registrationForm.password" required="required" class="form-control"/>
+          <p ng-show="registration.password.$error.minlength && submitted">Password is too short.</p>
+        </div>
+
+        <div class="form-group">
+          <label>Password confirmation</label>
+          <input type="password" ng-minlength="8" name="password_confirmation" ng-model="registrationForm.password_confirmation" required="required" class="form-control"/>
+          <p ng-show="registration.password_confirmation.$error.minlength && submitted">Password is too short.</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg">Register</button>
+      </form>
+    </div>
+  </li>
+</ul>
 </div>
+<script type="text/javascript">
+$(document).ready(function () {
+  $('.accordion-tabs-minimal').each(function(index) {
+    $(this).children('li').first().children('a').addClass('is-active').next().addClass('is-open').show();
+  });
+
+  $('.accordion-tabs-minimal').on('click', 'li > a', function(event) {
+    if (!$(this).hasClass('is-active')) {
+      event.preventDefault();
+      var accordionTabs = $(this).closest('.accordion-tabs-minimal');
+      accordionTabs.find('.is-open').removeClass('is-open').hide();
+
+      $(this).next().toggleClass('is-open').toggle();
+      accordionTabs.find('.is-active').removeClass('is-active');
+      $(this).addClass('is-active');
+    } else {
+      event.preventDefault();
+    }
+  });
+});
+
+</script>

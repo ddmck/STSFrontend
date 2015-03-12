@@ -1058,7 +1058,7 @@ app.factory('authModal', function (btfModal) {
   });
 })
 
-app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localStorage', function ($scope, $state, $auth, $localStorage) {
+app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localStorage', 'authModal', function ($scope, $state, $auth, $localStorage, authModal) {
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
   });
@@ -1067,7 +1067,9 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
     if ($localStorage.returnTo) {
       $state.go($localStorage.returnTo);
       delete $localStorage.returnTo;
-    } else {
+    } else if (authModal.active()){
+      authModal.deactivate();
+    } else { 
       $state.go('products.new');
     }
         
@@ -1096,8 +1098,6 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
   });
 
   $scope.$on('auth:registration-email-success', function(ev, message){
-    $('#signUpModal').foundation('reveal', 'close');
-    console.log(message);
     $auth.submitLogin({
       email: $scope.registrationForm.email,
       password: $scope.registrationForm.password
