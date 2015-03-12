@@ -87,11 +87,11 @@ app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products'
   });
 }]);
 
-app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
+app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', 'authModal', function($http, $state, Filters, Products, WishlistItems, $localStorage, authModal){
   var productCtrl = this;
   productCtrl.products = Products;
   // WishlistItems.fetchWishlistItems();
-
+  this.showModal = authModal.activate;
   this.filters = Filters;
 
   this.viewProduct = function(product) {
@@ -411,4 +411,8 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
   })
 }]);
 
+
+app.controller('AuthModalCtrl', function (authModal) {
+  this.closeMe = authModal.deactivate;
+})
 

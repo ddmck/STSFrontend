@@ -11,6 +11,7 @@ module.exports =
       resolve('angular-ui-router'),
       resolve('ngStorage'),
       resolve('angular-sanitize'),
+      resolve('angular-modal'),
       resolve('showdown'),
       resolve('markdown'),
       resolve('angular-cookie'),

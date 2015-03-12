@@ -380,3 +380,11 @@ app.factory('Meta', function(){
     }
   }
 });
+
+app.factory('authModal', function (btfModal) {
+  return btfModal({
+    controller: 'AuthModalCtrl',
+    controllerAs: 'modal',
+    templateUrl: assetsUrl + 'partials/auth-modal.html'
+  });
+})

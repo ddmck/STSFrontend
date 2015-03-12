@@ -1,4 +1,4 @@
-var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'btford.markdown', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments']);
+var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'btford.markdown', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments', 'btford.modal']);
 var backendUrl = "http://localhost:3000/";
 var assetsUrl = 'http://localhost:9000/';
 Stripe.setPublishableKey('pk_test_mfQJDA4oT57DLFi7l0HYu782');
@@ -1050,6 +1050,14 @@ app.factory('Meta', function(){
   }
 });
 
+app.factory('authModal', function (btfModal) {
+  return btfModal({
+    controller: 'AuthModalCtrl',
+    controllerAs: 'modal',
+    templateUrl: assetsUrl + 'partials/auth-modal.html'
+  });
+})
+
 app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localStorage', function ($scope, $state, $auth, $localStorage) {
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
@@ -1139,11 +1147,11 @@ app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products'
   });
 }]);
 
-app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', function($http, $state, Filters, Products, WishlistItems, $localStorage){
+app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', 'authModal', function($http, $state, Filters, Products, WishlistItems, $localStorage, authModal){
   var productCtrl = this;
   productCtrl.products = Products;
   // WishlistItems.fetchWishlistItems();
-
+  this.showModal = authModal.activate;
   this.filters = Filters;
 
   this.viewProduct = function(product) {
@@ -1463,5 +1471,9 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
   })
 }]);
 
+
+app.controller('AuthModalCtrl', function (authModal) {
+  this.closeMe = authModal.deactivate;
+})
 
 
