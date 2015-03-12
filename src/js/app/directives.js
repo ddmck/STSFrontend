@@ -287,7 +287,7 @@ app.directive('ngMetaOgPriceAmount', function(){
 app.directive('ngMetaPriceCurrency', function(){
   return {
     restrict: "A",
-    template: '<meta property="og:price:currency" content="GBP" />',
+    template: '<meta property="product:price:currency" content="GBP" />',
     replace: true,
     transclude: true
   }
