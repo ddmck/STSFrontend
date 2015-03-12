@@ -361,8 +361,10 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
   $locationProvider.hashPrefix('!');
 })
 
-app.run(function($rootScope, $location) {
+app.run(function($rootScope, $location, Meta) {
+
   $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
     ga('send', 'pageview', $location.path());
+    Meta.set("url", $location.protocol() + '://' + $location.host() + $location.path());
   });
 })
