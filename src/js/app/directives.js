@@ -284,7 +284,7 @@ app.directive('ngMetaOgPriceAmount', function(){
   }
 });
 
-app.directive('ngMetaPriceCurrency', function(){
+app.directive('ngMetaOgPriceCurrency', function(){
   return {
     restrict: "A",
     template: '<meta property="product:price:currency" content="GBP" />',
