@@ -179,7 +179,7 @@ app.directive('ngMetaTwitterPriceLabel', function(){
 app.directive('ngMetaTwitterData', function(){
   return {
     restrict: "A",
-    template: '<meta name="twitter:data2" content="Buy it">',
+    template: '<meta name="twitter:data2" content="{{ meta.content().sizes }}">',
     replace: true,
     transclude: true
   }
@@ -188,7 +188,7 @@ app.directive('ngMetaTwitterData', function(){
 app.directive('ngMetaTwitterDataLabel', function(){
   return {
     restrict: "A",
-    template: '<meta name="twitter:label2" content="Now">',
+    template: '<meta name="twitter:label2" content="Sizes">',
     replace: true,
     transclude: true
   }
