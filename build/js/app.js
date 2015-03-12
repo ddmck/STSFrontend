@@ -365,9 +365,11 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
   $locationProvider.hashPrefix('!');
 })
 
-app.run(function($rootScope, $location) {
+app.run(function($rootScope, $location, Meta) {
+
   $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
     ga('send', 'pageview', $location.path());
+    Meta.set("url", $location.protocol() + '://' + $location.host() + $location.path());
   });
 })
 
@@ -534,7 +536,7 @@ app.directive('ngMetaTwitterImage', function(){
 app.directive('ngMetaTwitterPrice', function(){
   return {
     restrict: "A",
-    template: '<meta name="twitter:data1" content="{{ meta.content().displayPrice }}">',
+    templateUrl: assetsUrl + 'templates/meta-twitter-price.html',
     replace: true,
     transclude: true
   }
@@ -544,6 +546,24 @@ app.directive('ngMetaTwitterPriceLabel', function(){
   return {
     restrict: "A",
     template: '<meta name="twitter:label1" content="Price">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterData', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:data2" content="{{ meta.content().sizes }}">',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMetaTwitterDataLabel', function(){
+  return {
+    restrict: "A",
+    template: '<meta name="twitter:label2" content="Sizes">',
     replace: true,
     transclude: true
   }
@@ -633,7 +653,7 @@ app.directive('ngMetaOgSiteName', function(){
 app.directive('ngMetaOgPriceAmount', function(){
   return {
     restrict: "A",
-    template: '<meta property="og:price:amount" content="{{ meta.content().display_price }}" />',
+    templateUrl: assetsUrl + 'templates/meta-og-price-amount.html',
     replace: true,
     transclude: true
   }
@@ -1351,6 +1371,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
   $scope.size = null;
 
 
+
   $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
     $scope.product = data;
     Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Fetch My Fashion");
@@ -1359,6 +1380,9 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     Meta.set("imageUrl", $scope.currentImg);
     Meta.set("displayPrice", $scope.product.display_price);
     Meta.set("id", $scope.product.id);
+    Meta.set("slug", $scope.product.slug);
+    var sizes = _.map($scope.product.sizes, function(size){ return size.name }).join(" | ");
+    Meta.set("sizes", sizes);
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
   });
