@@ -869,19 +869,21 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
       return $localStorage.wishlistItems;
     },
     addToWishlistItems: function(product){
-      var wishlistItems = $localStorage.wishlistItems;
-      wishlistItems.push(product.id);
-      $localStorage.wishlistItems = wishlistItems;
-    },
-    removeFromWishlistItems: function(product){
-      var wishlistItems = $localStorage.wishlistItems;
-      wishlistItems = _.reject(wishlistItems, function(n){
-        return n == product.id
-      });
-      $localStorage.wishlistItems = wishlistItems;
-      products = _.reject(products, function(p){
-        return p === product;
-      })   
+      console.log($localStorage.wishlistItems);
+      if (_.indexOf($localStorage.wishlistItems, product.id) === -1) {
+        var wishlistItems = $localStorage.wishlistItems;
+        wishlistItems.push(product.id);
+        $localStorage.wishlistItems = wishlistItems;
+      } else {
+        var wishlistItems = $localStorage.wishlistItems;
+        wishlistItems = _.reject(wishlistItems, function(n){
+          return n == product.id
+        });
+        $localStorage.wishlistItems = wishlistItems;
+        products = _.reject(products, function(p){
+          return p === product;
+        })   
+      }
     }
   }
 }]);
@@ -1064,11 +1066,13 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
   });
 
   $scope.$on('auth:login-success', function(ev){
+
+
     if ($localStorage.returnTo) {
       $state.go($localStorage.returnTo);
       delete $localStorage.returnTo;
-    } else if (authModal.active()){
-      authModal.deactivate();
+    } else if (authModal.active()) {
+      return
     } else { 
       $state.go('products.new');
     }
@@ -1147,11 +1151,10 @@ app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products'
   });
 }]);
 
-app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', 'authModal', function($http, $state, Filters, Products, WishlistItems, $localStorage, authModal){
+app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', 'authModal', '$auth', function($http, $state, Filters, Products, WishlistItems, $localStorage, authModal, $auth){
   var productCtrl = this;
   productCtrl.products = Products;
   // WishlistItems.fetchWishlistItems();
-  this.showModal = authModal.activate;
   this.filters = Filters;
 
   this.viewProduct = function(product) {
@@ -1159,15 +1162,19 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   };
 
   this.addToWishlist = function(product){
-    var currWishlist = WishlistItems.list();
-    if (_.indexOf(currWishlist, product.id) != -1) {
-      var currWishlist = _.reject(currWishlist, function(n){
-        return n == product.id
-      });
-      WishlistItems.update(currWishlist);
+    if ($auth.user.id) {
+      var currWishlist = WishlistItems.list();
+      if (_.indexOf(currWishlist, product.id) != -1) {
+        var currWishlist = _.reject(currWishlist, function(n){
+          return n == product.id
+        });
+        WishlistItems.update(currWishlist);
+      } else {
+        WishlistItems.addToWishlistItems(product);
+        ga('send', 'event', 'products', 'save', product.name);
+      }
     } else {
-      WishlistItems.addToWishlistItems(product);
-      ga('send', 'event', 'products', 'save', product.name);
+      authModal.activate()
     }
     
   };
@@ -1370,7 +1377,7 @@ app.controller('OrdersController', ['$scope', 'Orders', function($scope, Orders)
   $scope.orders = Orders;
 }]);
 
-app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Basket', 'Meta', 'WishlistItems', function($scope, $stateParams, $http, Basket, Meta, WishlistItems){
+app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Basket', 'Meta', 'WishlistItems', '$auth', 'authModal','$localStorage', function($scope, $stateParams, $http, Basket, Meta, WishlistItems, $auth, authModal, $localStorage){
   // get the id
   $scope.showMenu = false;
   $scope.id = $stateParams.productID;
@@ -1395,16 +1402,28 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     window.scrollTo(0, 0);
   });
 
-  $scope.addToWishlist = function(){
-    var currWishlist = WishlistItems.list();
-    if (_.indexOf(currWishlist, $scope.product.id) != -1) {
-      var currWishlist = _.reject(currWishlist, function(n){
-        return n == $scope.product.id
-      });
-      WishlistItems.update(currWishlist);
+  $scope.addToWishlist = function(product){
+    var callback = function(product){
+      return function(){
+        WishlistItems.addToWishlistItems(product);
+      }
+    }
+
+    var cb = callback(product)
+
+    if ($auth.user.id) {
+      cb();
     } else {
-      WishlistItems.addToWishlistItems($scope.product);
-      ga('send', 'event', 'products', 'save', $scope.product.name);
+      // window.cb = cb;
+      // $localStorage.cb = cb;
+      authModal
+
+      var unsubscribe = $scope.$on('auth:login-success', function(ev){
+        cb();
+        authModal.deactivate();
+        unsubscribe();
+      })
+      authModal.activate();
     }
     
   };

@@ -20,7 +20,7 @@
       }"></ng-pluralize>)</button>
 
       <strong style="display: block">Want to be notified of price changes?</strong>
-      <button ng-click="addToWishlist()"><span ng-show="!checkIfWishedFor()">Save</span><span ng-show="checkIfWishedFor()">Saved</span></button>
+      <button ng-click="addToWishlist(product)"><span ng-show="!checkIfWishedFor()">Save</span><span ng-show="checkIfWishedFor()">Saved</span></button>
       <div ng-product-details></div>
     </div>
   </div>  

@@ -200,19 +200,21 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
       return $localStorage.wishlistItems;
     },
     addToWishlistItems: function(product){
-      var wishlistItems = $localStorage.wishlistItems;
-      wishlistItems.push(product.id);
-      $localStorage.wishlistItems = wishlistItems;
-    },
-    removeFromWishlistItems: function(product){
-      var wishlistItems = $localStorage.wishlistItems;
-      wishlistItems = _.reject(wishlistItems, function(n){
-        return n == product.id
-      });
-      $localStorage.wishlistItems = wishlistItems;
-      products = _.reject(products, function(p){
-        return p === product;
-      })   
+      console.log($localStorage.wishlistItems);
+      if (_.indexOf($localStorage.wishlistItems, product.id) === -1) {
+        var wishlistItems = $localStorage.wishlistItems;
+        wishlistItems.push(product.id);
+        $localStorage.wishlistItems = wishlistItems;
+      } else {
+        var wishlistItems = $localStorage.wishlistItems;
+        wishlistItems = _.reject(wishlistItems, function(n){
+          return n == product.id
+        });
+        $localStorage.wishlistItems = wishlistItems;
+        products = _.reject(products, function(p){
+          return p === product;
+        })   
+      }
     }
   }
 }]);
