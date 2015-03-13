@@ -2098,6 +2098,7 @@ ul.brands {
       -ms-transform: translateX(-50%) translateY(-50%);
       transform: translateX(-50%) translateY(-50%); } }
   .btf-modal .modal-close {
+    z-index: 20010;
     position: absolute;
     top: 1em;
     right: 1em;

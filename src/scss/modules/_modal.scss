@@ -38,6 +38,7 @@
   -moz-background-clip: padding-box;
 
   .modal-close {
+    z-index: 20010;
     @include position(absolute, ($modal-padding /2) ($modal-padding /2) null null);
     @include size(1.5em);
     background: $modal-background;
