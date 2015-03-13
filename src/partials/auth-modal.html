@@ -31,6 +31,10 @@
       </div>
       <form ng-submit="buttonClick()" role="form" name="registration" ng-init="registrationForm = {}" novalidate>
         <div class="form-group">
+          <label>Name</label>
+          <input type="text" name="name" ng-model="registrationForm.name" required="required" class="form-control"/>
+        </div>
+        <div class="form-group">
           <label>Email</label>
           <input type="email" name="email" ng-model="registrationForm.email" required="required" class="form-control"/>
           <p ng-show="registration.email.$invalid && !registration.email.$pristine && submitted">Enter a valid Email.</p>
