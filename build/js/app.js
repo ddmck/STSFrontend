@@ -875,7 +875,6 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
     fetchWishlistItemProducts: function(){
       $http.get(backendUrl + 'api/wishlist_items.json').success(function(data){
         wishlistItems = data;
-        console.log("fetched wls");
       });
     },
     listProducts: function(){
@@ -1019,7 +1018,6 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
       products = products.concat(newProducts);
     },
     fetchProducts: function(){
-      // console.log("Page: " + page);
       searching = true;
       $http.get(backendUrl + 'products.json', { async: true, 
                                                 params: {
@@ -1514,7 +1512,6 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
   Products.resetPage();
   Filters.resetAll();
   Filters.setFilter('brand', $stateParams.id);
-  console.log(Filters.getFilters());
   Products.fetchProducts()
   $http.get(backendUrl + 'brands/' + $stateParams.brandId + '.json', {async: true}).success(function(data){
     $scope.brand = data;

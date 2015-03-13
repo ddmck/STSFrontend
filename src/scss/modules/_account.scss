@@ -129,9 +129,8 @@
   li.tab-header-and-content {
     list-style: none;
 
-    @include media($tab-mode) {
-      display: inline;
-    }
+    
+    display: inline;
   }
 
   a.tab-link {
@@ -143,10 +142,12 @@
     padding: ($base-spacing / 2) $gutter;
     text-decoration: none;
 
-    @include media($tab-mode) {
-      @include inline-block;
-      border-top: 0;
+    @include media($tab-mode){
+      padding: ($base-spacing / 2) $gutter;
     }
+    
+    @include inline-block;
+    border-top: 0;
 
     &:hover {
       color: $base-link-color;
@@ -159,23 +160,25 @@
     &.is-active {
       border-bottom: 0;
 
-      @include media($tab-mode) {
-        border: $tab-border;
-        border-bottom-color: $tab-active-background;
-        margin-bottom: -1px;
-      }
+      
+      border: $tab-border;
+      border-bottom-color: $tab-active-background;
+      margin-bottom: -1px;
     }
   }
 
   .tab-content {
     display: none;
-    padding: $base-spacing $gutter;
+    padding: $base-spacing 0;
     width: 100%;
 
-    @include media($tab-mode) {
-      border-top: $tab-border;
-      float: left;
+    @include media($tab-mode){
+      padding: $base-spacing $gutter;
     }
+    
+    border-top: $tab-border;
+    float: left;
+    
   }
 }
 

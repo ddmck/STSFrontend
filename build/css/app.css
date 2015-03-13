@@ -1908,10 +1908,8 @@ form.search-bar {
     content: "";
     display: table; }
   .accordion-tabs-minimal li.tab-header-and-content {
-    list-style: none; }
-    @media screen and (min-width: 40em) {
-      .accordion-tabs-minimal li.tab-header-and-content {
-        display: inline; } }
+    list-style: none;
+    display: inline; }
   .accordion-tabs-minimal a.tab-link {
     background-color: white;
     border-top: 1px solid #DDD;
@@ -1919,30 +1917,30 @@ form.search-bar {
     display: block;
     font-weight: 400;
     padding: 0.75em 1.618em;
-    text-decoration: none; }
+    text-decoration: none;
+    display: inline-block;
+    border-top: 0; }
     @media screen and (min-width: 40em) {
       .accordion-tabs-minimal a.tab-link {
-        display: inline-block;
-        border-top: 0; } }
+        padding: 0.75em 1.618em; } }
     .accordion-tabs-minimal a.tab-link:hover {
       color: #477DCA; }
     .accordion-tabs-minimal a.tab-link:focus {
       outline: none; }
     .accordion-tabs-minimal a.tab-link.is-active {
-      border-bottom: 0; }
-      @media screen and (min-width: 40em) {
-        .accordion-tabs-minimal a.tab-link.is-active {
-          border: 1px solid #DDD;
-          border-bottom-color: white;
-          margin-bottom: -1px; } }
+      border-bottom: 0;
+      border: 1px solid #DDD;
+      border-bottom-color: white;
+      margin-bottom: -1px; }
   .accordion-tabs-minimal .tab-content {
     display: none;
-    padding: 1.5em 1.618em;
-    width: 100%; }
+    padding: 1.5em 0;
+    width: 100%;
+    border-top: 1px solid #DDD;
+    float: left; }
     @media screen and (min-width: 40em) {
       .accordion-tabs-minimal .tab-content {
-        border-top: 1px solid #DDD;
-        float: left; } }
+        padding: 1.5em 1.618em; } }
 
 .comment {
   border-bottom: 1px solid rgba(51, 51, 51, 0.1);
@@ -2077,16 +2075,9 @@ ul.brands {
  */
 .btf-modal {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 50%;
-  max-width: 550px;
-  min-width: 330px;
-  height: auto;
-  z-index: 2000;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  -ms-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
+  height: 100%;
+  overflow: scroll;
+  z-index: 20000;
   background: white;
   padding: 2em;
   border-radius: 3px;
@@ -2094,6 +2085,17 @@ ul.brands {
   box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.5);
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding-box; }
+  @media screen and (min-width: 53.75em) {
+    .btf-modal {
+      top: 50%;
+      left: 50%;
+      width: 50%;
+      max-width: 550px;
+      min-width: 330px;
+      height: auto;
+      -webkit-transform: translateX(-50%) translateY(-50%);
+      -ms-transform: translateX(-50%) translateY(-50%);
+      transform: translateX(-50%) translateY(-50%); } }
   .btf-modal .modal-close {
     position: absolute;
     top: 1em;

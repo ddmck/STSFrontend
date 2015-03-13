@@ -5,21 +5,27 @@
  */
 
 .btf-modal {
+  $large-screen: em(860) !default;
   $modal-padding: 2em;
   $modal-background: white;
   $modal-close-color: rgba($brand-black, 0.3);
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 50%;
-  max-width: 550px;
-  min-width: 330px;
-  height: auto;
-  z-index: 2000;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  -moz-transform: translateX(-50%) translateY(-50%);
-  -ms-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
+  height: 100%;
+  overflow: scroll;
+  @include media($large-screen) {
+    
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    max-width: 550px;
+    min-width: 330px;
+    height: auto;
+     -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+  }
+  z-index: 20000;
   background: $modal-background;
   padding: $modal-padding;
   border-radius: 3px;
