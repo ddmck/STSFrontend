@@ -213,9 +213,28 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .state('products.saved', {
       url: '/saved',
       templateUrl: assetsUrl + 'partials/saved.html',
-      controller: function($scope, WishlistItems){
-        $scope.wishlist = WishlistItems;
-        WishlistItems.fetchWishlistItemProducts();
+      controller: function($scope, WishlistItems, $auth, authModal){
+        var callback = function(){
+          return function(){
+            $scope.wishlist = WishlistItems;
+            WishlistItems.fetchWishlistItemProducts();
+          }
+          
+        }
+        var cb = callback()
+        if ($auth.user.id) {
+          cb()
+        } else {
+
+          var unsubscribe = $scope.$on('auth:login-success', function(ev){
+            cb();
+            authModal.deactivate();
+            unsubscribe();
+          })
+          authModal.activate()
+
+        }
+        
         $scope.addToWishlist = function(product){
           WishlistItems.addToWishlistItems(product);
         };

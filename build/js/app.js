@@ -217,9 +217,28 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .state('products.saved', {
       url: '/saved',
       templateUrl: assetsUrl + 'partials/saved.html',
-      controller: function($scope, WishlistItems){
-        $scope.wishlist = WishlistItems;
-        WishlistItems.fetchWishlistItemProducts();
+      controller: function($scope, WishlistItems, $auth, authModal){
+        var callback = function(){
+          return function(){
+            $scope.wishlist = WishlistItems;
+            WishlistItems.fetchWishlistItemProducts();
+          }
+          
+        }
+        var cb = callback()
+        if ($auth.user.id) {
+          cb()
+        } else {
+
+          var unsubscribe = $scope.$on('auth:login-success', function(ev){
+            cb();
+            authModal.deactivate();
+            unsubscribe();
+          })
+          authModal.activate()
+
+        }
+        
         $scope.addToWishlist = function(product){
           WishlistItems.addToWishlistItems(product);
         };
@@ -1076,14 +1095,14 @@ app.factory('authModal', function (btfModal) {
   });
 })
 
-app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localStorage', 'authModal', function ($scope, $state, $auth, $localStorage, authModal) {
+app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localStorage', 'authModal', 'WishlistItems', function ($scope, $state, $auth, $localStorage, authModal) {
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
   });
 
   $scope.$on('auth:login-success', function(ev){
 
-
+    WishlistItems.fetchWishlistItems()
     if ($localStorage.returnTo) {
       $state.go($localStorage.returnTo);
       delete $localStorage.returnTo;
