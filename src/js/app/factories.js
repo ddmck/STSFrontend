@@ -179,7 +179,6 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
   var wishlistItems = [];
   $http.get(backendUrl + 'api/wishlist_items.json').success(function(data){
         wishlistItems = data;
-        console.log("fetched wls");
   });
   return {
     update: function(array) {
@@ -188,7 +187,6 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
     fetchWishlistItemProducts: function(){
       $http.get(backendUrl + 'api/wishlist_items.json').success(function(data){
         wishlistItems = data;
-        console.log("fetched wls");
       });
     },
     listProducts: function(){
@@ -203,8 +201,6 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
       var ans =  _.find(wishlistItems, function(wl){
         return wl.product.id == productId;
       })
-      console.log(wishlistItems);
-      console.log(!(ans === undefined));
       return !(ans === undefined);
     },
     addToWishlistItems: function(product){
@@ -218,7 +214,6 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
                                                                               }})
           .success(function(data){
             wishlistItems.push(data)
-            console.log(wishlistItems);
           });
         
       } else {
@@ -335,7 +330,6 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
       products = products.concat(newProducts);
     },
     fetchProducts: function(){
-      // console.log("Page: " + page);
       searching = true;
       $http.get(backendUrl + 'products.json', { async: true, 
                                                 params: {
