@@ -200,7 +200,6 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
       return $localStorage.wishlistItems;
     },
     addToWishlistItems: function(product){
-      console.log($localStorage.wishlistItems);
       if (_.indexOf($localStorage.wishlistItems, product.id) === -1) {
         var wishlistItems = $localStorage.wishlistItems;
         wishlistItems.push(product.id);

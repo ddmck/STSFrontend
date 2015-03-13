@@ -89,7 +89,7 @@ app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products'
   });
 }]);
 
-app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', 'authModal', '$auth', function($http, $state, Filters, Products, WishlistItems, $localStorage, authModal, $auth){
+app.controller('ProductsController',  ['$scope', '$http', '$state', 'Filters', 'Products', 'WishlistItems', '$localStorage', 'authModal', '$auth', function($scope, $http, $state, Filters, Products, WishlistItems, $localStorage, authModal, $auth){
   var productCtrl = this;
   productCtrl.products = Products;
   // WishlistItems.fetchWishlistItems();
@@ -100,19 +100,24 @@ app.controller('ProductsController',  ['$http', '$state', 'Filters', 'Products',
   };
 
   this.addToWishlist = function(product){
-    if ($auth.user.id) {
-      var currWishlist = WishlistItems.list();
-      if (_.indexOf(currWishlist, product.id) != -1) {
-        var currWishlist = _.reject(currWishlist, function(n){
-          return n == product.id
-        });
-        WishlistItems.update(currWishlist);
-      } else {
+    var callback = function(product){
+      return function(){
         WishlistItems.addToWishlistItems(product);
-        ga('send', 'event', 'products', 'save', product.name);
       }
+    }
+
+    var cb = callback(product)
+
+    if ($auth.user.id) {
+      cb();
     } else {
-      authModal.activate()
+
+      var unsubscribe = $scope.$on('auth:login-success', function(ev){
+        cb();
+        authModal.deactivate();
+        unsubscribe();
+      })
+      authModal.activate();
     }
     
   };
@@ -352,9 +357,6 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     if ($auth.user.id) {
       cb();
     } else {
-      // window.cb = cb;
-      // $localStorage.cb = cb;
-      authModal
 
       var unsubscribe = $scope.$on('auth:login-success', function(ev){
         cb();
