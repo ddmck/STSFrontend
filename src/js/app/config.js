@@ -216,8 +216,8 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: function($scope, WishlistItems){
         $scope.wishlist = WishlistItems;
         WishlistItems.fetchWishlistItemProducts();
-        $scope.removeFromWishlist = function(product){
-          WishlistItems.removeFromWishlistItems(product);
+        $scope.addToWishlist = function(product){
+          WishlistItems.addToWishlistItems(product);
         };
       }
     })

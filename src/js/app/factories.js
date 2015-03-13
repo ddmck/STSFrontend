@@ -176,43 +176,60 @@ app.factory('Orders', [ '$http', function($http){
 }]);
 
 app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localStorage){
-  if (!$localStorage.wishlistItems){
-    $localStorage.wishlistItems = [];
-  };
-  var products = [];
+  var wishlistItems = [];
+  $http.get(backendUrl + 'api/wishlist_items.json').success(function(data){
+        wishlistItems = data;
+        console.log("fetched wls");
+  });
   return {
     update: function(array) {
       $localStorage.wishlistItems = array;
     },
     fetchWishlistItemProducts: function(){
-      products = [];
-      var wishlistItems = $localStorage.wishlistItems;
-      _.forEach(wishlistItems, function(item){
-        $http.get(backendUrl + 'products/' + item + '.json').success(function(data){
-          products.push(data);
-        });
+      $http.get(backendUrl + 'api/wishlist_items.json').success(function(data){
+        wishlistItems = data;
+        console.log("fetched wls");
       });
     },
     listProducts: function(){
-      return products;
+      return _.map(wishlistItems, function(wl){
+        return wl.product
+      });
     },
     list: function(){
-      return $localStorage.wishlistItems;
+      return wishlistItems;
+    },
+    wishedFor: function(productId){
+      var ans =  _.find(wishlistItems, function(wl){
+        return wl.product.id == productId;
+      })
+      console.log(wishlistItems);
+      console.log(!(ans === undefined));
+      return !(ans === undefined);
     },
     addToWishlistItems: function(product){
-      if (_.indexOf($localStorage.wishlistItems, product.id) === -1) {
-        var wishlistItems = $localStorage.wishlistItems;
-        wishlistItems.push(product.id);
-        $localStorage.wishlistItems = wishlistItems;
+      
+      var wli = _.find(wishlistItems, function(wl){
+        return wl.product.id === product.id;
+      })
+      if ( wli === undefined ) {
+        $http.post(backendUrl + 'api/wishlist_items.json', {async: true, params: {
+                                                                              product_id: product.id 
+                                                                              }})
+          .success(function(data){
+            wishlistItems.push(data)
+            console.log(wishlistItems);
+          });
+        
       } else {
-        var wishlistItems = $localStorage.wishlistItems;
-        wishlistItems = _.reject(wishlistItems, function(n){
-          return n == product.id
-        });
-        $localStorage.wishlistItems = wishlistItems;
-        products = _.reject(products, function(p){
-          return p === product;
-        })   
+
+        $http.delete(backendUrl + 'api/wishlist_items/' + wli.id + '.json', {async: true})
+          .success(function(data){
+            wishlistItems = _.reject(wishlistItems, function(wl){
+              return wl.id === wli.id
+            })
+          })
+
       }
     }
   }

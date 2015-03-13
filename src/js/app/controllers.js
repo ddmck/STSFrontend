@@ -123,7 +123,7 @@ app.controller('ProductsController',  ['$scope', '$http', '$state', 'Filters', '
   };
 
   this.checkIfWishedFor = function(product_id){
-    return _.indexOf(WishlistItems.list(), product_id) != -1;
+    return WishlistItems.wishedFor(product_id);
   },                           
 
 
@@ -330,6 +330,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
 
 
 
+
   $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
     $scope.product = data;
     Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Fetch My Fashion");
@@ -369,8 +370,8 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
   };
 
   $scope.checkIfWishedFor = function(){
-    return _.indexOf(WishlistItems.list(), $scope.product.id) != -1;
-  };  
+    return WishlistItems.wishedFor($scope.id);
+  };
 
   $scope.toggleMenu = function(){
     $scope.showMenu = !$scope.showMenu;
