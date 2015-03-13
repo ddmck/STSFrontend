@@ -15,7 +15,7 @@
       </h1>
     </div>
     <form class="search-bar" role="search" ng-controller="SearchController as SearchCtrl" ng-submit="SearchCtrl.updateSearch(searchString)">
-      <input type="search" ng-model="searchString" placeholder="Enter Search" />
+      <input type="search" ng-change="SearchCtrl.findCat(searchString)" ng-model="searchString" placeholder="Enter Search" />
       <button type="submit">
         <img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon.png" alt="Search Icon">
       </button>
