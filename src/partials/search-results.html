@@ -1,7 +1,7 @@
-<section class="row">
-  <h4>Showing results for {{searchString}}</h4>
-  <div class="search-tools">
-    <section ng-filters></section>
-  </div>
-</section>
-<div ng-product-list></div>
+<div class="title">
+  <section class="row">
+    <h1>Results for: {{searchString}}</h1>
+  </section>
+</div>
+<section ng-filters></section>
+<section class="no-top-margin" ng-product-list></section>

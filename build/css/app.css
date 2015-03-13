@@ -1211,7 +1211,7 @@ header.navigation {
       -webkit-transform: translateX(-120%) translateY(20%);
           -ms-transform: translateX(-120%) translateY(20%);
               transform: translateX(-120%) translateY(20%);
-      opacity: 0;
+      opacity: 1;
       -webkit-transition: opacity 0.25s;
               transition: opacity 0.25s; }
       .card .card-image a.save-button:hover:not(:disabled) {
@@ -1223,6 +1223,9 @@ header.navigation {
       .card .card-image a.save-button:disabled {
         opacity: 0.5;
         cursor: not-allowed; }
+      @media screen and (min-width: 53.75em) {
+        .card .card-image a.save-button {
+          opacity: 0; } }
     .card .card-image:hover a.save-button {
       -webkit-transition: opacity 0.5s;
               transition: opacity 0.5s;

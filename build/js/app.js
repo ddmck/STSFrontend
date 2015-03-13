@@ -1091,14 +1091,14 @@ app.factory('authModal', function (btfModal) {
   });
 })
 
-app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localStorage', 'authModal', 'WishlistItems', function ($scope, $state, $auth, $localStorage, authModal) {
+app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localStorage', 'authModal', 'WishlistItems', function ($scope, $state, $auth, $localStorage, authModal, WishlistItems) {
   $scope.$on('auth:login-error', function(ev, reason) { 
     $scope.error = reason.errors[0]; 
   });
 
   $scope.$on('auth:login-success', function(ev){
 
-    WishlistItems.fetchWishlistItems()
+    WishlistItems.fetchWishlistItemProducts()
     if ($localStorage.returnTo) {
       $state.go($localStorage.returnTo);
       delete $localStorage.returnTo;

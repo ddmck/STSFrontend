@@ -63,8 +63,11 @@
       top: 0;
       left: 100%;
       transform: translateX(-120%) translateY(20%);
-      opacity: 0;
+      opacity: 1;
       transition: opacity 0.25s;
+      @include media($large-screen) {
+        opacity: 0;
+      }
     }
     &:hover a.save-button {
       transition: opacity 0.5s;
