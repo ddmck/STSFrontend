@@ -1321,7 +1321,6 @@ app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories
     if (searchString === null || searchString === undefined || searchString === '' || searchString === ' ') {
       return
     } else {
-      Filters.resetAll();
       Filters.setFilter("searchString", searchString);
       $state.go('search', {searchString: searchString});
       ga('send', 'event', 'products', 'search', searchString);
