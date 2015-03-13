@@ -187,7 +187,6 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
     fetchWishlistItemProducts: function(){
       $http.get(backendUrl + 'api/wishlist_items.json').success(function(data){
         wishlistItems = data;
-        console.log("fetched wls");
       });
     },
     listProducts: function(){
@@ -331,7 +330,6 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
       products = products.concat(newProducts);
     },
     fetchProducts: function(){
-      // console.log("Page: " + page);
       searching = true;
       $http.get(backendUrl + 'products.json', { async: true, 
                                                 params: {
