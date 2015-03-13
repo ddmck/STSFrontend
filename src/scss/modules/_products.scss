@@ -57,6 +57,19 @@
       border-top-right-radius: $base-border-radius;
       width: 100%;
     }
+    a.save-button {
+      @include button(flat, $base-accent-color);
+      position: absolute;
+      top: 0;
+      left: 100%;
+      transform: translateX(-120%) translateY(20%);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    &:hover a.save-button {
+      transition: opacity 0.5s;
+      opacity: 1;
+    }
   }
 
   .ribbon-wrapper {

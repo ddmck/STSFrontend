@@ -1194,6 +1194,39 @@ header.navigation {
       border-top-left-radius: 3px;
       border-top-right-radius: 3px;
       width: 100%; }
+    .card .card-image a.save-button {
+      background-color: #477DCA;
+      border-radius: 3px;
+      border: none;
+      color: white;
+      display: inline-block;
+      font-size: inherit;
+      font-weight: bold;
+      padding: 7px 18px;
+      text-decoration: none;
+      background-clip: padding-box;
+      position: absolute;
+      top: 0;
+      left: 100%;
+      -webkit-transform: translateX(-120%) translateY(20%);
+          -ms-transform: translateX(-120%) translateY(20%);
+              transform: translateX(-120%) translateY(20%);
+      opacity: 0;
+      -webkit-transition: opacity 0.25s;
+              transition: opacity 0.25s; }
+      .card .card-image a.save-button:hover:not(:disabled) {
+        background-color: #578ad4;
+        cursor: pointer; }
+      .card .card-image a.save-button:active:not(:disabled), .card .card-image a.save-button:focus:not(:disabled) {
+        background-color: #3c71bb;
+        cursor: pointer; }
+      .card .card-image a.save-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed; }
+    .card .card-image:hover a.save-button {
+      -webkit-transition: opacity 0.5s;
+              transition: opacity 0.5s;
+      opacity: 1; }
   .card .ribbon-wrapper {
     height: 85px;
     width: 85px;

@@ -5,6 +5,7 @@
         <a ui-sref="productDetail({productID: product.id, slug: product.slug})">
           <img ng-src="{{product.image_url}}" alt="">
         </a>
+        <a class="save-button" ng-click="products.addToWishlist(product)"><span ng-show="!products.checkIfWishedFor(product.id)">Save</span><span ng-show="products.checkIfWishedFor(product.id)">Saved</span></a>
       </div>
       <div class="card-header">
         {{ product.brand_name }}
@@ -17,7 +18,6 @@
       <div class="card-stats">
         <ul>
           <li>{{ product.display_price | currency : '£' }}</li>
-          <li><a ng-click="products.addToWishlist(product)"><span ng-show="!products.checkIfWishedFor(product.id)">Save</span><span ng-show="products.checkIfWishedFor(product.id)">Saved</span></a></li>
           <!-- <li>923<span>Objects</span></li> -->
         </ul>
       </div>
