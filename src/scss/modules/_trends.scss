@@ -36,10 +36,15 @@ $large-screen: em(860) !default;
 
 .a-card {
   position: relative;
-  margin: 1em 1em 1em 1em;
+  margin-bottom: 1em;
+
+  @include media($medium-screen) {
+   margin-left: 0.5em;
+   margin-right: 0.5em;
+  }
 
   @include media($large-screen) {
-    margin-top: 0em;
+    margin-bottom: 1em;
   }
 
   img {

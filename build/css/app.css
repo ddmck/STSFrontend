@@ -2154,10 +2154,14 @@ ul.brands {
 
 .a-card {
   position: relative;
-  margin: 1em 1em 1em 1em; }
+  margin-bottom: 1em; }
+  @media screen and (min-width: 33.75em) {
+    .a-card {
+      margin-left: 0.5em;
+      margin-right: 0.5em; } }
   @media screen and (min-width: 53.75em) {
     .a-card {
-      margin-top: 0em; } }
+      margin-bottom: 1em; } }
   .a-card img {
     width: 100%; }
   .a-card .overlay {
