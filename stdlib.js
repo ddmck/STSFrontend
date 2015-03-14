@@ -12,6 +12,7 @@ module.exports =
       resolve('ngStorage'),
       resolve('angular-sanitize'),
       resolve('angular-modal'),
+      resolve('angular-deckgrid'),
       resolve('showdown'),
       resolve('markdown'),
       resolve('angular-cookie'),

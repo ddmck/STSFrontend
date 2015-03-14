@@ -4,25 +4,14 @@
   </section>
 </div>
 <section class="row">
-  <div class="cards">
-    
-      <div class="card" ng-repeat="trend in trends.list()">
-        <div class="card-image">
-          <a ui-sref="trendView({slug: trend.slug})" >
-            <img ng-src="{{trend.image_url}}" alt="">
-          </a>
+  <div deckgrid class="deckgrid" source="trends.list()">
+    <div class="a-card">
+      <a ui-sref="trendView({slug: card.slug})" >
+        <div class="overlay">
+          <h2>{{card.title}}</h2>
         </div>
-        <div class="card-header">
-          <a ui-sref="trendView({slug: trend.slug})" >
-            <p>{{ trend.title }}</p>
-          </a>
-        </div>
-        <div class="card-copy">
-          <a ui-sref="trendView({slug: trend.slug})" >
-            <p>{{ trend.copy }}</p>
-          </a>
-        </div>
-      </div>
-    </a>
+        <img data-ng-src="{{card.image_url}}">
+      </a>
+    </div>
   </div>
 </section>
