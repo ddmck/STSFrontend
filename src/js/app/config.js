@@ -242,7 +242,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     })
 
     .state('categoryView', {
-      url: '/products/:gender/{catID}-{category}',
+      url: '/products/:gender/{catID:[0-9]+}-{category}',
       templateUrl: assetsUrl + 'partials/category-view.html',
       controller: function($scope, $stateParams, Products, Filters, Categories){
         var genderVar;
@@ -271,13 +271,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     })
 
     .state('brandView', {
-      url: '/brands/{id}-{brandId}',
+      url: '/brands/{id:[0-9]+}-{brandId}',
       templateUrl: assetsUrl + "partials/brands-view.html",
       controller: "BrandController"
     })
 
     .state('productDetail', {
-      url: '/products/{productID}-{slug}',
+      url: '/products/{productID:[0-9]+}-{slug}',
       templateUrl: assetsUrl + 'partials/product-detail.html',
       onEnter: function($stateParams, $state){
         if ($stateParams.productID === "") {
