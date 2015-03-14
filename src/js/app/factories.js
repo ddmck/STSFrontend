@@ -16,7 +16,7 @@ app.factory('Filters', ['$location', function($location){
       filters = query;
     },
     resetAll: function(){
-      filters = {};
+      filters = {gender: filters.gender};
     }         
   };
 }]);

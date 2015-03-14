@@ -704,7 +704,7 @@ app.factory('Filters', ['$location', function($location){
       filters = query;
     },
     resetAll: function(){
-      filters = {};
+      filters = {gender: filters.gender};
     }         
   };
 }]);
@@ -1236,11 +1236,13 @@ app.controller('ProductsController',  ['$scope', '$http', '$state', 'Filters', '
 }]);
 
 app.controller('GenderController', ['$scope', 'Filters', 'Products', '$localStorage', function($scope, Filters, Products, $localStorage){
+  $scope.genderId = Filters.getFilters().gender;
+
   $scope.setGender = function(gender) {
-    if ( gender === "mens") {
-      Filters.setFilter("gender", "1");
-    } else if ( gender === "womens") {
-      Filters.setFilter("gender", "2");
+    if ( gender === "1") {
+      Filters.setFilter("gender", 1);
+    } else if ( gender === "2") {
+      Filters.setFilter("gender", 2);
     } else if ( gender === "" ){
       Filters.removeFilter("gender")
     }
@@ -1310,11 +1312,14 @@ app.controller('MobileCatController', ['$scope', 'Categories', function($scope, 
 
 }]);
 
-app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories', function($state, Filters, Products, Categories){
+app.controller('SearchController', ['$state', 'Filters', 'Products', 'Categories', '$localStorage', function($state, Filters, Products, Categories, $localStorage){
   this.updateSearch = function(searchString){
     if (searchString === null || searchString === undefined || searchString === '' || searchString === ' ') {
       return
     } else {
+      cat = Filters.getFilters().category;
+      Filters.resetAll();
+      Filters.setFilter("category", cat);
       Filters.setFilter("searchString", searchString);
       $state.go('search', {searchString: searchString});
       ga('send', 'event', 'products', 'search', searchString);

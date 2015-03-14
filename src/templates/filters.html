@@ -2,10 +2,10 @@
   <div class="search-tools">
     <div class="filter">
       <label>Gender</label>
-      <select ng-controller="GenderController" ng-model="genderId" ng-change="setGender(genderId)">
+      <select ng-controller="GenderController" ng-model="genderId" ng-change="setGender(genderId)" >
         <option value="">All</option>
-        <option value="mens">Mens</option>
-        <option value="womens">Womens</option>
+        <option value="1" ng-selected="genderId == 1">Mens</option>
+        <option value="2" ng-selected="genderId == 2">Womens</option>
       </select> 
     </li>
     </div>
