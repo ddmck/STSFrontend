@@ -2128,22 +2128,38 @@ ul.brands {
       -ms-transform: rotate(-45deg);
       transform: rotate(-45deg); }
 
-@media screen and (min-width: 560px) {
-  .deckgrid[deckgrid]::before {
-    /* Specifies that the grid should have a maximum of 4 columns. Each column will have the classes 'column' and 'column-1-4' */
-    content: '4 .column.column-1-4';
-    font-size: 0;
-    /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
-    visibility: hidden; }
+.deckgrid[deckgrid]::before {
+  content: '1 .column.column-1-1';
+  font-size: 0;
+  /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
+  visibility: hidden; }
+  @media screen and (min-width: 33.75em) {
+    .deckgrid[deckgrid]::before {
+      content: '2 .column.column-1-2'; } }
+  @media screen and (min-width: 53.75em) {
+    .deckgrid[deckgrid]::before {
+      content: '4 .column.column-1-4'; } }
 
-  .deckgrid .column {
-    float: left; }
+.deckgrid .column {
+  float: left; }
 
-  .deckgrid .column-1-4 {
-    width: 25%; } }
+.deckgrid .column-1-4 {
+  width: 25%; }
+
+.deckgrid .column-1-2 {
+  width: 50%; }
+
+.deckgrid .column-1-1 {
+  width: 100%; }
+
 .a-card {
   position: relative;
-  margin: 0 1em 1em 1em; }
+  margin: 1em 1em 1em 1em; }
+  @media screen and (min-width: 53.75em) {
+    .a-card {
+      margin-top: 0em; } }
+  .a-card img {
+    width: 100%; }
   .a-card .overlay {
     position: absolute;
     top: 0;
@@ -2151,8 +2167,12 @@ ul.brands {
     width: 100%;
     height: 100%;
     z-index: 10;
+    background-color: rgba(0, 0, 0, 0.4);
     -webkit-transition: background-color 0.2s ease-in-out;
     transition: background-color 0.2s ease-in-out; }
+    @media screen and (min-width: 64.0625em) {
+      .a-card .overlay {
+        background-color: transparent; } }
     .a-card .overlay h2 {
       padding: 0 1em;
       position: absolute;
@@ -2163,9 +2183,12 @@ ul.brands {
       color: white;
       width: 100%;
       text-align: center;
-      opacity: 0;
+      opacity: 1;
       -webkit-transition: opacity 0.2s ease-in-out;
       transition: opacity 0.2s ease-in-out; }
+      @media screen and (min-width: 64.0625em) {
+        .a-card .overlay h2 {
+          opacity: 0; } }
   .a-card:hover .overlay {
     -webkit-transition: background-color 0.2s ease-in-out;
     transition: background-color 0.2s ease-in-out;
@@ -2175,22 +2198,6 @@ ul.brands {
       -webkit-transition: opacity 0.2s ease-in-out;
       transition: opacity 0.2s ease-in-out; }
 
-@media screen and (max-width: 560px) {
-  .deckgrid[deckgrid]::before {
-    content: '1 .column.column-1-1';
-    font-size: 0;
-    /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
-    visibility: hidden; }
-
-  .deckgrid .column-1-1 {
-    width: 100%; }
-
-  .a-card img {
-    width: 100%; }
-  .a-card .overlay {
-    background-color: rgba(0, 0, 0, 0.4); }
-    .a-card .overlay h2 {
-      opacity: 1; } }
 #main-view {
   padding-top: 120px; }
   @media screen and (min-width: 53.75em) {

@@ -1,27 +1,50 @@
 
+$medium-screen: em(540);
+$large-screen: em(860) !default;
 
 
-@media screen and (min-width: 560px){
+.deckgrid[deckgrid]::before {
+  content: '1 .column.column-1-1';
+  font-size: 0; /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
+  visibility: hidden;
 
-  .deckgrid[deckgrid]::before {
-      /* Specifies that the grid should have a maximum of 4 columns. Each column will have the classes 'column' and 'column-1-4' */
-      content: '4 .column.column-1-4';
-      font-size: 0; /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
-      visibility: hidden;
+  @include media($medium-screen) {
+    content: '2 .column.column-1-2';
   }
 
-  .deckgrid .column {
-      float: left;
+  @include media($large-screen) {
+    content: '4 .column.column-1-4';
   }
+}
 
-  .deckgrid .column-1-4 {
-    width: 25%;
-  }
+.deckgrid .column {
+    float: left;
+}
+
+.deckgrid .column-1-4 {
+  width: 25%;
+}
+
+.deckgrid .column-1-2 {
+  width: 50%;
+}
+
+
+.deckgrid .column-1-1 {
+    width: 100%;
 }
 
 .a-card {
   position: relative;
-  margin: 0 1em 1em 1em;
+  margin: 1em 1em 1em 1em;
+
+  @include media($large-screen) {
+    margin-top: 0em;
+  }
+
+  img {
+    width: 100%;
+  }
 
   .overlay {
     position: absolute;
@@ -30,7 +53,11 @@
     width: 100%;
     height: 100%;
     z-index: 10;
+    background-color: rgba(0,0,0,0.4);
     @include transition (background-color 0.2s ease-in-out);
+    @include media(em(1025)) {
+      background-color: rgba(0,0,0,0);
+    }
     h2  {
       padding: 0 1em;
       position: absolute;
@@ -39,8 +66,12 @@
       color: white;
       width: 100%;
       text-align: center;
-      opacity: 0;
+      opacity: 1;
       @include transition (opacity 0.2s ease-in-out);
+      @include media(em(1025)) {
+        opacity: 0;
+      }
+
     }
 
   }
@@ -50,39 +81,14 @@
       @include transition (background-color 0.2s ease-in-out);
       background-color: rgba(0,0,0,0.4);
 
-    h2  {
-      opacity: 1;
-      @include transition (opacity 0.2s ease-in-out);
-    }
-  }
-
-  }
-
-  
-}
-
-@media screen and (max-width: 560px){
-    .deckgrid[deckgrid]::before {
-        content: '1 .column.column-1-1';
-        font-size: 0; /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
-        visibility: hidden;
-    }
-
-    .deckgrid .column-1-1 {
-        width: 100%;
-    }
-
-    .a-card {
-      img {
-        width: 100%;
-      }
-
-      .overlay {
-        background-color: rgba(0,0,0,0.4);
-
-        h2 {
-          opacity: 1;
-        }
+      h2  {
+        opacity: 1;
+        @include transition (opacity 0.2s ease-in-out);
       }
     }
+
 }
+
+}
+
+
