@@ -597,6 +597,9 @@ input[type="submit"] {
   text-transform: capitalize; }
 
 header.navigation {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
   background-color: #212121;
   border-bottom: 1px solid #080808;
   min-height: 60px;
