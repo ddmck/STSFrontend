@@ -45,5 +45,14 @@
         </option>
       </select>
     </div>
+    <div class="filter">
+      <label>Materials</label>
+      <select ng-controller="MaterialController" ng-model="materialId" ng-change="setMaterial(materialId)">
+        <option value="">All</option>
+        <option ng-repeat="material in materials.list() | orderBy:'name'" value={{material.id}} ng-selected="filters.getFilters().material === material.id">
+          {{material.name}}
+        </option>
+      </select>
+    </div>
   </div>
 </section>
