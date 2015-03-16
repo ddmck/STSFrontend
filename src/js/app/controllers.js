@@ -215,6 +215,24 @@ app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', fu
   };
 }]);
 
+app.controller('MaterialController', ['$scope', 'Filters', 'Products', 'Materials', function($scope, Filters, Products, Materials){
+  
+  $scope.materials = [];
+  Materials.fetchMaterials();
+  $scope.materials = Materials;
+  $scope.filters = Filters;
+  $scope.setMaterial = function(mtrl_id){
+    if (mtrl_id === "") {
+      Filters.removeFilter("material");
+    } else {
+      Filters.setFilter("material", parseInt(mtrl_id));
+    }
+    Products.resetProducts();
+    Products.resetPage();
+    Products.fetchProducts();
+  };
+}]);
+
 app.controller('MobileCatController', ['$scope', 'Categories', function($scope, Categories){
   Categories.fetchCategories();
   $scope.categories = Categories;
