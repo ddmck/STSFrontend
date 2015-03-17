@@ -197,6 +197,22 @@ app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categ
   };
 }]);
 
+app.controller('StylesController', ['$scope', 'Filters', 'Products', 'Categories', 'Styles', function($scope, Filters, Products, Categories, Styles){
+  $scope.styles = Styles;
+  $scope.styles.fetchStyles();
+  $scope.filters = Filters;
+  $scope.setStyle = function(style_id){
+    if (style_id === "") {
+      Filters.removeFilter("style");
+    } else {
+      Filters.setFilter("style", parseInt(style_id));
+    }
+    Products.resetProducts();
+    Products.resetPage();
+    Products.fetchProducts();
+  };
+}]);
+
 app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', function($scope, Filters, Products, Colors){
   
   $scope.colors = [];
