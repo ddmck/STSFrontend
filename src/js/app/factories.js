@@ -161,6 +161,26 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   }
 }]);
 
+app.factory('Styles', [ '$http', 'Filters', function($http, Filters){
+  var styles = [];
+  return {
+    fetchStyles: function(){
+      $http.get(backendUrl + 'styles.json', {async: true}).success(function(data){
+        styles = data;
+        console.log(styles);
+      });
+    },
+    list: function(){
+      return styles;
+    },
+    availableList: function(){
+      return _.filter(styles, function(style){
+        return style.category_id == Filters.getFilters().category
+      })
+    }
+  }
+}]);
+
 app.factory('Orders', [ '$http', function($http){
   var orders = [];
   return {
@@ -339,7 +359,8 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
                                                     brand_id: Filters.getFilters().brand, 
                                                     category_id: Filters.getFilters().category, 
                                                     sub_category_id: Filters.getFilters().subCategory,
-                                                    color_id: Filters.getFilters().color
+                                                    color_id: Filters.getFilters().color,
+                                                    style_id: Filters.getFilters().style
                                                   }, 
                                                   sort: Filters.getFilters().sort, 
                                                   search_string: Filters.getFilters().searchString
