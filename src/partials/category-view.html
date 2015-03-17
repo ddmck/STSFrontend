@@ -15,6 +15,15 @@
         </option>
       </select>
     </div>
+    <div class="filter" ng-controller="StylesController" >
+      <label ng-show="filters.getFilters().category">Styles</label>
+      <select ng-model="styleId" ng-change="setStyle(styleId)" ng-show="filters.getFilters().category">
+        <option value="">All</option>
+        <option ng-repeat="style in styles.availableList() | orderBy:'name'" value={{style.id}} ng-selected="filters.getFilters().style === style.id">
+          {{ style.name }}
+        </option>
+      </select>
+    </div>
     <div class="filter">
       <label>Colors</label>
       <select ng-controller="ColorController" ng-model="colorId" ng-change="setColor(colorId)">
