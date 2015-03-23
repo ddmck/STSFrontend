@@ -175,6 +175,7 @@ app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categori
       Filters.setFilter("category", parseInt(cat_id));
     }
     Filters.removeFilter("subCategory");
+    Filters.removeFilter("style");
     Products.resetProducts();
     Products.resetPage();
     Products.fetchProducts();

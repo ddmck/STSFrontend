@@ -18,18 +18,9 @@
         </option>
       </select>
     </div>
-    <div class="filter" ng-controller="SubCategoryController" >
-      <label ng-show="filters.getFilters().category">Sub Categories</label>
-      <select ng-model="subCatId" ng-change="setSubCat(subCatId)" ng-show="filters.getFilters().category">
-        <option value="">All</option>
-        <option ng-repeat="subCat in subCategories.availableList() | orderBy:'name'" value={{subCat.id}} ng-selected="filters.getFilters().subCategory === subCat.id">
-          {{ subCat.name }}
-        </option>
-      </select>
-    </div>
     <div class="filter" ng-controller="StylesController" >
-      <label ng-show="filters.getFilters().category">Styles</label>
-      <select ng-model="styleId" ng-change="setStyle(styleId)" ng-show="filters.getFilters().category">
+      <label ng-show="filters.getFilters().category && styles.availableList().length > 0">Styles</label>
+      <select ng-model="styleId" ng-change="setStyle(styleId)" ng-show="filters.getFilters().category && styles.availableList().length > 0">
         <option value="">All</option>
         <option ng-repeat="style in styles.availableList() | orderBy:'name'" value={{style.id}} ng-selected="filters.getFilters().style === style.id">
           {{ style.name }}

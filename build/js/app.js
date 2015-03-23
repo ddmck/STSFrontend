@@ -755,6 +755,21 @@ app.factory('Colors', [ '$http', function($http){
   }
 }]);
 
+app.factory('Materials', [ '$http', function($http){
+  var materials = [];
+  return {
+    fetchMaterials: function(){
+      $http.get(backendUrl + 'materials.json', {async: true}).success(function(data){
+        materials = data;
+      });
+    },
+    list: function(){
+      return materials;
+    }
+
+  }
+}]);
+
 app.factory('Stores', [ '$http', function($http){
   var stores = [];
   return {
@@ -844,6 +859,26 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
     availableList: function(){
       return _.filter(subCategories, function(subCat){
         return subCat.category_id == Filters.getFilters().category
+      })
+    }
+  }
+}]);
+
+app.factory('Styles', [ '$http', 'Filters', function($http, Filters){
+  var styles = [];
+  return {
+    fetchStyles: function(){
+      $http.get(backendUrl + 'styles.json', {async: true}).success(function(data){
+        styles = data;
+        console.log(styles);
+      });
+    },
+    list: function(){
+      return styles;
+    },
+    availableList: function(){
+      return _.filter(styles, function(style){
+        return style.category_id == Filters.getFilters().category
       })
     }
   }
@@ -1027,7 +1062,9 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
                                                     brand_id: Filters.getFilters().brand, 
                                                     category_id: Filters.getFilters().category, 
                                                     sub_category_id: Filters.getFilters().subCategory,
-                                                    color_id: Filters.getFilters().color
+                                                    color_id: Filters.getFilters().color,
+                                                    material_id: Filters.getFilters().material,
+                                                    style_id: Filters.getFilters().style
                                                   }, 
                                                   sort: Filters.getFilters().sort, 
                                                   search_string: Filters.getFilters().searchString
@@ -1266,6 +1303,7 @@ app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categori
       Filters.setFilter("category", parseInt(cat_id));
     }
     Filters.removeFilter("subCategory");
+    Filters.removeFilter("style");
     Products.resetProducts();
     Products.resetPage();
     Products.fetchProducts();
@@ -1288,6 +1326,22 @@ app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categ
   };
 }]);
 
+app.controller('StylesController', ['$scope', 'Filters', 'Products', 'Categories', 'Styles', function($scope, Filters, Products, Categories, Styles){
+  $scope.styles = Styles;
+  $scope.styles.fetchStyles();
+  $scope.filters = Filters;
+  $scope.setStyle = function(style_id){
+    if (style_id === "") {
+      Filters.removeFilter("style");
+    } else {
+      Filters.setFilter("style", parseInt(style_id));
+    }
+    Products.resetProducts();
+    Products.resetPage();
+    Products.fetchProducts();
+  };
+}]);
+
 app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', function($scope, Filters, Products, Colors){
   
   $scope.colors = [];
@@ -1299,6 +1353,24 @@ app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', fu
       Filters.removeFilter("color");
     } else {
       Filters.setFilter("color", parseInt(cat_id));
+    }
+    Products.resetProducts();
+    Products.resetPage();
+    Products.fetchProducts();
+  };
+}]);
+
+app.controller('MaterialController', ['$scope', 'Filters', 'Products', 'Materials', function($scope, Filters, Products, Materials){
+  
+  $scope.materials = [];
+  Materials.fetchMaterials();
+  $scope.materials = Materials;
+  $scope.filters = Filters;
+  $scope.setMaterial = function(mtrl_id){
+    if (mtrl_id === "") {
+      Filters.removeFilter("material");
+    } else {
+      Filters.setFilter("material", parseInt(mtrl_id));
     }
     Products.resetProducts();
     Products.resetPage();
