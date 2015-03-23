@@ -67,6 +67,21 @@ app.factory('Colors', [ '$http', function($http){
   }
 }]);
 
+app.factory('Materials', [ '$http', function($http){
+  var materials = [];
+  return {
+    fetchMaterials: function(){
+      $http.get(backendUrl + 'materials.json', {async: true}).success(function(data){
+        materials = data;
+      });
+    },
+    list: function(){
+      return materials;
+    }
+
+  }
+}]);
+
 app.factory('Stores', [ '$http', function($http){
   var stores = [];
   return {
@@ -339,7 +354,8 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
                                                     brand_id: Filters.getFilters().brand, 
                                                     category_id: Filters.getFilters().category, 
                                                     sub_category_id: Filters.getFilters().subCategory,
-                                                    color_id: Filters.getFilters().color
+                                                    color_id: Filters.getFilters().color,
+                                                    material_id: Filters.getFilters().material
                                                   }, 
                                                   sort: Filters.getFilters().sort, 
                                                   search_string: Filters.getFilters().searchString
