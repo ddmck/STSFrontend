@@ -11,16 +11,16 @@
   $gradient-angle: 10deg;
   @include background(url($assetURL + 'images/cover.jpeg'), no-repeat center center fixed);
   @include media($large-screen) {
-    @include background(url($assetURL + 'images/coverbricklarge.jpg'), no-repeat center center fixed);
+    @include background(url($assetURL + 'images/cvr.jpg'), no-repeat center center fixed);
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
   }
   background-color: #324766;
-  padding-bottom: 3em;
+  padding-bottom: 6em;
   margin-bottom: -2em;
-  height: 100vh;
+  // height: 100vh;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -28,7 +28,17 @@
 
   .hero-logo img {
     height: 4em;
-    margin-bottom: 1em;
+    margin-top: 1em;
+  }
+
+  .inspiration {
+    color: white;
+    font-family: "Fira Mono";
+    text-shadow: 0 0 25px rgba($brand-black ,0.8);
+    text-align: center;
+    @include media($large-screen) {
+      margin-top: 1em;
+    }
   }
 
   .hero-inner {
@@ -38,13 +48,13 @@
     margin: auto;
     position: relative;
     top: 0em;
-    padding: 3.5em 1em 2em;
+    padding: 2em 1em 2em;
     text-align: center;
-    height: 100vh;
+    // height: 100vh;
     @include media($large-screen) {
       top: 2em;
       height: auto;
-      padding: 3.5em;
+      padding: 1em 3.5em 3.5em 3.5em;
     }
 
     .hero-copy {
@@ -140,5 +150,15 @@
   100% {
     transform: rotateX(180deg);
     opacity: 0;
+  }
+}
+
+.welcome-trends {
+  background: #272727; 
+  margin-bottom: -5em;
+
+  .welcome-deckgrid {
+    position: relative;
+    top: -4em; margin-bottom: -2em
   }
 }

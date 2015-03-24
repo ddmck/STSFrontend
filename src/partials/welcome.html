@@ -20,5 +20,21 @@
         <img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon.png" alt="Search Icon">
       </button>
     </form>
+
   </div>
+  <h4 class="inspiration">Looking for inspiration?</h4>
+</div>
+<div class="welcome-trends" style="">
+  <section class="row mobile-padding welcome-deckgrid" ng-controller="TrendsController">
+    <div deckgrid class="deckgrid" source="trends.list()">
+      <div class="a-card">
+        <a ui-sref="trendView({slug: card.slug})" >
+          <div class="overlay">
+            <h2>{{card.title}}</h2>
+          </div>
+          <img data-ng-src="{{card.image_url}}">
+        </a>
+      </div>
+    </div>
+  </section>
 </div>
