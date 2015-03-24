@@ -4,7 +4,7 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
   });
 
   $scope.$on('auth:login-success', function(ev){
-
+    ga('send', 'event', 'users', 'signedIn');
     WishlistItems.fetchWishlistItemProducts()
     if ($localStorage.returnTo) {
       $state.go($localStorage.returnTo);
@@ -40,6 +40,7 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
   });
 
   $scope.$on('auth:registration-email-success', function(ev, message){
+    ga('send', 'event', 'users', 'signedUp');
     $auth.submitLogin({
       email: $scope.registrationForm.email,
       password: $scope.registrationForm.password
@@ -49,7 +50,7 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
   $scope.handleRegBtnClick = function() {
     $auth.submitRegistration($scope.registrationForm)
       .then(function(resp) {
-        ga('send', 'event', 'users', 'signUp'); 
+        // ga('send', 'event', 'users', 'signUp'); 
       })
       .catch(function(resp) { 
         //$scope.error = resp
@@ -104,6 +105,7 @@ app.controller('ProductsController',  ['$scope', '$http', '$state', 'Filters', '
     var callback = function(product){
       return function(){
         WishlistItems.addToWishlistItems(product);
+        ga('send', 'event', 'products', 'addToWishlist', product.name);
       }
     }
 
@@ -119,6 +121,7 @@ app.controller('ProductsController',  ['$scope', '$http', '$state', 'Filters', '
         unsubscribe();
       })
       authModal.activate();
+      ga('send', 'event', 'users', 'askedToSignIn', 'adding to wishlist');
     }
     
   };
@@ -139,6 +142,7 @@ app.controller('ProductsController',  ['$scope', '$http', '$state', 'Filters', '
   this.nextPage = function(products){
 
     if (Products.scrollActive() === true) {
+      ga('send', 'event', 'products', 'viewPage', Products.currentPage());
       Products.setScrollActive(false);
       Products.fetchProducts()
     }
@@ -151,8 +155,10 @@ app.controller('GenderController', ['$scope', 'Filters', 'Products', '$localStor
   $scope.setGender = function(gender) {
     if ( gender === "1") {
       Filters.setFilter("gender", 1);
+      ga('send', 'event', 'filters', 'selectGender', 'male');
     } else if ( gender === "2") {
       Filters.setFilter("gender", 2);
+      ga('send', 'event', 'filters', 'selectGender', 'female');
     } else if ( gender === "" ){
       Filters.removeFilter("gender")
     }
@@ -174,6 +180,7 @@ app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categori
       Filters.removeFilter("category");
     } else {
       Filters.setFilter("category", parseInt(cat_id));
+      ga('send', 'event', 'filters', 'selectCategory', cat_id);
     }
     Filters.removeFilter("subCategory");
     Filters.removeFilter("style");
@@ -208,6 +215,7 @@ app.controller('StylesController', ['$scope', 'Filters', 'Products', 'Categories
       Filters.removeFilter("style");
     } else {
       Filters.setFilter("style", parseInt(style_id));
+      ga('send', 'event', 'filters', 'selectStyle', style_id);
     }
     Products.resetProducts();
     Products.resetPage();
@@ -221,11 +229,12 @@ app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', fu
   Colors.fetchColors();
   $scope.colors = Colors;
   $scope.filters = Filters;
-  $scope.setColor = function(cat_id){
-    if (cat_id === "") {
+  $scope.setColor = function(color_id){
+    if (color_id === "") {
       Filters.removeFilter("color");
     } else {
-      Filters.setFilter("color", parseInt(cat_id));
+      Filters.setFilter("color", parseInt(color_id));
+      ga('send', 'event', 'filters', 'selectColor', color_id);
     }
     Products.resetProducts();
     Products.resetPage();
@@ -244,6 +253,7 @@ app.controller('MaterialController', ['$scope', 'Filters', 'Products', 'Material
       Filters.removeFilter("material");
     } else {
       Filters.setFilter("material", parseInt(mtrl_id));
+      ga('send', 'event', 'filters', 'selectMaterial', mtrl_id);
     }
     Products.resetProducts();
     Products.resetPage();
@@ -309,6 +319,7 @@ app.controller('BasketController', ['$scope', '$localStorage', 'Basket', 'Stores
   Stores.fetchStores();
   $scope.removeFromBasket = function(product){
     Basket.removeFromBasketItems(product);
+    ga('send', 'event', 'products', 'removeFromBasket', product.name);
   };
   $scope.setDelivery = function(delivery, store){
     Deliveries.addDelivery(delivery, store);
@@ -348,7 +359,8 @@ app.controller('SortController', ['$scope', 'Filters', 'Products', function($sco
   ];
 
   $scope.setSort = function(sort){
-    Filters.setFilter("sort", sort)
+    Filters.setFilter("sort", sort);
+    ga('send', 'event', 'filters', 'sort', sort);
     Products.resetProducts();
     Products.resetPage();
     Products.fetchProducts();
@@ -390,6 +402,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     var callback = function(product){
       return function(){
         WishlistItems.addToWishlistItems(product);
+        ga('send', 'event', 'products', 'addToWishlist', product.name);
       }
     }
 
@@ -405,6 +418,7 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
         unsubscribe();
       })
       authModal.activate();
+      ga('send', 'event', 'users', 'askedToSignIn', 'adding to wishlist');
     }
     
   };
