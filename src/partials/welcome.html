@@ -1,7 +1,8 @@
 <div class="hero">
   <div class="hero-inner">
-    <a href="" class="hero-logo"><img src="http://d29a1j0u6wal4v.cloudfront.net/images/fmflogowhiteshadow2x.png
-" alt="Logo Image"></a>
+    <div class="hero-logo">
+      <img src="https://s3-eu-west-1.amazonaws.com/fetchmyfashion/images/logoshadowtextwhite.png" alt="Fetch My Fashion">
+    </div>
     <div class="hero-copy">
       <!-- <h1>{{msg}} <span ng-show="wishlist.list().length > 1">You know you want them, buy one of your {{wishlist.list().length}} wishlist items now!</span></h1> -->
       <h1 class="cd-headline rotate-1">
@@ -15,14 +16,14 @@
       </h1>
     </div>
     <form class="search-bar" role="search" ng-controller="SearchController as SearchCtrl" ng-submit="SearchCtrl.updateSearch(searchString)">
-      <input type="search" ng-change="SearchCtrl.findCat(searchString)" ng-model="searchString" placeholder="Enter Search" />
+      <input type="search" ng-change="SearchCtrl.findCat(searchString)" ng-model="searchString" placeholder="You search it, we'll fetch it!" />
       <button type="submit">
         <img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon.png" alt="Search Icon">
       </button>
     </form>
 
   </div>
-  <h4 class="inspiration">Looking for inspiration?</h4>
+  <h4 class="inspiration">Looking for Inspiration?</h4>
 </div>
 <div class="welcome-trends" style="">
   <section class="row mobile-padding welcome-deckgrid" ng-controller="TrendsController">

@@ -1204,6 +1204,7 @@ app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products'
   Products.resetProducts();
   Products.resetPage();
   Filters.resetAll();
+  Filters.removeFilter('gender');
   $http.get(backendUrl + 'features/' + $stateParams.slug + '.json').success(function(data){
     $scope.trend = data;
     if ($scope.trend.gender_id) Filters.setFilter("gender", $scope.trend.gender_id);

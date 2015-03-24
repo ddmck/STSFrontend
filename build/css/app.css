@@ -911,8 +911,8 @@ header.navigation {
       background: url("http://localhost:9000/images/cvr.jpg"), no-repeat center center fixed;
       background-size: cover; } }
   .hero .hero-logo img {
-    height: 4em;
-    margin-top: 1em; }
+    max-height: 4em;
+    margin-bottom: 1em; }
   .hero .inspiration {
     color: white;
     font-family: "Fira Mono";
