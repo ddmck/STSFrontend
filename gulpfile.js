@@ -124,10 +124,9 @@ gulp.task('connect', function() {
   connect.server({
     root: 'build',
     livereload: {
-      enabled: true,
-      port: 35727
+      enabled: true
     },
-    port: 9000,
+    port: 9999,
     middleware: function(connect, options) {
       return [
         function(req, res, next) {
