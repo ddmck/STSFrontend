@@ -1,7 +1,6 @@
 var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'btford.markdown', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments', 'btford.modal', 'akoenig.deckgrid']);
 var backendUrl = "http://localhost:3000/";
 var assetsUrl = 'http://localhost:9999/';
-Stripe.setPublishableKey('pk_test_mfQJDA4oT57DLFi7l0HYu782');
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider, $sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
@@ -1296,16 +1295,11 @@ app.controller('SortController', ['$scope', 'Filters', 'Products', function($sco
   };
 }]);
 
-app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Basket', 'Meta', 'WishlistItems', '$auth', 'authModal','$localStorage', function($scope, $stateParams, $http, Basket, Meta, WishlistItems, $auth, authModal, $localStorage){
+app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Meta', 'WishlistItems', '$auth', 'authModal','$localStorage', function($scope, $stateParams, $http, Meta, WishlistItems, $auth, authModal, $localStorage){
   // get the id
   $scope.showMenu = false;
   $scope.id = $stateParams.productID;
-  $scope.basket = Basket;
-  $scope.basket.fetchBasketItemProducts();
   $scope.size = null;
-
-
-
 
   $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
     $scope.product = data;
@@ -1371,17 +1365,6 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
     } else {
       $scope.msg = "Removing from Basket";
     }
-  };
-
-  $scope.addToBasket = function(inBasket){
-    if (!inBasket) {
-      Basket.addToBasketItems($scope.product);
-      ga('send', 'event', 'products', 'addToBasket', $scope.product.name);
-    } else {
-      Basket.removeFromBasketItems($scope.product);
-    }
-    $scope.basket.fetchBasketItemProducts();
-    $scope.msg = null;
   };
 
   $scope.getStoreDetails = function(product){
