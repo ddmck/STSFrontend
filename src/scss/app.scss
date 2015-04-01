@@ -29,8 +29,8 @@ $large-screen: em(860) !default;
 
 
 #main-view {
-  padding-top: 120px;
+  padding-top: 80px;
   @include media($large-screen) {
-    padding-top: 60px;
+    padding-top: 40px;
   }
 }

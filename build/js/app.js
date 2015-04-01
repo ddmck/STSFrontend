@@ -54,12 +54,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       }
     })
 
-    .state('basket', {
-      url: '/basket',
-      templateUrl: assetsUrl + 'partials/basket.html',
-      controller: 'BasketController'
-    })
-
     .state('trends', {
       url: '/trends',
       templateUrl: assetsUrl + 'partials/trends.html',
@@ -73,14 +67,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: 'TrendController'
     })
 
-
-    .state('pay', {
-      abstract: true,
-      url: '/pay',
-      templateUrl: assetsUrl + 'partials/pay.html',
-      controller: 'PaymentsController'
-    })
-
     .state('mens', {
       url: '/mens',
       templateUrl: assetsUrl + 'partials/mobile-mens-categories.html',
@@ -91,87 +77,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       url: '/womens',
       templateUrl: assetsUrl + 'partials/mobile-womens-categories.html',
       controller: 'MobileCatController'
-    })
-
-    .state('pay.you', {
-      url: '/you',
-      templateUrl: assetsUrl + 'partials/you.html',
-      controller: function($scope, $state, $localStorage){
-        $scope.goToSignIn = function(){
-          $localStorage.returnTo = "pay.address";
-          $state.go("account.signIn");
-        }, 
-        $scope.goToSignUp = function(){
-          $localStorage.returnTo = "pay.address";
-          $state.go("account.signUp");
-        }
-      }
-    })
-
-    .state('pay.address', {
-      url: '/address',
-      templateUrl: assetsUrl + 'partials/address.html', 
-      controller: function($scope, $state, $localStorage){
-        $scope.localStorage = $localStorage;
-        $scope.submitAddress = function(addressForm) {
-          $localStorage.address = addressForm;
-          $state.go('pay.billing')
-        }
-      }
-    })
-
-    .state('pay.billing', {
-      url: '/billing',
-      templateUrl: assetsUrl + 'partials/billing.html',
-      controller: function($scope, $state, $localStorage){
-        $scope.localStorage = $localStorage;
-        $scope.handleStripe = function(status, response){
-          if(response.error) {
-            $scope.billingForm.error = response.error;
-          } else {
-            // got stripe token, now charge it or smt
-            $localStorage.token = response.id;
-            $localStorage.last4 = $scope.number.slice(-4);
-            $state.go('pay.confirmation')
-          }
-        };
-        $scope.clear = function(){
-          $localStorage.token = null;
-        }
-      }
-    })
-
-    .state('pay.confirmation', {
-      url: '/confirmation',
-      templateUrl: assetsUrl + 'partials/confirmation.html',
-      controller: function($scope, $localStorage, $state, $http, Basket, Deliveries){
-        $scope.basket = Basket;
-        $scope.deliveries = Deliveries;      
-        Basket.fetchBasketItemProducts();
-        $scope.localStorage = $localStorage;
-        $scope.submitOrder = function(){
-          $scope.disabled = true;
-          $http.post(backendUrl + "api/orders.json", {order: {
-            token: $localStorage.token,
-            basket: $localStorage.basketItems,
-            deliveries: $localStorage.deliveries,
-            address: $localStorage.address
-          }}).success(function(){
-            $state.go("pay.confirmed")
-          });
-        } 
-      }
-    })
-
-    .state('pay.confirmed', {
-      url: "/confirmed",
-      templateUrl: assetsUrl + 'partials/confirmed.html'
-    })
-
-    .state('orders', {
-      url: '/orders',
-      templateUrl: assetsUrl + 'partials/orders.html',
-      controller: 'OrdersController'
     })
 
     .state('account', {
@@ -373,7 +278,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
   $urlRouterProvider
     .when('/products', 'products/new')
     .when('/account', 'account/sign-in')
-    .when('/pay', 'pay/ypu')
     .otherwise('/welcome');
   
   $authProvider.configure({
@@ -884,20 +788,6 @@ app.factory('Styles', [ '$http', 'Filters', function($http, Filters){
   }
 }]);
 
-app.factory('Orders', [ '$http', function($http){
-  var orders = [];
-  return {
-    fetchOrders: function(){
-      $http.get(backendUrl + 'api/orders.json', {async: true}).success(function(data){
-        orders = data;
-      });
-    },
-    list: function(){
-      return orders;
-    }
-  }
-}]);
-
 app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localStorage){
   var wishlistItems = [];
   $http.get(backendUrl + 'api/wishlist_items.json').success(function(data){
@@ -949,68 +839,6 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
           })
 
       }
-    }
-  }
-}]);
-
-app.factory('Basket', [ '$http', '$localStorage', function($http, $localStorage){
-  if (!$localStorage.basketItems){
-    $localStorage.basketItems = [];
-  };
-  var products = [];
-  return {
-    update: function(array) {
-      $localStorage.basketItems = array;
-    },
-    fetchBasketItemProducts: function(){
-      products = [];
-      var basketItems = $localStorage.basketItems;
-      _.forEach(basketItems, function(item){
-        $http.get(backendUrl + 'products/' + item.productId + '.json').success(function(data){
-          data.selectedSize = _.find(data.sizes, function(size){
-            return size.id === item.sizeId
-          });
-          products.push(data);        
-        });
-      });
-    },
-    listProducts: function(){
-      return products;
-    },
-    listStores: function(){
-      return stores;
-    },
-    list: function(){
-      return $localStorage.basketItems;
-    },
-    total: function(){
-      var result = 0.0;
-      _.forEach(products, function(p){
-        result += parseFloat(p.display_price)
-      });
-      return result
-    },
-    addToBasketItems: function(product){
-      var basketItems = $localStorage.basketItems;
-      var productWithSize = { 
-        productId: product.id,
-        sizeId: product.selectedSize.id 
-      }
-      basketItems.push(productWithSize);
-      $localStorage.basketItems = basketItems;
-    },
-    removeFromBasketItems: function(product){
-      var basketItems = $localStorage.basketItems;
-      basketItems = _.reject(basketItems, function(n){
-        return n.productId == product.id
-      });
-      $localStorage.basketItems = basketItems;
-      products = _.reject(products, function(p){
-        return p === product;
-      })   
-    }, 
-    inBasketItems: function(productID){
-      return _.some(products, { 'id': productID });
     }
   }
 }]);
@@ -1212,7 +1040,7 @@ app.controller('TrendController', ['$http', '$stateParams', '$scope', 'Products'
     if ($scope.trend.brand_id) Filters.setFilter("brand", $scope.trend.brand_id);
     if ($scope.trend.search_string) Filters.setFilter("searchString", $scope.trend.search_string);
     if ($scope.trend.category_id) Filters.setFilter("category", $scope.trend.category_id);
-    Meta.set("title", "Check out " + data.title + " and other trends at Fetch my Fashion");
+    Meta.set("title", "Check out " + data.title + " and other trends at Search The Sales");
     Meta.set("description", data.copy);
     Meta.set("imageUrl", data.image_url);
     Products.fetchProducts();
@@ -1438,33 +1266,6 @@ app.controller('ToggleController', ['$scope', function($scope){
   } 
 }]);
 
-app.controller('BasketController', ['$scope', '$localStorage', 'Basket', 'Stores', 'Deliveries', function($scope, $localStorage, Basket, Stores, Deliveries){
-  $scope.basket = Basket;
-  $scope.stores = Stores;
-  $scope.deliveries = Deliveries;
-  Deliveries.reset();
-  Basket.fetchBasketItemProducts();
-  Stores.fetchStores();
-  $scope.removeFromBasket = function(product){
-    Basket.removeFromBasketItems(product);
-    ga('send', 'event', 'products', 'removeFromBasket', product.name);
-  };
-  $scope.setDelivery = function(delivery, store){
-    Deliveries.addDelivery(delivery, store);
-  }
-  $scope.valid = function(){
-    var numbersMatch = ($scope.stores.listStoresForProducts($scope.basket.listProducts()).length === $scope.deliveries.list().length);
-    var gtZero = ($scope.deliveries.list().length > 0);
-    return !(numbersMatch && gtZero)
-  }
-
-}])
-
-app.controller('PaymentsController', ['$scope', '$auth', '$localStorage', '$state', 'Basket', function($scope, $auth, $localStorage, $state, Basket){
-  if ($auth.user.id) {
-    $state.go('pay.address');
-  }
-}]);
 app.controller('SortController', ['$scope', 'Filters', 'Products', function($scope, Filters, Products){
   $scope.Filters = Filters;
   $scope.sorters = [
@@ -1495,11 +1296,6 @@ app.controller('SortController', ['$scope', 'Filters', 'Products', function($sco
   };
 }]);
 
-app.controller('OrdersController', ['$scope', 'Orders', function($scope, Orders){
-  Orders.fetchOrders();
-  $scope.orders = Orders;
-}]);
-
 app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Basket', 'Meta', 'WishlistItems', '$auth', 'authModal','$localStorage', function($scope, $stateParams, $http, Basket, Meta, WishlistItems, $auth, authModal, $localStorage){
   // get the id
   $scope.showMenu = false;
@@ -1513,8 +1309,8 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'B
 
   $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
     $scope.product = data;
-    Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Fetch My Fashion");
-    Meta.set("description", "Shop " + $scope.product.name + " by " + $scope.product.brand_name + " at Fetch My Fashion, All Your Favourite Stores In One Place");
+    Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Search The Sales");
+    Meta.set("description", "Shop " + $scope.product.name + " by " + $scope.product.brand_name + " at Search The Sales, All Your Favourite Stores In One Place");
     $scope.currentImg = data.large_image_url || data.image_url;
     Meta.set("imageUrl", $scope.currentImg);
     Meta.set("displayPrice", $scope.product.display_price);
@@ -1607,8 +1403,8 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
   Products.fetchProducts()
   $http.get(backendUrl + 'brands/' + $stateParams.brandId + '.json', {async: true}).success(function(data){
     $scope.brand = data;
-    Meta.set("title", $scope.brand.name + " at Fetch My Fashion");
-    Meta.set("description", "Shop " + $scope.brand.name + " at Fetch My Fashion, All Your Favourite Stores In One Place");
+    Meta.set("title", $scope.brand.name + " at Search The Sales");
+    Meta.set("description", "Shop " + $scope.brand.name + " at Search The Sales, All Your Favourite Stores In One Place");
   })
 }]);
 

@@ -196,20 +196,6 @@ app.factory('Styles', [ '$http', 'Filters', function($http, Filters){
   }
 }]);
 
-app.factory('Orders', [ '$http', function($http){
-  var orders = [];
-  return {
-    fetchOrders: function(){
-      $http.get(backendUrl + 'api/orders.json', {async: true}).success(function(data){
-        orders = data;
-      });
-    },
-    list: function(){
-      return orders;
-    }
-  }
-}]);
-
 app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localStorage){
   var wishlistItems = [];
   $http.get(backendUrl + 'api/wishlist_items.json').success(function(data){
@@ -261,68 +247,6 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
           })
 
       }
-    }
-  }
-}]);
-
-app.factory('Basket', [ '$http', '$localStorage', function($http, $localStorage){
-  if (!$localStorage.basketItems){
-    $localStorage.basketItems = [];
-  };
-  var products = [];
-  return {
-    update: function(array) {
-      $localStorage.basketItems = array;
-    },
-    fetchBasketItemProducts: function(){
-      products = [];
-      var basketItems = $localStorage.basketItems;
-      _.forEach(basketItems, function(item){
-        $http.get(backendUrl + 'products/' + item.productId + '.json').success(function(data){
-          data.selectedSize = _.find(data.sizes, function(size){
-            return size.id === item.sizeId
-          });
-          products.push(data);        
-        });
-      });
-    },
-    listProducts: function(){
-      return products;
-    },
-    listStores: function(){
-      return stores;
-    },
-    list: function(){
-      return $localStorage.basketItems;
-    },
-    total: function(){
-      var result = 0.0;
-      _.forEach(products, function(p){
-        result += parseFloat(p.display_price)
-      });
-      return result
-    },
-    addToBasketItems: function(product){
-      var basketItems = $localStorage.basketItems;
-      var productWithSize = { 
-        productId: product.id,
-        sizeId: product.selectedSize.id 
-      }
-      basketItems.push(productWithSize);
-      $localStorage.basketItems = basketItems;
-    },
-    removeFromBasketItems: function(product){
-      var basketItems = $localStorage.basketItems;
-      basketItems = _.reject(basketItems, function(n){
-        return n.productId == product.id
-      });
-      $localStorage.basketItems = basketItems;
-      products = _.reject(products, function(p){
-        return p === product;
-      })   
-    }, 
-    inBasketItems: function(productID){
-      return _.some(products, { 'id': productID });
     }
   }
 }]);

@@ -5,22 +5,15 @@
       <a ui-sref="brandView({brandId: product.brand_slug, id: product.brand_id})">
         <h4>{{product.brand_name}}</h4>
       </a>
-      <h1>{{product.name}}</h1>
-      <p>{{ product.display_price | currency : '£' }}</p>
+      <h5>{{product.name}}</h5>
+      <h3>{{ product.display_price | currency : '£' }}</h3>
       <ul class="additional-images"><li ng-repeat="img in product.image_urls">
         <img class="thumb" ng-src="{{img}}" ng-click="setProductImg(img)" ng-class="{current: currentImg === img}"></img>
       </li></ul>
       
-      <strong ng-show="product && product.sizes.length > 0" style="display: block">Select a size</strong>
-      <div ng-show="product && product.sizes.length > 0" ng-size-dropdown></div> 
 
-      <button ui-sref="basket" ng-show="basket.inBasketItems(product.id)" class="button">View basket ({{basket.list().length}} <ng-pluralize count="basket.list().length" when="{
-        '1': 'item',
-        'other': 'items'
-      }"></ng-pluralize>)</button>
-
-      <strong style="display: block">Want to be notified of price changes?</strong>
-      <button ng-click="addToWishlist(product)"><span ng-show="!checkIfWishedFor()">Save</span><span ng-show="checkIfWishedFor()">Saved</span></button>
+      <a class="buy-button" ng-href="{{product.url}}" target="_blank">Buy</a>
+      <a class="buy-button" ng-click="addToWishlist(product)"><span ng-show="!checkIfWishedFor()">Save</span><span ng-show="checkIfWishedFor()">Saved</span></a>
       <div ng-product-details></div>
     </div>
   </div>  

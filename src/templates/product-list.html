@@ -1,17 +1,35 @@
 <section class="row">
   <div class="cards" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="1" infinite-scroll-immediate-check='{{ products.products.scrollActive() }}'>
     <div class="card" ng-repeat="product in products.products.getProducts() track by $index" >
+      <!-- <div class="action-buttons">
+          <div class="save-button-container">
+            <a class="save-button" ng-click="products.addToWishlist(product)"><span ng-show="!products.checkIfWishedFor(product.id)">Info</span><span ng-show="products.checkIfWishedFor(product.id)">Info</span></a>
+          </div>
+          <div class="buy-button-container">
+            <a class="buy-button" ng-click="products.addToWishlist(product)">Info</a>
+          </div>
+          <div class="info-button-container">
+            <a class="info-button" ng-click="products.addToWishlist(product)">Info</a>
+          </div>
+        </div> -->
       <div class="card-image">
-        <a ui-sref="productDetail({productID: product.id, slug: product.slug})">
-          <img ng-src="{{product.image_url}}" alt="">
+
+        <a ng-href="{{product.url}}" target="_blank">
+          <img ng-src="{{product.image_url}}" alt="{{product.name}}">
         </a>
-        <a class="save-button" ng-click="products.addToWishlist(product)"><span ng-show="!products.checkIfWishedFor(product.id)">Save</span><span ng-show="products.checkIfWishedFor(product.id)">Saved</span></a>
+        
+        <ul class="flex-container">
+          <li class="twitter"><a ng-href="{{product.url}}" target="_blank">BUY</a></li>
+          <li class="facebook"><a ng-click="products.addToWishlist(product)"><span ng-show="!products.checkIfWishedFor(product.id)">SAVE</span><span ng-show="products.checkIfWishedFor(product.id)">SAVED</span></a></li>
+          <li class="linkedin"><a ui-sref="productDetail({productID: product.id, slug: product.slug})">INFO</a></li>
+        </ul>
+        
       </div>
       <div class="card-header">
         {{ product.brand_name }}
       </div>
       <div class="card-copy">
-        <a ui-sref="productDetail({productID: product.id, slug: product.slug})">
+        <a ng-href="{{product.url}}" target="_blank">
           <p ng-bind-html="product.name"></p>
         </a>
       </div>

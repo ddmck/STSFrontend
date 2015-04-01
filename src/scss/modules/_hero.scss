@@ -11,7 +11,7 @@
   $gradient-angle: 10deg;
   @include background(url($assetURL + 'images/cover.jpeg'), no-repeat center center fixed);
   @include media($large-screen) {
-    @include background(url($assetURL + 'images/cvr.jpg'), no-repeat center center fixed);
+    @include background(url($assetURL + 'images/sts-cover.jpg'), no-repeat center center fixed);
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -154,7 +154,7 @@
 }
 
 .welcome-trends {
-  background: #272727; 
+  // background: #272727; 
   margin-bottom: -5em;
 
   .welcome-deckgrid {

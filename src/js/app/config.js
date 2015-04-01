@@ -50,12 +50,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       }
     })
 
-    .state('basket', {
-      url: '/basket',
-      templateUrl: assetsUrl + 'partials/basket.html',
-      controller: 'BasketController'
-    })
-
     .state('trends', {
       url: '/trends',
       templateUrl: assetsUrl + 'partials/trends.html',
@@ -69,14 +63,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: 'TrendController'
     })
 
-
-    .state('pay', {
-      abstract: true,
-      url: '/pay',
-      templateUrl: assetsUrl + 'partials/pay.html',
-      controller: 'PaymentsController'
-    })
-
     .state('mens', {
       url: '/mens',
       templateUrl: assetsUrl + 'partials/mobile-mens-categories.html',
@@ -87,87 +73,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       url: '/womens',
       templateUrl: assetsUrl + 'partials/mobile-womens-categories.html',
       controller: 'MobileCatController'
-    })
-
-    .state('pay.you', {
-      url: '/you',
-      templateUrl: assetsUrl + 'partials/you.html',
-      controller: function($scope, $state, $localStorage){
-        $scope.goToSignIn = function(){
-          $localStorage.returnTo = "pay.address";
-          $state.go("account.signIn");
-        }, 
-        $scope.goToSignUp = function(){
-          $localStorage.returnTo = "pay.address";
-          $state.go("account.signUp");
-        }
-      }
-    })
-
-    .state('pay.address', {
-      url: '/address',
-      templateUrl: assetsUrl + 'partials/address.html', 
-      controller: function($scope, $state, $localStorage){
-        $scope.localStorage = $localStorage;
-        $scope.submitAddress = function(addressForm) {
-          $localStorage.address = addressForm;
-          $state.go('pay.billing')
-        }
-      }
-    })
-
-    .state('pay.billing', {
-      url: '/billing',
-      templateUrl: assetsUrl + 'partials/billing.html',
-      controller: function($scope, $state, $localStorage){
-        $scope.localStorage = $localStorage;
-        $scope.handleStripe = function(status, response){
-          if(response.error) {
-            $scope.billingForm.error = response.error;
-          } else {
-            // got stripe token, now charge it or smt
-            $localStorage.token = response.id;
-            $localStorage.last4 = $scope.number.slice(-4);
-            $state.go('pay.confirmation')
-          }
-        };
-        $scope.clear = function(){
-          $localStorage.token = null;
-        }
-      }
-    })
-
-    .state('pay.confirmation', {
-      url: '/confirmation',
-      templateUrl: assetsUrl + 'partials/confirmation.html',
-      controller: function($scope, $localStorage, $state, $http, Basket, Deliveries){
-        $scope.basket = Basket;
-        $scope.deliveries = Deliveries;      
-        Basket.fetchBasketItemProducts();
-        $scope.localStorage = $localStorage;
-        $scope.submitOrder = function(){
-          $scope.disabled = true;
-          $http.post(backendUrl + "api/orders.json", {order: {
-            token: $localStorage.token,
-            basket: $localStorage.basketItems,
-            deliveries: $localStorage.deliveries,
-            address: $localStorage.address
-          }}).success(function(){
-            $state.go("pay.confirmed")
-          });
-        } 
-      }
-    })
-
-    .state('pay.confirmed', {
-      url: "/confirmed",
-      templateUrl: assetsUrl + 'partials/confirmed.html'
-    })
-
-    .state('orders', {
-      url: '/orders',
-      templateUrl: assetsUrl + 'partials/orders.html',
-      controller: 'OrdersController'
     })
 
     .state('account', {
@@ -369,7 +274,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
   $urlRouterProvider
     .when('/products', 'products/new')
     .when('/account', 'account/sign-in')
-    .when('/pay', 'pay/ypu')
     .otherwise('/welcome');
   
   $authProvider.configure({

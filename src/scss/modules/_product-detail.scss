@@ -23,17 +23,17 @@ section.row {
 }
 
 .title {
-  background-color: tint($brand-black, 10);
+  background-color: white;
   width: 100%;
   padding-top: 1em;
   padding-bottom: 1em;
   @include media($large-screen) {
-    padding-top: 2em;
-    padding-bottom: 2em;
+    padding-top: 1em;
+    padding-bottom: 1em;
   }
   section.row {
     margin-top: 0em;
-    color: #e7e7e7;
+    color: $brand-black;
     h1 {
       text-align: center;
       text-transform: capitalize;
@@ -104,8 +104,8 @@ section.row {
       padding: 4em 4em 8em 4em;
     }
 
-    h1 {
-      margin-bottom: 0.9em;
+    h5 {
+      margin-bottom: 1em;
       text-transform: capitalize;
     }
 
@@ -120,9 +120,15 @@ section.row {
       text-transform: uppercase;
     }
 
-    p {
-      color: gray;
-      margin-bottom: 1.5em;
+    h3 {
+      color: $brand-black;
+      margin-bottom: 1em;
+    }
+
+    a.buy-button {
+      @include button(flat, $base-accent-color);
+      // padding: 0.7em 1em;
+      margin-bottom: 1em;
     }
 
     ul.additional-images {
