@@ -185,7 +185,7 @@
   .card-copy {
     font-size: 0.9em;
     line-height: 1.5em;
-    padding: ($base-spacing / 2) ($base-spacing / 2);
+    padding: ($base-spacing / 2) ($base-spacing / 2) ($base-spacing) ($base-spacing / 2);
     text-transform: capitalize;
 
     p {
@@ -198,7 +198,7 @@
     @include align-self(flex-end);
     bottom: 0.5em;
     overflow: auto;
-    padding: $base-spacing / 2;
+    padding: 0 ($base-spacing / 2);
     position: absolute;
 
     ul {
@@ -207,15 +207,16 @@
 
     li {
       border-right: 1px solid transparentize($base-font-color, 0.8);
-      color: $card-stats-color;
+      color: $brand-black;
       display: inline;
       float: left;
-      font-size: 1.2em;
+      font-size: 1em;
       font-weight: 800;
-      line-height: 1.1em;
+      line-height: 1em;
       padding: 0 0.7em;
 
       &:first-child {
+        color: $card-stats-color;
         padding-left: 0;
       }
 
@@ -233,12 +234,12 @@
         // text-transform: uppercase;
       }
 
-      // span {
-      //   color: $base-font-color;
-      //   display: block;
-      //   font-size: 0.7em;
-      //   font-weight: normal;
-      // }
+      span {
+        color: $base-font-color;
+        display: block;
+        font-size: 0.7em;
+        font-weight: normal;
+      }
     }
   }
   

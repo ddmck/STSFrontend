@@ -35,8 +35,9 @@
       </div>
       <div class="card-stats">
         <ul>
-          <li>{{ product.display_price | currency : '£' }}</li>
-          <!-- <li>923<span>Objects</span></li> -->
+          <li>{{ product.display_price | currency : '£' }}<span>Sale Price</span></li>
+          <li>{{ product.rrp | currency : '£' }}<span>RRP</span></li>
+          <li>{{( 1 - (product.display_price / product.rrp))  * 100 | number:0 }}%<span>OFF</span></li>
         </ul>
       </div>
     </div>

@@ -1333,7 +1333,7 @@ header.navigation {
   .card .card-copy {
     font-size: 0.9em;
     line-height: 1.5em;
-    padding: 0.75em 0.75em;
+    padding: 0.75em 0.75em 1.5em 0.75em;
     text-transform: capitalize; }
     .card .card-copy p {
       color: #333;
@@ -1344,20 +1344,21 @@ header.navigation {
     -ms-flex-item-align: end;
     bottom: 0.5em;
     overflow: auto;
-    padding: 0.75em;
+    padding: 0 0.75em;
     position: absolute; }
     .card .card-stats ul {
       padding: 0; }
     .card .card-stats li {
       border-right: 1px solid rgba(51, 51, 51, 0.2);
-      color: #6f99d5;
+      color: #212121;
       display: inline;
       float: left;
-      font-size: 1.2em;
+      font-size: 1em;
       font-weight: 800;
-      line-height: 1.1em;
+      line-height: 1em;
       padding: 0 0.7em; }
       .card .card-stats li:first-child {
+        color: #6f99d5;
         padding-left: 0; }
       .card .card-stats li:last-child {
         border-right: 0; }
@@ -1384,6 +1385,11 @@ header.navigation {
         .card .card-stats li a:disabled {
           opacity: 0.5;
           cursor: not-allowed; }
+      .card .card-stats li span {
+        color: #333;
+        display: block;
+        font-size: 0.7em;
+        font-weight: normal; }
   .card:focus, .card:hover {
     background-color: white; }
     .card:focus .card-image img, .card:hover .card-image img {

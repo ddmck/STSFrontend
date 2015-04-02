@@ -1,5 +1,5 @@
 var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'btford.markdown', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments', 'btford.modal', 'akoenig.deckgrid']);
-var backendUrl = "https://www.shopshopgo.com/";
+var backendUrl = "http://localhost:3000/";
 var assetsUrl = 'http://localhost:9999/';
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider, $sceDelegateProvider) {
@@ -895,7 +895,8 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
                                                     sub_category_id: Filters.getFilters().subCategory,
                                                     color_id: Filters.getFilters().color,
                                                     material_id: Filters.getFilters().material,
-                                                    style_id: Filters.getFilters().style
+                                                    style_id: Filters.getFilters().style,
+                                                    on_sale: true
                                                   }, 
                                                   sort: Filters.getFilters().sort, 
                                                   search_string: Filters.getFilters().searchString
