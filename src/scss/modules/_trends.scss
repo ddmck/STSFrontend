@@ -63,7 +63,9 @@ $large-screen: em(860) !default;
     @include media(em(1025)) {
       background-color: rgba(0,0,0,0);
     }
-    h2  {
+    h1  {
+      font-family: "SignPainter";
+      font-weight: 300;
       padding: 0 1em;
       position: absolute;
       top: 50%;
@@ -86,7 +88,7 @@ $large-screen: em(860) !default;
       @include transition (background-color 0.2s ease-in-out);
       background-color: rgba(0,0,0,0.4);
 
-      h2  {
+      h1  {
         opacity: 1;
         @include transition (opacity 0.2s ease-in-out);
       }

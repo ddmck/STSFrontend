@@ -919,7 +919,7 @@ header.navigation {
     margin-bottom: 1em; }
   .hero .inspiration {
     color: white;
-    font-family: "Fira Mono";
+    font-family: "SignPainter";
     text-shadow: 0 0 25px rgba(33, 33, 33, 0.8);
     text-align: center; }
     @media screen and (min-width: 53.75em) {
@@ -1430,6 +1430,8 @@ section.row {
     margin-top: 0em;
     color: #212121; }
     .title section.row h1 {
+      font-family: "SignPainter";
+      font-weight: 300;
       text-align: center;
       text-transform: capitalize;
       font-size: 1.25em; }
@@ -2264,7 +2266,9 @@ ul.brands {
     @media screen and (min-width: 64.0625em) {
       .a-card .overlay {
         background-color: transparent; } }
-    .a-card .overlay h2 {
+    .a-card .overlay h1 {
+      font-family: "SignPainter";
+      font-weight: 300;
       padding: 0 1em;
       position: absolute;
       top: 50%;
@@ -2278,13 +2282,13 @@ ul.brands {
       -webkit-transition: opacity 0.2s ease-in-out;
       transition: opacity 0.2s ease-in-out; }
       @media screen and (min-width: 64.0625em) {
-        .a-card .overlay h2 {
+        .a-card .overlay h1 {
           opacity: 0; } }
   .a-card:hover .overlay {
     -webkit-transition: background-color 0.2s ease-in-out;
     transition: background-color 0.2s ease-in-out;
     background-color: rgba(0, 0, 0, 0.4); }
-    .a-card:hover .overlay h2 {
+    .a-card:hover .overlay h1 {
       opacity: 1;
       -webkit-transition: opacity 0.2s ease-in-out;
       transition: opacity 0.2s ease-in-out; }
