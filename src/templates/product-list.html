@@ -19,7 +19,7 @@
         </a>
         
         <ul class="flex-container">
-          <li class="twitter"><a ng-href="{{product.url}}" target="_blank">BUY</a></li>
+          <li class="twitter"><a ng-href="{{product.url}}" target="_blank" ng-click="sendEvent(product)">BUY</a></li>
           <li class="facebook"><a ng-click="products.addToWishlist(product)"><span ng-show="!products.checkIfWishedFor(product.id)">SAVE</span><span ng-show="products.checkIfWishedFor(product.id)">SAVED</span></a></li>
           <li class="linkedin"><a ui-sref="productDetail({productID: product.id, slug: product.slug})">INFO</a></li>
         </ul>

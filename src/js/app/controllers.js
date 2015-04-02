@@ -147,6 +147,10 @@ app.controller('ProductsController',  ['$scope', '$http', '$state', 'Filters', '
       Products.fetchProducts()
     }
   };
+
+  $scope.sendEvent = function(product){
+    ga('send', 'event', 'products', 'sentToRetailer', product.name);
+  };
 }]);
 
 app.controller('GenderController', ['$scope', 'Filters', 'Products', '$localStorage', function($scope, Filters, Products, $localStorage){
@@ -416,6 +420,10 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'M
     $http.get(backendUrl + 'stores/' + product.store_id + '.json', {async: true}).success(function(data){
       $scope.storeDetails = data
     })
+  };
+
+  $scope.sendEvent = function(){
+    ga('send', 'event', 'products', 'sentToRetailer', $scope.product.name);
   };
 }]);
 

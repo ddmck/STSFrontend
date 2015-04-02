@@ -12,7 +12,7 @@
       </li></ul>
       
 
-      <a class="buy-button" ng-href="{{product.url}}" target="_blank">Buy</a>
+      <a class="buy-button" ng-href="{{product.url}}" target="_blank" ng-click="sendEvent()">Buy</a>
       <a class="buy-button" ng-click="addToWishlist(product)"><span ng-show="!checkIfWishedFor()">Save</span><span ng-show="checkIfWishedFor()">Saved</span></a>
       <div ng-product-details></div>
     </div>
