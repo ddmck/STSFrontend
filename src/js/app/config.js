@@ -143,6 +143,10 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         $scope.addToWishlist = function(product){
           WishlistItems.addToWishlistItems(product);
         };
+
+        $scope.sendEvent = function(product){
+          ga('send', 'event', 'products', 'sentToRetailer', product.name);
+        };
       }
     })
 

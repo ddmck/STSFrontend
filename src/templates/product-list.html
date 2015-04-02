@@ -14,7 +14,7 @@
         </div> -->
       <div class="card-image">
 
-        <a ng-href="{{product.url}}" target="_blank">
+        <a ng-href="{{product.url}}" target="_blank" ng-click="sendEvent(product)">
           <img ng-src="{{product.image_url}}" alt="{{product.name}}">
         </a>
         
@@ -29,7 +29,7 @@
         {{ product.brand_name }}
       </div>
       <div class="card-copy">
-        <a ng-href="{{product.url}}" target="_blank">
+        <a ng-href="{{product.url}}" target="_blank" ng-click="sendEvent(product)">
           <p ng-bind-html="product.name"></p>
         </a>
       </div>
