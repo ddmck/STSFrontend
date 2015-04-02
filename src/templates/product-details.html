@@ -22,16 +22,4 @@
       </div>
     </div>
   </div>
-  <div class="expander" ng-controller="ToggleController">
-    <a href="javascript:void(0)" ng-class="{'expander-hidden': !open}" class="expander-trigger" ng-click="toggle()">Returns</a>
-    <div class="expander-content">
-      <p>Return within: 
-        <span ng-show="storeDetails.days_to_return"><strong>{{storeDetails.days_to_return}} Days</strong></span>
-        <span ng-hide="storeDetails.days_to_return"><strong>See Retailer</strong></span>
-      </p>
-      <div btf-markdown="storeDetails.returns_copy">
-       
-      </div>
-    </div>
-  </div>
 </div>
