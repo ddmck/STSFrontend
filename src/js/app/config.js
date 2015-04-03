@@ -185,6 +185,12 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: "BrandController"
     })
 
+    .state('brandCatView', {
+      url: '/brands/{id:[0-9]+}-{brandId}/{catID:[0-9]+}-{category}',
+      templateUrl: assetsUrl + "partials/brands-cat-view.html",
+      controller: "BrandController"
+    })
+
     .state('productDetail', {
       url: '/products/{productID:[0-9]+}-{slug}',
       templateUrl: assetsUrl + 'partials/product-detail.html',

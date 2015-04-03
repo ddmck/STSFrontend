@@ -44,6 +44,30 @@ section.row {
         font-size: $base-font-size * 2.25;
       }
     }
+    .table {
+      display: table;   /* Allow the centering to work */
+      margin: 1em auto 0 auto;
+
+      ul.featured-categories {
+
+        li {
+          display: inline;
+          padding-right: 1em;
+          text-transform: capitalize;
+          &:last-child {
+            padding-right: 0;
+          }
+          a {
+            color: $brand-black;
+
+            &:hover {
+              color: darken($brand-black, 20);
+            }
+          }
+          
+        }
+      }
+    }
   }
 }
 

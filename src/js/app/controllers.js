@@ -436,12 +436,32 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
   Products.resetPage();
   Filters.resetAll();
   Filters.setFilter('brand', $stateParams.id);
+  $scope.category = $stateParams.category;
+  Filters.setFilter('category', $stateParams.catID);
   Products.fetchProducts()
   $http.get(backendUrl + 'brands/' + $stateParams.brandId + '.json', {async: true}).success(function(data){
     $scope.brand = data;
-    Meta.set("title", $scope.brand.name + " at Search The Sales");
-    Meta.set("description", "Shop " + $scope.brand.name + " at Search The Sales, All Your Favourite Stores In One Place");
+    $scope.checkIfFeaturedCategorySet($scope);
+    
+    if ($stateParams.catID){
+      Meta.set("title", $scope.brand.name + " " + $scope.category + " at Search The Sales");
+      Meta.set("description", "Shop " + $scope.brand.name + " " + $scope.category + " at Search The Sales, All Your Favourite Stores In One Place");
+    }else{
+      $scope.brand = data;
+      Meta.set("title", $scope.brand.name + " at Search The Sales");
+      Meta.set("description", "Shop " + $scope.brand.name + " at Search The Sales, All Your Favourite Stores In One Place");
+    }
   })
+
+  $scope.checkIfFeaturedCategorySet = function($scope){
+    $scope.brand.featured_categories = _.reject($scope.brand.featured_categories, function(n) {
+                                       return _.contains(n.name, $scope.category)
+                                       });
+  };
+
+  $scope.onCatPage = function(){
+    return !!$scope.category;
+  }
 }]);
 
 

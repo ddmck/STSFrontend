@@ -1,0 +1,14 @@
+<div class="table">
+  <ul class="featured-categories">
+    <li ng-show="onCatPage()">
+      <a ui-sref="brandView({id: brand.id, brandId: brand.slug})">All {{brand.name}} products</a>
+    </li>
+    <li ng-repeat="(key, item) in brand.featured_categories | orderBy:'name'" 
+      ng-click="changeCat(brand.featured_categories[key])"> 
+      <a ui-sref="brandCatView({id: brand.id, brandId: brand.slug, catID: '{{brand.featured_categories[key].id}}',
+        category: '{{brand.featured_categories[key].name}}'})">
+        {{brand.featured_categories[key].name}}
+      </a>
+    </li>
+  </ul>
+</div>

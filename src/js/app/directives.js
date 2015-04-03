@@ -41,6 +41,15 @@ app.directive('ngCallouts', function(){
   }
 });
 
+app.directive('ngFeaturedCategories', function(){
+  return {
+    restrict: 'A',
+    templateUrl: assetsUrl + 'templates/featured-categories.html',
+    replace: true,
+    transclude: true
+  }
+});
+
 app.directive('ngFooter', function(){
   return {
     restrict: 'A',
