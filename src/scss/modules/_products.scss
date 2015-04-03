@@ -46,6 +46,12 @@
     margin: 0 $card-margin $base-spacing $card-margin;
   }
 
+  &.spinner-card {
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+
   .card-image {
     overflow: hidden;
     max-height: 350px;
