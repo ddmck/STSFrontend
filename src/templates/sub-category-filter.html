@@ -1,0 +1,4 @@
+<div class="filter" ng-controller="SubCategoryController" ng-show="filters.getFilters().category">
+  <label ng-show="filters.getFilters().category">Sub Categories</label>
+  <selectize ng-show="filters.getFilters().category" placeholder='Select a Sub Category...' ng-model="subCatId" ng-change="setSubCat(subCatId)" options='mySubCats' config='myConfig'></selectize> 
+</div>

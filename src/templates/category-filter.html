@@ -1,0 +1,4 @@
+<div class="filter" ng-controller="CategoryController">
+  <label>Categories</label>
+  <selectize placeholder='Select a Category...' ng-model="catId" ng-change="setCategory(catId)" options='myCats' config='myConfig'></selectize>
+</div>

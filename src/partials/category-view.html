@@ -6,42 +6,12 @@
 
 <section class="row no-top-margin">
   <div class="search-tools">
-    <div class="filter" ng-controller="StylesController" >
-      <label ng-show="filters.getFilters().category && styles.availableList().length > 0">Styles</label>
-      <select ng-model="styleId" ng-change="setStyle(styleId)" ng-show="filters.getFilters().category && styles.availableList().length > 0">
-        <option value="">All</option>
-        <option ng-repeat="style in styles.availableList() | orderBy:'name'" value={{style.id}} ng-selected="filters.getFilters().style === style.id">
-          {{ style.name }}
-        </option>
-      </select>
-    </div>
-    <div class="filter">
-      <label>Colors</label>
-      <select ng-controller="ColorController" ng-model="colorId" ng-change="setColor(colorId)">
-        <option value="">All</option>
-        <option ng-repeat="color in colors.list() | orderBy:'name'" value={{color.id}} ng-selected="filters.getFilters().color === color.id">
-          {{color.name}}
-        </option>
-      </select>
-    </div>
-    <div class="filter" ng-controller="SortController" style="float:right; margin-right: 0em;">
-      <label>Sort by</label>
-      <select ng-model="sort" ng-change="setSort(sort)">
-        <option value="">Relevance</option>
-        <option ng-repeat="sorter in sorters" value={{sorter.val}}>
-          {{ sorter.name }}
-        </option>
-      </select>
-    </div>
-    <div class="filter">
-      <label>Materials</label>
-      <select ng-controller="MaterialController" ng-model="materialId" ng-change="setMaterial(materialId)">
-        <option value="">All</option>
-        <option ng-repeat="material in materials.list() | orderBy:'name'" value={{material.id}} ng-selected="filters.getFilters().material === material.id">
-          {{material.name}}
-        </option>
-      </select>
-    </div>
+    <div ng-gender-filter></div>
+    <div ng-styles-filter></div>
+    <div ng-colors-filter></div>
+    <div ng-brands-filter></div>
+    <div ng-materials-filter></div>
+    <div ng-sort-by></div>
   </div>
 </section>
 

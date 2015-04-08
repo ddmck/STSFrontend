@@ -1,22 +1,33 @@
 app.factory('Filters', ['$location', function($location){
   // Hacky way to prevent location being set to empty string causing refresh
   var filters = {};
-
+  var lastResetFrom;
   return {
     getFilters: function(){
       return filters;
     },
     setFilter: function(name, value){
+      var changed = filters[name] !== value
       filters[name] = value;
+      return changed;
     },
     removeFilter: function(name){
+      var changed = !!filters[name]
       delete filters[name];
+      return changed;
     },
     useQuery: function(query){
       filters = query;
     },
-    resetAll: function(){
-      filters = {gender: filters.gender};
+    resetAll: function(hard){
+      if (hard) {
+        
+        filters = {gender: filters.gender};
+        lastResetFrom = $location.absUrl();
+      } else if (lastResetFrom !== $location.absUrl()) {
+        filters = {gender: filters.gender};
+        lastResetFrom = $location.absUrl();
+      } 
     }         
   };
 }]);
@@ -37,12 +48,14 @@ app.factory('Trends', [ '$http', 'Products', 'Filters', function($http, Products
 }]);
 
 
-app.factory('Categories', [ '$http', function($http){
+app.factory('Categories', [ '$http', '$rootScope', function($http, $rootScope){
   var categories = [];
   return {
     fetchCategories: function(){
       $http.get(backendUrl + 'categories.json', {async: true}).success(function(data){
         categories = data;
+        $rootScope.$broadcast('catsLoaded');
+        $rootScope.$broadcast('stylesLoaded');
       });
     },
     list: function(){
@@ -52,12 +65,13 @@ app.factory('Categories', [ '$http', function($http){
   }
 }]);
 
-app.factory('Colors', [ '$http', function($http){
+app.factory('Colors', [ '$http', '$rootScope', function($http, $rootScope){
   var colors = [];
   return {
     fetchColors: function(){
       $http.get(backendUrl + 'colors.json', {async: true}).success(function(data){
         colors = data;
+        $rootScope.$broadcast('colorsLoaded');
       });
     },
     list: function(){
@@ -67,12 +81,13 @@ app.factory('Colors', [ '$http', function($http){
   }
 }]);
 
-app.factory('Materials', [ '$http', function($http){
+app.factory('Materials', [ '$http', '$rootScope', function($http, $rootScope){
   var materials = [];
   return {
     fetchMaterials: function(){
       $http.get(backendUrl + 'materials.json', {async: true}).success(function(data){
         materials = data;
+        $rootScope.$broadcast('materialsLoaded');
       });
     },
     list: function(){
@@ -182,7 +197,6 @@ app.factory('Styles', [ '$http', 'Filters', function($http, Filters){
     fetchStyles: function(){
       $http.get(backendUrl + 'styles.json', {async: true}).success(function(data){
         styles = data;
-        console.log(styles);
       });
     },
     list: function(){
@@ -259,6 +273,7 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
   var page = 1;
   var searching = true;
   var scrollActive = false;
+  var lastResetFrom;
   return {
     scrollActive: function(){
       return scrollActive;
@@ -278,9 +293,18 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     enumeratePage: function(){
       page += 1;
     },
-    resetProducts: function(){
-      products = [];
-      scrollActive = false;
+    resetProducts: function(hard){
+      if (hard) {
+        products = [];
+        scrollActive = false;
+        lastResetFrom = $location.absUrl();
+        page = 1
+      } else if ($location.absUrl() !== lastResetFrom) {
+        products = [];
+        scrollActive = false;
+        lastResetFrom = $location.absUrl();
+        page = 1
+      }
     },
     resetPage: function(){
       page = 1;
@@ -325,14 +349,19 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
   };
 }]);
 
-app.factory('Brands', ['$http', function($http){
+app.factory('Brands', ['$http', '$rootScope', function($http, $rootScope){
   var o = {}
   o.brands = [];
   o.fetchBrands = function(){
     $http.get(backendUrl + 'brands.json', { async: true }).success(function(data){
-      o.brands = _.groupBy(data, function(br){
-        return br.name[0].toLowerCase();
-      });
+      o.brands = data;
+      $rootScope.$broadcast('brandsLoaded');       
+    });
+  }
+
+  o.formattedList = function(){
+    return _.groupBy(o.brands, function(br){
+      return br.name[0].toLowerCase();
     });
   }
 

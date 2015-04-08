@@ -25,6 +25,8 @@ module.exports =
       resolve('lodash.min'),
       resolve('inflection.min'),
       resolve('angular-payments'),
-      resolve('google-analytics')
+      resolve('google-analytics'),
+      resolve('selectize.min'),
+      resolve('selectize')
     ]
   }

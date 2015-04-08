@@ -1,0 +1,4 @@
+<div class="filter" ng-controller="BrandDropdownController">
+  <label>Brands</label>
+  <selectize placeholder='Select a Brand...' ng-model="brandId" ng-change="setBrand(brandId)" options='myBrands' config='myConfig'></selectize>
+</div>

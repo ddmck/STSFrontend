@@ -49,73 +49,16 @@
     @include media($large-screen) {
       margin-bottom: 0;
       float: left;
-      margin-right: 2em;
+      margin-right: 1em;
     }
 
-    > div {
-      @include box-sizing(border-box);
-      @include transition(border-color);
-      background-color: white;
-      border-radius: $base-border-radius;
-      border: 1px solid $base-border-color;
-      font-size: 1em;
-      margin-bottom: $base-spacing / 2;
-      padding: ($base-spacing / 3) ($base-spacing / 3);
-      position: relative;
-      width: 100%;
+    .selectize-control {
+      min-width: 110px;
 
-      &:focus,
-      &:hover {
-        border-color: darken($base-border-color, 10%);
-      }
-
-      label {
-        cursor: pointer;
-        font-weight: 400;
-        margin-bottom: 0;
+      .selectize-input {
+        padding-right: 2em;
       }
     }
-
-    ol {
-      margin-top: 1em;
-
-      label {
-        display: inline;
-      }
-    }
-
-    button {
-      @include button(simple, lighten($search-tools-background, 10%));
-      @include position(absolute, 5px 5px auto auto);
-      font-size: 0.7em;
-    }
-
-    .hide-options {
-      margin-bottom: 0;
-
-      ol, button {
-        display: none;
-      }
-    }
-  }
-
-  .trigger {
-    width: 100%;
-
-    @include media($large-screen) {
-      @include span-columns(1.5);
-    }
-
-    button {
-      @include button(flat, $base-accent-color);
-      margin-top: 1em;
-      padding-bottom: 0.5em;
-      padding-top: 0.5em;
-      width: 100%;
-
-      @include media($large-screen) {
-        margin-top: 1.55em;
-      }
-    }
+    
   }
 }

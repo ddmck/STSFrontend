@@ -1,0 +1,4 @@
+<div class="filter" ng-controller="MaterialController">
+  <label>Materials</label>
+  <selectize placeholder='Select a Material...' ng-model="materialId" ng-change="setMaterial(materialId)" options='myMaterials' config='myConfig'></selectize>
+</div>

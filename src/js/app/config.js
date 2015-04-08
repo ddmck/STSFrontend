@@ -104,7 +104,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       templateUrl: assetsUrl + 'partials/new.html',
       controller: function(Filters, Products){
         Products.resetProducts();
-        Products.resetPage();
         Filters.resetAll();
         Products.fetchProducts();
       }
@@ -162,7 +161,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         }
         $scope.category = $stateParams.category;
         Products.resetProducts();
-        Products.resetPage();
         Filters.resetAll();
         Filters.setFilter('category', $stateParams.catID);
         Filters.setFilter('gender', genderVar);
@@ -208,7 +206,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: function($scope, $stateParams, Products){
         $scope.searchString = $stateParams.searchString;
         Products.resetProducts();
-        Products.resetPage();
         Products.fetchProducts();
       }
     })

@@ -1,4 +1,4 @@
-var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'btford.markdown', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments', 'btford.modal', 'akoenig.deckgrid']);
+var app = angular.module('App', ['infinite-scroll', 'ngSanitize', 'btford.markdown', 'ui.router', 'ng-token-auth', 'ipCookie', 'ngStorage', 'angularPayments', 'btford.modal', 'akoenig.deckgrid', 'selectize']);
 var backendUrl = "http://localhost:3000/";
 var assetsUrl = 'http://localhost:9999/';
 
@@ -107,7 +107,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       templateUrl: assetsUrl + 'partials/new.html',
       controller: function(Filters, Products){
         Products.resetProducts();
-        Products.resetPage();
         Filters.resetAll();
         Products.fetchProducts();
       }
@@ -165,7 +164,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         }
         $scope.category = $stateParams.category;
         Products.resetProducts();
-        Products.resetPage();
         Filters.resetAll();
         Filters.setFilter('category', $stateParams.catID);
         Filters.setFilter('gender', genderVar);
@@ -211,7 +209,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       controller: function($scope, $stateParams, Products){
         $scope.searchString = $stateParams.searchString;
         Products.resetProducts();
-        Products.resetPage();
         Products.fetchProducts();
       }
     })
@@ -397,6 +394,78 @@ app.directive('ngFilters', function(){
   return {
     restrict: "A",
     templateUrl: assetsUrl + 'templates/filters.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngGenderFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/gender-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngCategoryFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/category-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngSubCategoryFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/sub-category-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngStylesFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/styles-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngColorsFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/colors-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngBrandsFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/brands-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMaterialsFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/materials-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngSortBy', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/sort-by.html',
     replace: true,
     transclude: true
   }
@@ -611,22 +680,33 @@ app.directive('ngMetaOgPriceCurrency', function(){
 app.factory('Filters', ['$location', function($location){
   // Hacky way to prevent location being set to empty string causing refresh
   var filters = {};
-
+  var lastResetFrom;
   return {
     getFilters: function(){
       return filters;
     },
     setFilter: function(name, value){
+      var changed = filters[name] !== value
       filters[name] = value;
+      return changed;
     },
     removeFilter: function(name){
+      var changed = !!filters[name]
       delete filters[name];
+      return changed;
     },
     useQuery: function(query){
       filters = query;
     },
-    resetAll: function(){
-      filters = {gender: filters.gender};
+    resetAll: function(hard){
+      if (hard) {
+        
+        filters = {gender: filters.gender};
+        lastResetFrom = $location.absUrl();
+      } else if (lastResetFrom !== $location.absUrl()) {
+        filters = {gender: filters.gender};
+        lastResetFrom = $location.absUrl();
+      } 
     }         
   };
 }]);
@@ -647,12 +727,14 @@ app.factory('Trends', [ '$http', 'Products', 'Filters', function($http, Products
 }]);
 
 
-app.factory('Categories', [ '$http', function($http){
+app.factory('Categories', [ '$http', '$rootScope', function($http, $rootScope){
   var categories = [];
   return {
     fetchCategories: function(){
       $http.get(backendUrl + 'categories.json', {async: true}).success(function(data){
         categories = data;
+        $rootScope.$broadcast('catsLoaded');
+        $rootScope.$broadcast('stylesLoaded');
       });
     },
     list: function(){
@@ -662,12 +744,13 @@ app.factory('Categories', [ '$http', function($http){
   }
 }]);
 
-app.factory('Colors', [ '$http', function($http){
+app.factory('Colors', [ '$http', '$rootScope', function($http, $rootScope){
   var colors = [];
   return {
     fetchColors: function(){
       $http.get(backendUrl + 'colors.json', {async: true}).success(function(data){
         colors = data;
+        $rootScope.$broadcast('colorsLoaded');
       });
     },
     list: function(){
@@ -677,12 +760,13 @@ app.factory('Colors', [ '$http', function($http){
   }
 }]);
 
-app.factory('Materials', [ '$http', function($http){
+app.factory('Materials', [ '$http', '$rootScope', function($http, $rootScope){
   var materials = [];
   return {
     fetchMaterials: function(){
       $http.get(backendUrl + 'materials.json', {async: true}).success(function(data){
         materials = data;
+        $rootScope.$broadcast('materialsLoaded');
       });
     },
     list: function(){
@@ -792,7 +876,6 @@ app.factory('Styles', [ '$http', 'Filters', function($http, Filters){
     fetchStyles: function(){
       $http.get(backendUrl + 'styles.json', {async: true}).success(function(data){
         styles = data;
-        console.log(styles);
       });
     },
     list: function(){
@@ -869,6 +952,7 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
   var page = 1;
   var searching = true;
   var scrollActive = false;
+  var lastResetFrom;
   return {
     scrollActive: function(){
       return scrollActive;
@@ -888,9 +972,18 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
     enumeratePage: function(){
       page += 1;
     },
-    resetProducts: function(){
-      products = [];
-      scrollActive = false;
+    resetProducts: function(hard){
+      if (hard) {
+        products = [];
+        scrollActive = false;
+        lastResetFrom = $location.absUrl();
+        page = 1
+      } else if ($location.absUrl() !== lastResetFrom) {
+        products = [];
+        scrollActive = false;
+        lastResetFrom = $location.absUrl();
+        page = 1
+      }
     },
     resetPage: function(){
       page = 1;
@@ -935,14 +1028,19 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
   };
 }]);
 
-app.factory('Brands', ['$http', function($http){
+app.factory('Brands', ['$http', '$rootScope', function($http, $rootScope){
   var o = {}
   o.brands = [];
   o.fetchBrands = function(){
     $http.get(backendUrl + 'brands.json', { async: true }).success(function(data){
-      o.brands = _.groupBy(data, function(br){
-        return br.name[0].toLowerCase();
-      });
+      o.brands = data;
+      $rootScope.$broadcast('brandsLoaded');       
+    });
+  }
+
+  o.formattedList = function(){
+    return _.groupBy(o.brands, function(br){
+      return br.name[0].toLowerCase();
     });
   }
 
@@ -1130,113 +1228,240 @@ app.controller('ProductsController',  ['$scope', '$http', '$state', 'Filters', '
 
 app.controller('GenderController', ['$scope', 'Filters', 'Products', '$localStorage', function($scope, Filters, Products, $localStorage){
   $scope.genderId = Filters.getFilters().gender;
+  $scope.myGenders = [{id: 0, name: "All"},{id: 1, name: "Mens"},{id: 2, name: "Womens"}];
+
+  $scope.myConfig = {
+      create: false,
+      valueField: 'id',
+      labelField: 'name',
+      maxItems: 1,
+      searchField: 'name',
+      allowEmptyOption: true
+    };
 
   $scope.setGender = function(gender) {
+    var changed;
     if ( gender === "1") {
-      Filters.setFilter("gender", 1);
+      changed = Filters.setFilter("gender", 1);
       ga('send', 'event', 'filters', 'selectGender', 'male');
     } else if ( gender === "2") {
-      Filters.setFilter("gender", 2);
-      ga('send', 'event', 'filters', 'selectGender', 'female');
-    } else if ( gender === "" ){
-      Filters.removeFilter("gender")
+      changed = Filters.setFilter("gender", 2);
+    } else if ( gender === undefined || gender == 0 ){
+      changed = Filters.removeFilter("gender");
     }
     $localStorage.gender = Filters.getFilters().gender
-    Products.resetProducts();
-    Products.resetPage()
-    Products.fetchProducts();
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
   };
 }]);
 
-app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categories', function($scope, Filters, Products, Categories){
-  
-  $scope.categories = [];
+app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categories', '$rootScope', function($scope, Filters, Products, Categories, $rootScope){
+  var changed;
   Categories.fetchCategories();
-  $scope.categories = Categories;
-  $scope.filters = Filters;
+  $scope.catId = Filters.getFilters().category;
+  $scope.myCats = [{id: 0, name: "All"}].concat(Categories.list());
+  $scope.$on("catsLoaded", function(){
+    $scope.myCats = [{id: 0, name: "All"}].concat(Categories.list());
+  });
+
+
+  $scope.categories = Categories
+
+  $scope.myConfig = {
+      create: false,
+      valueField: 'id',
+      labelField: 'name',
+      maxItems: 1,
+      searchField: 'name',
+      allowEmptyOption: true
+    };
+
   $scope.setCategory = function(cat_id){
-    if (cat_id === "") {
-      Filters.removeFilter("category");
+    if (cat_id === undefined || cat_id == 0) {
+      changed = Filters.removeFilter("category");
     } else {
-      Filters.setFilter("category", parseInt(cat_id));
+      changed = Filters.setFilter("category", parseInt(cat_id));
       ga('send', 'event', 'filters', 'selectCategory', cat_id);
+      $rootScope.$broadcast('stylesLoaded');
     }
-    Filters.removeFilter("subCategory");
-    Filters.removeFilter("style");
-    Products.resetProducts();
-    Products.resetPage();
-    Products.fetchProducts();
+    
+    if (changed) {
+      Filters.removeFilter("subCategory");
+      Filters.removeFilter("style");
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
   };
 }]);
+
 
 app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categories', 'SubCategories', function($scope, Filters, Products, Categories, SubCategories){
+  SubCategories.fetchSubCategories();
+  $scope.mySubCats = [{id: 0, name: "All"}].concat(SubCategories.availablelist());
+  $scope.$on("subCatsLoaded", function(){
+    $scope.mySubCats = [{id: 0, name: "All"}].concat(SubCategories.availablelist());
+  });
+
   $scope.subCategories = SubCategories;
-  $scope.subCategories.fetchSubCategories();
-  $scope.filters = Filters;
+
+  $scope.myConfig = {
+      create: false,
+      valueField: 'id',
+      labelField: 'name',
+      maxItems: 1,
+      searchField: 'name',
+      allowEmptyOption: true
+    };
+
   $scope.setSubCat = function(sub_cat_id){
-    if (sub_cat_id === "") {
+    if (sub_cat_id === undefined || sub_cat_id == 0) {
       Filters.removeFilter("subCategory");
     } else {
       Filters.setFilter("subCategory", parseInt(sub_cat_id));
     }
-    Products.resetProducts();
-    Products.resetPage();
+    Products.resetProducts(true);
     Products.fetchProducts();
   };
 }]);
 
 app.controller('StylesController', ['$scope', 'Filters', 'Products', 'Categories', 'Styles', function($scope, Filters, Products, Categories, Styles){
+  var changed;
+  $scope.styleId = Filters.getFilters().style;
+  Styles.fetchStyles();
+  $scope.myStyles = [{id: 0, name: "All"}].concat(Styles.availableList());
+  $scope.$on("stylesLoaded", function(){
+    $scope.myStyles = [{id: 0, name: "All"}].concat(Styles.availableList());
+  });
+
   $scope.styles = Styles;
-  $scope.styles.fetchStyles();
   $scope.filters = Filters;
+
+  $scope.myConfig = {
+    create: false,
+    valueField: 'id',
+    labelField: 'name',
+    maxItems: 1,
+    searchField: 'name',
+    allowEmptyOption: true
+  };
+
   $scope.setStyle = function(style_id){
-    if (style_id === "") {
-      Filters.removeFilter("style");
+    if (style_id === undefined || style_id == 0) {
+      changed = Filters.removeFilter("style");
     } else {
-      Filters.setFilter("style", parseInt(style_id));
+      changed = Filters.setFilter("style", parseInt(style_id));
       ga('send', 'event', 'filters', 'selectStyle', style_id);
     }
-    Products.resetProducts();
-    Products.resetPage();
-    Products.fetchProducts();
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
   };
 }]);
 
 app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', function($scope, Filters, Products, Colors){
-  
-  $scope.colors = [];
+  var changed;
+  $scope.colorId = Filters.getFilters().color;
   Colors.fetchColors();
+  $scope.myColors = [{id: 0, name: "All"}].concat(Colors.list());
+  $scope.$on("colorsLoaded", function(){
+    $scope.myColors = [{id: 0, name: "All"}].concat(Colors.list());
+  });
+
   $scope.colors = Colors;
-  $scope.filters = Filters;
+  
+  $scope.myConfig = {
+      create: false,
+      valueField: 'id',
+      labelField: 'name',
+      maxItems: 1,
+      searchField: 'name',
+      allowEmptyOption: true
+    };
+
   $scope.setColor = function(color_id){
-    if (color_id === "") {
-      Filters.removeFilter("color");
+    if (color_id === undefined || color_id == 0) {
+      changed = Filters.removeFilter("color");
     } else {
-      Filters.setFilter("color", parseInt(color_id));
-      ga('send', 'event', 'filters', 'selectColor', color_id);
+      changed = Filters.setFilter("color", parseInt(color_id));
     }
-    Products.resetProducts();
-    Products.resetPage();
-    Products.fetchProducts();
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
   };
+}]);
+
+app.controller('BrandDropdownController', ['$scope', 'Filters', 'Products', 'Brands', '$http', function($scope, Filters, Products, Brands, $http){
+  var changed;
+  $scope.brandId = Filters.getFilters().brand;
+
+  Brands.fetchBrands();
+  $scope.myBrands = [{id: 0, name: "All"}].concat(Brands.brands);
+  
+  $scope.$on("brandsLoaded", function(){
+    $scope.myBrands = [{id: 0, name: "All"}].concat(Brands.brands)
+  });
+
+  $scope.brands = Brands;
+  
+  $scope.myConfig = {
+      create: false,
+      valueField: 'id',
+      labelField: 'name',
+      maxItems: 1,
+      searchField: 'name',
+      allowEmptyOption: true
+    };
+
+  $scope.setBrand = function(brand_id){
+    if (brand_id === undefined || brand_id == 0) {
+      changed = Filters.removeFilter("brand");
+    } else {
+      changed = Filters.setFilter("brand", parseInt(brand_id));
+    }
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
+  }; 
 }]);
 
 app.controller('MaterialController', ['$scope', 'Filters', 'Products', 'Materials', function($scope, Filters, Products, Materials){
   
   $scope.materials = [];
   Materials.fetchMaterials();
-  $scope.materials = Materials;
+  $scope.myMaterials = [{id: 0, name: "All"}].concat(Materials.list());
   $scope.filters = Filters;
+
+  $scope.$on("materialsLoaded", function(){
+    console.log(Materials.list());
+    $scope.myMaterials = [{id: 0, name: "All"}].concat(Materials.list())
+  });
+
+  $scope.myConfig = {
+    create: false,
+    valueField: 'id',
+    labelField: 'name',
+    maxItems: 1,
+    searchField: 'name',
+    allowEmptyOption: true
+  };
+  
   $scope.setMaterial = function(mtrl_id){
-    if (mtrl_id === "") {
-      Filters.removeFilter("material");
+    if (mtrl_id === undefined || mtrl_id == 0) {
+      changed = Filters.removeFilter("material");
     } else {
-      Filters.setFilter("material", parseInt(mtrl_id));
+      changed = Filters.setFilter("material", parseInt(mtrl_id));
       ga('send', 'event', 'filters', 'selectMaterial', mtrl_id);
     }
-    Products.resetProducts();
-    Products.resetPage();
-    Products.fetchProducts();
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
+    
   };
 }]);
 
@@ -1290,32 +1515,28 @@ app.controller('ToggleController', ['$scope', function($scope){
 }]);
 
 app.controller('SortController', ['$scope', 'Filters', 'Products', function($scope, Filters, Products){
+  var changed;
+  $scope.sort = Filters.getFilters().sort;
   $scope.Filters = Filters;
-  $scope.sorters = [
-    {
-      name: "Name A-Z",
-      val: "first_letter, asc"
-    },
-    {
-      name: "Name Z-A",
-      val: "first_letter, desc"
-    },
-    {
-      name: "Price Low-High",
-      val: "display_price, asc"
-    },
-    {
-      name: "Price High-Low",
-      val: "display_price, desc"
-    }
-  ];
+  $scope.mySorts = [{id: 0, name: "Name A-Z", value: "first_letter, asc"},{id: 1, name: "Name Z-A", value: "first_letter, desc"},{id: 2, name: "Price Low-High", value: "display_price, asc"},{id: 2, name: "Price High-Low", value: "display_price, desc"}];
+
+  $scope.myConfig = {
+    create: false,
+    valueField: 'value',
+    labelField: 'name',
+    maxItems: 1,
+    searchField: 'name',
+    allowEmptyOption: true
+  };
+
 
   $scope.setSort = function(sort){
-    Filters.setFilter("sort", sort);
+    changed = Filters.setFilter("sort", sort);
     ga('send', 'event', 'filters', 'sort', sort);
-    Products.resetProducts();
-    Products.resetPage();
-    Products.fetchProducts();
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
   };
 }]);
 
@@ -1406,9 +1627,8 @@ app.controller("HeadController", ["Meta", "$scope", function(Meta, $scope){
   $scope.meta = Meta;
 }]);
 
-app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "Products", "Filters", function(Meta, $scope, $http, $stateParams, Products, Filters){
+app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "Products", "Filters", "$state", function(Meta, $scope, $http, $stateParams, Products, Filters, $state){
   Products.resetProducts();
-  Products.resetPage();
   Filters.resetAll();
   Filters.setFilter('brand', $stateParams.id);
   $scope.category = $stateParams.category;
@@ -1419,12 +1639,11 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
     $scope.checkIfFeaturedCategorySet($scope);
     
     if ($stateParams.catID){
-      Meta.set("title", $scope.brand.name + " " + $scope.category + " at Search The Sales");
-      Meta.set("description", "Shop " + $scope.brand.name + " " + $scope.category + " at Search The Sales, All Your Favourite Stores In One Place");
+      Meta.set("title", $scope.brand.name + " " + $scope.category + " at Fetch My Fashion");
+      Meta.set("description", "Shop " + $scope.brand.name + " " + $scope.category + " at Fetch My Fashion, All Your Favourite Stores In One Place");
     }else{
-      $scope.brand = data;
-      Meta.set("title", $scope.brand.name + " at Search The Sales");
-      Meta.set("description", "Shop " + $scope.brand.name + " at Search The Sales, All Your Favourite Stores In One Place");
+      Meta.set("title", $scope.brand.name + " at Fetch My Fashion");
+      Meta.set("description", "Shop " + $scope.brand.name + " at Fetch My Fashion, All Your Favourite Stores In One Place");
     }
   })
 

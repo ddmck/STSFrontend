@@ -1,0 +1,4 @@
+<div class="filter" ng-controller="StylesController" ng-show="filters.getFilters().category">
+  <label>Styles</label>
+  <selectize  placeholder='Select a Style...' ng-model="styleId" ng-change="setStyle(styleId)" options='myStyles' config='myConfig'></selectize>
+</div>

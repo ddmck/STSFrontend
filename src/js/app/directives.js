@@ -95,6 +95,78 @@ app.directive('ngFilters', function(){
   }
 });
 
+app.directive('ngGenderFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/gender-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngCategoryFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/category-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngSubCategoryFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/sub-category-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngStylesFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/styles-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngColorsFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/colors-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngBrandsFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/brands-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngMaterialsFilter', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/materials-filter.html',
+    replace: true,
+    transclude: true
+  }
+});
+
+app.directive('ngSortBy', function(){
+  return {
+    restrict: "A",
+    templateUrl: assetsUrl + 'templates/sort-by.html',
+    replace: true,
+    transclude: true
+  }
+});
+
 app.directive('ngMetaTitle', function(){
   return {
     restrict: "A",

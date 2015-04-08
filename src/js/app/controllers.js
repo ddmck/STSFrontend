@@ -155,113 +155,240 @@ app.controller('ProductsController',  ['$scope', '$http', '$state', 'Filters', '
 
 app.controller('GenderController', ['$scope', 'Filters', 'Products', '$localStorage', function($scope, Filters, Products, $localStorage){
   $scope.genderId = Filters.getFilters().gender;
+  $scope.myGenders = [{id: 0, name: "All"},{id: 1, name: "Mens"},{id: 2, name: "Womens"}];
+
+  $scope.myConfig = {
+      create: false,
+      valueField: 'id',
+      labelField: 'name',
+      maxItems: 1,
+      searchField: 'name',
+      allowEmptyOption: true
+    };
 
   $scope.setGender = function(gender) {
+    var changed;
     if ( gender === "1") {
-      Filters.setFilter("gender", 1);
+      changed = Filters.setFilter("gender", 1);
       ga('send', 'event', 'filters', 'selectGender', 'male');
     } else if ( gender === "2") {
-      Filters.setFilter("gender", 2);
-      ga('send', 'event', 'filters', 'selectGender', 'female');
-    } else if ( gender === "" ){
-      Filters.removeFilter("gender")
+      changed = Filters.setFilter("gender", 2);
+    } else if ( gender === undefined || gender == 0 ){
+      changed = Filters.removeFilter("gender");
     }
     $localStorage.gender = Filters.getFilters().gender
-    Products.resetProducts();
-    Products.resetPage()
-    Products.fetchProducts();
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
   };
 }]);
 
-app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categories', function($scope, Filters, Products, Categories){
-  
-  $scope.categories = [];
+app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categories', '$rootScope', function($scope, Filters, Products, Categories, $rootScope){
+  var changed;
   Categories.fetchCategories();
-  $scope.categories = Categories;
-  $scope.filters = Filters;
+  $scope.catId = Filters.getFilters().category;
+  $scope.myCats = [{id: 0, name: "All"}].concat(Categories.list());
+  $scope.$on("catsLoaded", function(){
+    $scope.myCats = [{id: 0, name: "All"}].concat(Categories.list());
+  });
+
+
+  $scope.categories = Categories
+
+  $scope.myConfig = {
+      create: false,
+      valueField: 'id',
+      labelField: 'name',
+      maxItems: 1,
+      searchField: 'name',
+      allowEmptyOption: true
+    };
+
   $scope.setCategory = function(cat_id){
-    if (cat_id === "") {
-      Filters.removeFilter("category");
+    if (cat_id === undefined || cat_id == 0) {
+      changed = Filters.removeFilter("category");
     } else {
-      Filters.setFilter("category", parseInt(cat_id));
+      changed = Filters.setFilter("category", parseInt(cat_id));
       ga('send', 'event', 'filters', 'selectCategory', cat_id);
+      $rootScope.$broadcast('stylesLoaded');
     }
-    Filters.removeFilter("subCategory");
-    Filters.removeFilter("style");
-    Products.resetProducts();
-    Products.resetPage();
-    Products.fetchProducts();
+    
+    if (changed) {
+      Filters.removeFilter("subCategory");
+      Filters.removeFilter("style");
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
   };
 }]);
+
 
 app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categories', 'SubCategories', function($scope, Filters, Products, Categories, SubCategories){
+  SubCategories.fetchSubCategories();
+  $scope.mySubCats = [{id: 0, name: "All"}].concat(SubCategories.availablelist());
+  $scope.$on("subCatsLoaded", function(){
+    $scope.mySubCats = [{id: 0, name: "All"}].concat(SubCategories.availablelist());
+  });
+
   $scope.subCategories = SubCategories;
-  $scope.subCategories.fetchSubCategories();
-  $scope.filters = Filters;
+
+  $scope.myConfig = {
+      create: false,
+      valueField: 'id',
+      labelField: 'name',
+      maxItems: 1,
+      searchField: 'name',
+      allowEmptyOption: true
+    };
+
   $scope.setSubCat = function(sub_cat_id){
-    if (sub_cat_id === "") {
+    if (sub_cat_id === undefined || sub_cat_id == 0) {
       Filters.removeFilter("subCategory");
     } else {
       Filters.setFilter("subCategory", parseInt(sub_cat_id));
     }
-    Products.resetProducts();
-    Products.resetPage();
+    Products.resetProducts(true);
     Products.fetchProducts();
   };
 }]);
 
 app.controller('StylesController', ['$scope', 'Filters', 'Products', 'Categories', 'Styles', function($scope, Filters, Products, Categories, Styles){
+  var changed;
+  $scope.styleId = Filters.getFilters().style;
+  Styles.fetchStyles();
+  $scope.myStyles = [{id: 0, name: "All"}].concat(Styles.availableList());
+  $scope.$on("stylesLoaded", function(){
+    $scope.myStyles = [{id: 0, name: "All"}].concat(Styles.availableList());
+  });
+
   $scope.styles = Styles;
-  $scope.styles.fetchStyles();
   $scope.filters = Filters;
+
+  $scope.myConfig = {
+    create: false,
+    valueField: 'id',
+    labelField: 'name',
+    maxItems: 1,
+    searchField: 'name',
+    allowEmptyOption: true
+  };
+
   $scope.setStyle = function(style_id){
-    if (style_id === "") {
-      Filters.removeFilter("style");
+    if (style_id === undefined || style_id == 0) {
+      changed = Filters.removeFilter("style");
     } else {
-      Filters.setFilter("style", parseInt(style_id));
+      changed = Filters.setFilter("style", parseInt(style_id));
       ga('send', 'event', 'filters', 'selectStyle', style_id);
     }
-    Products.resetProducts();
-    Products.resetPage();
-    Products.fetchProducts();
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
   };
 }]);
 
 app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', function($scope, Filters, Products, Colors){
-  
-  $scope.colors = [];
+  var changed;
+  $scope.colorId = Filters.getFilters().color;
   Colors.fetchColors();
+  $scope.myColors = [{id: 0, name: "All"}].concat(Colors.list());
+  $scope.$on("colorsLoaded", function(){
+    $scope.myColors = [{id: 0, name: "All"}].concat(Colors.list());
+  });
+
   $scope.colors = Colors;
-  $scope.filters = Filters;
+  
+  $scope.myConfig = {
+      create: false,
+      valueField: 'id',
+      labelField: 'name',
+      maxItems: 1,
+      searchField: 'name',
+      allowEmptyOption: true
+    };
+
   $scope.setColor = function(color_id){
-    if (color_id === "") {
-      Filters.removeFilter("color");
+    if (color_id === undefined || color_id == 0) {
+      changed = Filters.removeFilter("color");
     } else {
-      Filters.setFilter("color", parseInt(color_id));
-      ga('send', 'event', 'filters', 'selectColor', color_id);
+      changed = Filters.setFilter("color", parseInt(color_id));
     }
-    Products.resetProducts();
-    Products.resetPage();
-    Products.fetchProducts();
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
   };
+}]);
+
+app.controller('BrandDropdownController', ['$scope', 'Filters', 'Products', 'Brands', '$http', function($scope, Filters, Products, Brands, $http){
+  var changed;
+  $scope.brandId = Filters.getFilters().brand;
+
+  Brands.fetchBrands();
+  $scope.myBrands = [{id: 0, name: "All"}].concat(Brands.brands);
+  
+  $scope.$on("brandsLoaded", function(){
+    $scope.myBrands = [{id: 0, name: "All"}].concat(Brands.brands)
+  });
+
+  $scope.brands = Brands;
+  
+  $scope.myConfig = {
+      create: false,
+      valueField: 'id',
+      labelField: 'name',
+      maxItems: 1,
+      searchField: 'name',
+      allowEmptyOption: true
+    };
+
+  $scope.setBrand = function(brand_id){
+    if (brand_id === undefined || brand_id == 0) {
+      changed = Filters.removeFilter("brand");
+    } else {
+      changed = Filters.setFilter("brand", parseInt(brand_id));
+    }
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
+  }; 
 }]);
 
 app.controller('MaterialController', ['$scope', 'Filters', 'Products', 'Materials', function($scope, Filters, Products, Materials){
   
   $scope.materials = [];
   Materials.fetchMaterials();
-  $scope.materials = Materials;
+  $scope.myMaterials = [{id: 0, name: "All"}].concat(Materials.list());
   $scope.filters = Filters;
+
+  $scope.$on("materialsLoaded", function(){
+    console.log(Materials.list());
+    $scope.myMaterials = [{id: 0, name: "All"}].concat(Materials.list())
+  });
+
+  $scope.myConfig = {
+    create: false,
+    valueField: 'id',
+    labelField: 'name',
+    maxItems: 1,
+    searchField: 'name',
+    allowEmptyOption: true
+  };
+  
   $scope.setMaterial = function(mtrl_id){
-    if (mtrl_id === "") {
-      Filters.removeFilter("material");
+    if (mtrl_id === undefined || mtrl_id == 0) {
+      changed = Filters.removeFilter("material");
     } else {
-      Filters.setFilter("material", parseInt(mtrl_id));
+      changed = Filters.setFilter("material", parseInt(mtrl_id));
       ga('send', 'event', 'filters', 'selectMaterial', mtrl_id);
     }
-    Products.resetProducts();
-    Products.resetPage();
-    Products.fetchProducts();
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
+    
   };
 }]);
 
@@ -315,32 +442,28 @@ app.controller('ToggleController', ['$scope', function($scope){
 }]);
 
 app.controller('SortController', ['$scope', 'Filters', 'Products', function($scope, Filters, Products){
+  var changed;
+  $scope.sort = Filters.getFilters().sort;
   $scope.Filters = Filters;
-  $scope.sorters = [
-    {
-      name: "Name A-Z",
-      val: "first_letter, asc"
-    },
-    {
-      name: "Name Z-A",
-      val: "first_letter, desc"
-    },
-    {
-      name: "Price Low-High",
-      val: "display_price, asc"
-    },
-    {
-      name: "Price High-Low",
-      val: "display_price, desc"
-    }
-  ];
+  $scope.mySorts = [{id: 0, name: "Name A-Z", value: "first_letter, asc"},{id: 1, name: "Name Z-A", value: "first_letter, desc"},{id: 2, name: "Price Low-High", value: "display_price, asc"},{id: 2, name: "Price High-Low", value: "display_price, desc"}];
+
+  $scope.myConfig = {
+    create: false,
+    valueField: 'value',
+    labelField: 'name',
+    maxItems: 1,
+    searchField: 'name',
+    allowEmptyOption: true
+  };
+
 
   $scope.setSort = function(sort){
-    Filters.setFilter("sort", sort);
+    changed = Filters.setFilter("sort", sort);
     ga('send', 'event', 'filters', 'sort', sort);
-    Products.resetProducts();
-    Products.resetPage();
-    Products.fetchProducts();
+    if (changed) {
+      Products.resetProducts(true);
+      Products.fetchProducts();
+    }
   };
 }]);
 
@@ -431,9 +554,8 @@ app.controller("HeadController", ["Meta", "$scope", function(Meta, $scope){
   $scope.meta = Meta;
 }]);
 
-app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "Products", "Filters", function(Meta, $scope, $http, $stateParams, Products, Filters){
+app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "Products", "Filters", "$state", function(Meta, $scope, $http, $stateParams, Products, Filters, $state){
   Products.resetProducts();
-  Products.resetPage();
   Filters.resetAll();
   Filters.setFilter('brand', $stateParams.id);
   $scope.category = $stateParams.category;
@@ -444,12 +566,11 @@ app.controller("BrandController", ["Meta", "$scope", "$http", "$stateParams", "P
     $scope.checkIfFeaturedCategorySet($scope);
     
     if ($stateParams.catID){
-      Meta.set("title", $scope.brand.name + " " + $scope.category + " at Search The Sales");
-      Meta.set("description", "Shop " + $scope.brand.name + " " + $scope.category + " at Search The Sales, All Your Favourite Stores In One Place");
+      Meta.set("title", $scope.brand.name + " " + $scope.category + " at Fetch My Fashion");
+      Meta.set("description", "Shop " + $scope.brand.name + " " + $scope.category + " at Fetch My Fashion, All Your Favourite Stores In One Place");
     }else{
-      $scope.brand = data;
-      Meta.set("title", $scope.brand.name + " at Search The Sales");
-      Meta.set("description", "Shop " + $scope.brand.name + " at Search The Sales, All Your Favourite Stores In One Place");
+      Meta.set("title", $scope.brand.name + " at Fetch My Fashion");
+      Meta.set("description", "Shop " + $scope.brand.name + " at Fetch My Fashion, All Your Favourite Stores In One Place");
     }
   })
 
