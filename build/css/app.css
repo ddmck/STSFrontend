@@ -1822,6 +1822,8 @@ form.search-bar {
         margin-bottom: 0;
         float: left;
         margin-right: 1em; } }
+    .search-tools .filter:last-child label {
+      text-align: right; }
     .search-tools .filter .selectize-control {
       min-width: 110px; }
       .search-tools .filter .selectize-control .selectize-input {

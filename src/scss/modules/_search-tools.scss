@@ -52,6 +52,10 @@
       margin-right: 1em;
     }
 
+    &:last-child  label {
+      text-align: right;
+    }
+
     .selectize-control {
       min-width: 110px;
 
