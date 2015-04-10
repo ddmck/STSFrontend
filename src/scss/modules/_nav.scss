@@ -234,14 +234,14 @@ header.navigation {
 
     display: none;
     padding-left: 0;
-    border-left: 1px solid darken($navigation-background, 10);
-    border-right: 1px solid darken($navigation-background, 10);
+    // border-left: 1px solid darken($navigation-background, 10);
+    // border-right: 1px solid darken($navigation-background, 10);
     border-bottom: 1px solid darken($navigation-background, 10);
 
     @include media($horizontal-bar-mode) {
       left: -$navigation-submenu-padding;
       position: absolute;
-      top: 1em;
+      top: 0.8em;
     }
 
     .submenu {
