@@ -412,7 +412,6 @@ app.controller('MaterialController', ['$scope', 'Filters', 'Products', 'Material
   $scope.filters = Filters;
 
   $scope.$on("materialsLoaded", function(){
-    console.log(Materials.list());
     $scope.myMaterials = [{id: 0, name: "All"}].concat(Materials.list())
   });
 
