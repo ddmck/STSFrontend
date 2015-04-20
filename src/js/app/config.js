@@ -314,7 +314,8 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .otherwise('/welcome');
   
   $authProvider.configure({
-      apiUrl: backendUrl + 'api'
+    apiUrl: backendUrl + 'api',
+    passwordResetSuccessUrl: window.location.protocol + '//' + window.location.host + '/account/password-reset'
   });
 
   $locationProvider.html5Mode(true);
