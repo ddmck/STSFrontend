@@ -1,0 +1,6 @@
+<div class="alert alert-danger" role="alert" ng-show="error">
+  {{error}} 
+</div>
+<button ng-click="signOutClick()" ng-class="{disabled: !user.signedIn}">
+  Sign Out
+</button>
