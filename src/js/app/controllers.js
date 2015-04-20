@@ -32,6 +32,11 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
       $scope.handleLoginBtnClick();
     }
   };
+
+  $scope.signOutClick = function() {
+    $scope.signOut();
+    $state.go('account.signIn');
+  };
 }]);
 
 app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$localStorage', function($scope, $state, $auth, $localStorage) {
@@ -62,6 +67,49 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
     if ($scope.registration.$valid){
       $scope.handleRegBtnClick();
     }
+  };
+}]);
+
+app.controller('UserRecoveryController', ['$stateParams','$state', '$scope', '$auth', function($stateParams, $state, $scope, $auth){
+  $scope.handlePwdResetBtnClick = function() {
+    $auth.requestPasswordReset($scope.passwordResetForm)
+      .success(function(resp) { 
+        $scope.error = "You'll receive an email with a link shortly"
+      })
+      .error(function(resp) { 
+        $scope.error = resp.errors[0];
+      });
+  };
+
+  $scope.handleUpdatePasswordBtnClick = function() {
+    $auth.updatePassword($scope.changePasswordForm)
+      .then(function(resp) {
+        $scope.error = "Password Updated"
+      })
+      .catch(function(resp) {
+        $scope.error = resp.data.errors[0];
+      });
+  };
+
+  $scope.handleDestroyAccountBtnClick = function() {
+    $auth.destroyAccount()
+      .then(function(resp) {
+        $state.go('welcome')
+      })
+      .catch(function(resp) {
+        $scope.error = resp.data.errors[0];
+      });
+  };
+
+  $scope.handleUpdateAccountBtnClick = function() {
+    $auth.updateAccount($scope.updateAccountForm)
+      .then(function(resp) { 
+        $scope.error = "Details updated successfully"
+      })
+      .catch(function(resp) { 
+        $scope.nameError = resp.data.errors.name[0]
+        $scope.emailError = resp.data.errors.email[0]
+      });
   };
 }]);
 
