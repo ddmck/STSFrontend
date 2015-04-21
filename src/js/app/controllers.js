@@ -103,12 +103,16 @@ app.controller('UserRecoveryController', ['$stateParams','$state', '$scope', '$a
 
   $scope.handleUpdateAccountBtnClick = function() {
     $auth.updateAccount($scope.updateAccountForm)
-      .then(function(resp) { 
-        $scope.error = "Details updated successfully"
+      .then(function(resp) {
+        $scope.result = "Details updated successfully";
       })
       .catch(function(resp) { 
-        $scope.nameError = resp.data.errors.name[0]
-        $scope.emailError = resp.data.errors.email[0]
+        if (resp.data.errors.name)
+          {
+            $scope.nameError = resp.data.errors.name[0]
+          }else{
+            $scope.emailError = resp.data.errors.email[0]
+          };
       });
   };
 }]);
