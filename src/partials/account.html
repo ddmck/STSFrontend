@@ -1,10 +1,25 @@
 <section class="row">
   <ul class="accordion-tabs">
-    <li class="tab-header-and-content">
+    <li class="tab-header-and-content" ng-hide="user.id">
       <a href="javascript:void(0)" ui-sref-active="is-active"  class="tab-link" ui-sref="account.signIn">Sign In</a>
     </li>
-    <li class="tab-header-and-content">
+    <li class="tab-header-and-content" ng-hide="user.id">
       <a href="javascript:void(0)" ui-sref-active="is-active" class="tab-link" ui-sref="account.signUp">Sign Up</a>
+    </li>
+    <li class="tab-header-and-content" ng-hide="user.id">
+      <a href="javascript:void(0)" ui-sref-active="is-active" class="tab-link" ui-sref="account.forgottenPassword">Forgotten Password</a>
+    </li>
+    <li class="tab-header-and-content" ng-show="user.id">
+      <a href="javascript:void(0)" ui-sref-active="is-active" class="tab-link" ui-sref="account.editDetails">Edit Details</a>
+    </li>
+    <li class="tab-header-and-content" ng-show="user.id">
+      <a href="javascript:void(0)" ui-sref-active="is-active" class="tab-link" ui-sref="account.passwordReset">Change Password</a>
+    </li>
+    <li class="tab-header-and-content" ng-show="user.id">
+      <a href="javascript:void(0)" ui-sref-active="is-active" class="tab-link" ui-sref="account.signOut">Sign Out</a>
+    </li>
+    <li class="tab-header-and-content" ng-show="user.id">
+      <a href="javascript:void(0)" ui-sref-active="is-active" class="tab-link" ui-sref="account.delete">Delete Account</a>
     </li>
     <div class="tab-content" ui-view></div>
   </ul>
