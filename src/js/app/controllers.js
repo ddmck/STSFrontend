@@ -84,7 +84,7 @@ app.controller('UserRecoveryController', ['$stateParams','$state', '$scope', '$a
   $scope.handleUpdatePasswordBtnClick = function() {
     $auth.updatePassword($scope.changePasswordForm)
       .then(function(resp) {
-        $scope.error = "Password Updated"
+        $scope.result = "Password Updated"
       })
       .catch(function(resp) {
         $scope.error = resp.data.errors[0];
@@ -94,7 +94,7 @@ app.controller('UserRecoveryController', ['$stateParams','$state', '$scope', '$a
   $scope.handleDestroyAccountBtnClick = function() {
     $auth.destroyAccount()
       .then(function(resp) {
-        $state.go('welcome')
+        $scope.result = "Your account has been closed"
       })
       .catch(function(resp) {
         $scope.error = resp.data.errors[0];
