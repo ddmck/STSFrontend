@@ -74,7 +74,7 @@ app.controller('UserRecoveryController', ['$stateParams','$state', '$scope', '$a
   $scope.handlePwdResetBtnClick = function() {
     $auth.requestPasswordReset($scope.passwordResetForm)
       .success(function(resp) { 
-        $scope.error = "You'll receive an email with a link shortly"
+        $scope.result = "You'll receive an email with a link shortly, didn't receive an email? Click the button below"
       })
       .error(function(resp) { 
         $scope.error = resp.errors[0];
