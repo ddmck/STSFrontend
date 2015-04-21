@@ -2,7 +2,7 @@
   <div class="form-container" ng-hide="result">
     <div class="alert alert-danger" role="alert" ng-show="error">
       {{error}} 
-    </div>
+    </div></br>
     <form ng-submit="handleUpdateAccountBtnClick()" role="form" ng-init="updateAccountForm = user" novalidate>
       <div class="form-group">
         <label>Name</label>
@@ -25,6 +25,5 @@
     {{result}} 
     <br>
     <button ng-click="result = nil">Edit something else?</button>
-  </div>
-  
+  </div> 
 </div>

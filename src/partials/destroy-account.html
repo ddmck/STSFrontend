@@ -1,6 +1,15 @@
-<div class="alert alert-danger" role="alert" ng-show="error">
-  {{error}} 
+<div class="container">
+  <div class="form-container" ng-hide="result">
+    <div class="alert alert-danger" role="alert" ng-show="error">
+      {{error}} 
+    </div></br>
+    <button ng-click="handleDestroyAccountBtnClick()" ng-class="{disabled: !user.signedIn}">
+      Close my account
+    </button>
+  </div>
+  <div class="message-container" ng-show="result">
+    {{result}} 
+    </br></br>
+    <button ui-sref="account.signUp">Sign back up?</button>
+  </div>
 </div>
-<button ng-click="handleDestroyAccountBtnClick()" ng-class="{disabled: !user.signedIn}">
-  Close my account
-</button>
