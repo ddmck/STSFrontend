@@ -94,9 +94,17 @@ section.row {
   // background: $side-image-content-background;
   margin-bottom: -2em;
   
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: flex-start;
+  background-color: $side-image-content-background;
+  
   @include media($large-screen) {
-    @include row(table);
-    margin-top: 3em;
+  //   @include row(table);
+  //   margin-top: 3em;
     margin-bottom: 3em;
   }
 
@@ -106,29 +114,23 @@ section.row {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    // border-bottom: $side-image-border;
-    display: block;
-    min-height: 24em;
-    padding: 3em;
 
-    @include media($large-screen) {
-      @include span-columns(4);
-      background-position: top right;
-      background-size: contain;
-      background-repeat: no-repeat;
-      // border-right: $side-image-border;
-    }
+    flex-grow: 4;
+    flex-shrink: 0;
+    flex-basis: 200px;
   }
 
   .side-image-content {
-    @include span-columns(12);
     padding: 1em 1em 4em 1em;
     background: $side-image-content-background;
 
+    flex-grow: 8;
+    flex-shrink: 0;
+    flex-basis: 200px;
     @include media($large-screen) {
-      @include span-columns(8);
       padding: 4em 4em 8em 4em;
     }
+
 
     h5 {
       margin-bottom: 1em;
@@ -136,7 +138,7 @@ section.row {
     }
 
     h4 {
-      background: #BBB;
+      background: $base-accent-color;
       color: white;
       display: inline-block;
       font-size: 0.75em;

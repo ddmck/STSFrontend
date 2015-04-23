@@ -1,17 +1,29 @@
 <section class="row">
   <div class="side-image">
-    <div class="images-wrapper" ng-style="{'background-image':'url('+ currentImg +')'}"></div>
+    <div class="images-wrapper">
+      <div class="container slider">
+        <img ng-repeat="img in product.image_urls" class="slide slide-animation" ng-hide="!isCurrentSlideIndex($index)" ng-src="{{img}}" alt="{{product.name + ' by ' + product.brand_name + ' ' + ($index + 1)}}"></img>
+        <a class="arrow prev" ng-click="nextSlide()" ng-show="product.image_urls.length > 1"></a>
+        <a class="arrow next" ng-click="prevSlide()" ng-show="product.image_urls.length > 1"></a>
+        <nav class="nav" ng-show="product.image_urls.length > 1">
+          <div class="wrapper">
+            <ul class="dots">
+              <li class="dot" ng-repeat="img in product.image_urls">
+                <a href="#" ng-class="{'active':isCurrentSlideIndex($index)}"
+                        ng-click="setCurrentSlideIndex($index);">{{$index}}</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
     <div class="side-image-content">
       <a ui-sref="brandView({brandId: product.brand_slug, id: product.brand_id})">
         <h4>{{product.brand_name}}</h4>
       </a>
       <h5>{{product.name}}</h5>
       <h3>{{ product.display_price | currency : '£' }}</h3>
-      <ul class="additional-images"><li ng-repeat="img in product.image_urls">
-        <img class="thumb" ng-src="{{img}}" ng-click="setProductImg(img)" ng-class="{current: currentImg === img}"></img>
-      </li></ul>
       
-
       <a class="buy-button" ng-href="{{product.url}}" target="_blank" ng-click="sendEvent()">Buy</a>
       <a class="buy-button" ng-click="addToWishlist(product)"><span ng-show="!checkIfWishedFor()">Save</span><span ng-show="checkIfWishedFor()">Saved</span></a>
       <div ng-product-details></div>

@@ -84,9 +84,21 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       templateUrl: assetsUrl + 'partials/account.html'
     })
 
+    .state('account.passwordReset', {
+      url: '/password-reset?client_id&config&expiry&reset_password&token&uid',
+      templateUrl: assetsUrl + 'partials/password-reset.html',
+      controller: "UserRecoveryController"
+    })
+
     .state('account.signIn', {
       url: '/sign-in',
       templateUrl: assetsUrl + 'partials/sign-in.html',
+      controller: "UserSessionsController"
+    })
+
+    .state('account.signOut', {
+      url: '/sign-in',
+      templateUrl: assetsUrl + 'partials/sign-out.html',
       controller: "UserSessionsController"
     })
 
@@ -94,6 +106,24 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
       url: '/sign-up',
       templateUrl: assetsUrl + 'partials/sign-up.html',
       controller: "UserRegistrationsController"
+    })
+
+    .state('account.forgottenPassword', {
+      url: '/forgotten-password',
+      templateUrl: assetsUrl + 'partials/forgotten-password.html',
+      controller: "UserRecoveryController"
+    })
+
+    .state('account.delete', {
+      url: '/destroy-account',
+      templateUrl: assetsUrl + 'partials/destroy-account.html',
+      controller: "UserRecoveryController"
+    })
+
+    .state('account.editDetails', {
+      url: '/edit-user-details',
+      templateUrl: assetsUrl + 'partials/edit-user-details.html',
+      controller: "UserRecoveryController"
     })
 
     .state('products', {
@@ -287,7 +317,8 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
     .otherwise('/welcome');
   
   $authProvider.configure({
-      apiUrl: backendUrl + 'api'
+    apiUrl: backendUrl + 'api',
+    passwordResetSuccessUrl: window.location.protocol + '//' + window.location.host + '/account/password-reset'
   });
 
   $locationProvider.html5Mode(true);
@@ -1105,6 +1136,11 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
       $scope.handleLoginBtnClick();
     }
   };
+
+  $scope.signOutClick = function() {
+    $scope.signOut();
+    $state.go('account.signIn');
+  };
 }]);
 
 app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$localStorage', function($scope, $state, $auth, $localStorage) {
@@ -1135,6 +1171,53 @@ app.controller('UserRegistrationsController', ['$scope', '$state', '$auth', '$lo
     if ($scope.registration.$valid){
       $scope.handleRegBtnClick();
     }
+  };
+}]);
+
+app.controller('UserRecoveryController', ['$stateParams','$state', '$scope', '$auth', function($stateParams, $state, $scope, $auth){
+  $scope.handlePwdResetBtnClick = function() {
+    $auth.requestPasswordReset($scope.passwordResetForm)
+      .success(function(resp) { 
+        $scope.result = "You'll receive an email with a link shortly, didn't receive an email? Click the button below"
+      })
+      .error(function(resp) { 
+        $scope.error = resp.errors[0];
+      });
+  };
+
+  $scope.handleUpdatePasswordBtnClick = function() {
+    $auth.updatePassword($scope.changePasswordForm)
+      .then(function(resp) {
+        $scope.result = "Password Updated"
+      })
+      .catch(function(resp) {
+        $scope.error = resp.data.errors[0];
+      });
+  };
+
+  $scope.handleDestroyAccountBtnClick = function() {
+    $auth.destroyAccount()
+      .then(function(resp) {
+        $scope.result = "Your account has been closed"
+      })
+      .catch(function(resp) {
+        $scope.error = resp.data.errors[0];
+      });
+  };
+
+  $scope.handleUpdateAccountBtnClick = function() {
+    $auth.updateAccount($scope.updateAccountForm)
+      .then(function(resp) {
+        $scope.result = "Details updated successfully";
+      })
+      .catch(function(resp) { 
+        if (resp.data.errors.name)
+          {
+            $scope.nameError = resp.data.errors.name[0]
+          }else{
+            $scope.emailError = resp.data.errors.email[0]
+          };
+      });
   };
 }]);
 
@@ -1437,7 +1520,6 @@ app.controller('MaterialController', ['$scope', 'Filters', 'Products', 'Material
   $scope.filters = Filters;
 
   $scope.$on("materialsLoaded", function(){
-    console.log(Materials.list());
     $scope.myMaterials = [{id: 0, name: "All"}].concat(Materials.list())
   });
 
@@ -1557,6 +1639,12 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'M
     Meta.set("slug", $scope.product.slug);
     var sizes = _.map($scope.product.sizes, function(size){ return size.name }).join(" | ");
     Meta.set("sizes", sizes);
+
+    if ($scope.product.image_urls) {
+      $scope.product.image_urls = _.uniq($scope.product.image_urls);
+    } else {
+      $scope.product.image_urls = [$scope.currentImg];
+    }
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
   });
@@ -1592,6 +1680,28 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'M
 
   $scope.toggleMenu = function(){
     $scope.showMenu = !$scope.showMenu;
+  };
+
+  $scope.currentIndex = 0;
+
+  $scope.setCurrentSlideIndex = function (index) {
+      $scope.currentIndex = index;
+  };
+
+  $scope.isCurrentSlideIndex = function (index) {
+      return $scope.currentIndex === index;
+  };
+
+  $scope.prevSlide = function () {
+    $scope.currentIndex = ($scope.currentIndex < $scope.product.image_urls.length - 1) ? ++$scope.currentIndex : 0;
+  };
+
+  $scope.nextSlide = function () {
+    $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.product.image_urls.length - 1;
+  };
+
+  $scope.setProductImg = function(imgUrl) {
+    $scope.currentImg = imgUrl;
   };
 
   $scope.setProductImg = function(imgUrl) {

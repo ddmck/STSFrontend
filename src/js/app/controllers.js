@@ -535,6 +535,12 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'M
     Meta.set("slug", $scope.product.slug);
     var sizes = _.map($scope.product.sizes, function(size){ return size.name }).join(" | ");
     Meta.set("sizes", sizes);
+
+    if ($scope.product.image_urls) {
+      $scope.product.image_urls = _.uniq($scope.product.image_urls);
+    } else {
+      $scope.product.image_urls = [$scope.currentImg];
+    }
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
   });
@@ -570,6 +576,28 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'M
 
   $scope.toggleMenu = function(){
     $scope.showMenu = !$scope.showMenu;
+  };
+
+  $scope.currentIndex = 0;
+
+  $scope.setCurrentSlideIndex = function (index) {
+      $scope.currentIndex = index;
+  };
+
+  $scope.isCurrentSlideIndex = function (index) {
+      return $scope.currentIndex === index;
+  };
+
+  $scope.prevSlide = function () {
+    $scope.currentIndex = ($scope.currentIndex < $scope.product.image_urls.length - 1) ? ++$scope.currentIndex : 0;
+  };
+
+  $scope.nextSlide = function () {
+    $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.product.image_urls.length - 1;
+  };
+
+  $scope.setProductImg = function(imgUrl) {
+    $scope.currentImg = imgUrl;
   };
 
   $scope.setProductImg = function(imgUrl) {
