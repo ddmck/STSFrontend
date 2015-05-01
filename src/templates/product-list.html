@@ -1,17 +1,19 @@
-<section class="row">
-  <div class="cards" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="1" infinite-scroll-immediate-check='{{ products.products.scrollActive() }}'>
+<section class="row"> <button ng-hide="showFilters" class="show-filters" ng-click="showFilters = true">Show Filters</button>
+  <div style="padding: 0 1em;" ng-show="showFilters">
+    <button class="hide-filters" ng-click="showFilters = false">Hide Filters</button>
+    <br>
+    <div ng-gender-filter></div>
+    <div ng-category-filter></div>
+    <div ng-styles-filter></div>
+    <div ng-colors-filter></div>
+    <div ng-brands-filter></div>
+    <div ng-materials-filter></div>
+    <div ng-sort-by></div>
+    <br>
+    <button class="hide-filters" ng-click="showFilters = false">Hide Filters</button>
+  </div>
+  <div ng-hide="showFilters" class="cards" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="1" infinite-scroll-immediate-check='{{ products.products.scrollActive() }}'>
     <div class="card" ng-repeat="product in products.products.getProducts() track by $index" >
-      <!-- <div class="action-buttons">
-          <div class="save-button-container">
-            <a class="save-button" ng-click="products.addToWishlist(product)"><span ng-show="!products.checkIfWishedFor(product.id)">Info</span><span ng-show="products.checkIfWishedFor(product.id)">Info</span></a>
-          </div>
-          <div class="buy-button-container">
-            <a class="buy-button" ng-click="products.addToWishlist(product)">Info</a>
-          </div>
-          <div class="info-button-container">
-            <a class="info-button" ng-click="products.addToWishlist(product)">Info</a>
-          </div>
-        </div> -->
       <div class="card-image">
 
         <a ng-href="{{product.url}}" target="_blank" ng-click="sendEvent(product)">

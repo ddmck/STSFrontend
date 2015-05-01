@@ -1506,9 +1506,9 @@ section.row {
     -webkit-flex-shrink: 0;
         -ms-flex-negative: 0;
             flex-shrink: 0;
-    -webkit-flex-basis: 200px;
-        -ms-flex-preferred-size: 200px;
-            flex-basis: 200px; }
+    -webkit-flex-basis: 250px;
+        -ms-flex-preferred-size: 250px;
+            flex-basis: 250px; }
   .side-image .side-image-content {
     padding: 1em 1em 4em 1em;
     background: #F9F9F9;
@@ -1846,12 +1846,28 @@ form.search-bar {
         margin-bottom: 0;
         float: left;
         margin-right: 1em; } }
-    .search-tools .filter:last-child label {
-      text-align: right; }
+    @media screen and (min-width: 53.75em) {
+      .search-tools .filter:last-child {
+        float: right;
+        margin-right: 0em; } }
+    @media screen and (min-width: 53.75em) {
+      .search-tools .filter:last-child label {
+        text-align: right; } }
     .search-tools .filter .selectize-control {
       min-width: 110px; }
       .search-tools .filter .selectize-control .selectize-input {
         padding-right: 2em; }
+
+button.show-filters {
+  margin-left: 1em;
+  margin-right: 1em;
+  width: calc(100% - 2em); }
+  @media screen and (min-width: 53.75em) {
+    button.show-filters {
+      display: none; } }
+
+button.hide-filters {
+  width: 100%; }
 
 .accordion-tabs {
   line-height: 1.5;
@@ -2692,3 +2708,9 @@ NAV
   @media screen and (min-width: 53.75em) {
     #main-view {
       padding-top: 40px; } }
+
+input[type='text'],
+input[type='number'],
+input[type='search'],
+textarea {
+  font-size: 16px !important; }
