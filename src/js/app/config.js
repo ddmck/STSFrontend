@@ -330,7 +330,10 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
   
   $authProvider.configure({
     apiUrl: backendUrl + 'api',
-    passwordResetSuccessUrl: window.location.protocol + '//' + window.location.host + '/account/password-reset'
+    passwordResetSuccessUrl: window.location.protocol + '//' + window.location.host + '/account/password-reset',
+    authProviderPaths: {
+        facebook: '/auth/facebook'
+      }
   });
 
   $locationProvider.html5Mode(true);
