@@ -273,8 +273,15 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
   var page = 1;
   var searching = true;
   var scrollActive = false;
+  var lastScrollLocation = 0;
   var lastResetFrom;
   return {
+    setLastScrollLocation: function(y) {
+      lastScrollLocation = y
+    },
+    getLastScrollLocation: function() {
+      return lastScrollLocation
+    },
     scrollActive: function(){
       return scrollActive;
     },
@@ -299,11 +306,15 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
         scrollActive = false;
         lastResetFrom = $location.absUrl();
         page = 1
+        lastScrollLocation = 0
       } else if ($location.absUrl() !== lastResetFrom) {
         products = [];
         scrollActive = false;
         lastResetFrom = $location.absUrl();
-        page = 1
+        page = 1;
+        lastScrollLocation = 0;
+      } else {
+        lastScrollLocation = lastScrollLocation;
       }
     },
     resetPage: function(){
