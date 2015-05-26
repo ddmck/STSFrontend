@@ -13,5 +13,6 @@
     <input type="password" ng-minlength="8" name="password" id="password" ng-model="loginForm.password" required="required" class="form-control">
     <p ng-show="login.password.$error.minlength && submit">Password is too short.</p>
   </div> 
-  <button type="submit" class="btn btn-primary btn-lg">Sign in</button> 
+  <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
+  <button ng-click="handleFacebookBtnClick()" class="btn btn-primary btn-lg">Login with Facebook</button> 
 </form>
