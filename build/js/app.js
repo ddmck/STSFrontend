@@ -1035,7 +1035,8 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
                                                     color_id: Filters.getFilters().color,
                                                     material_id: Filters.getFilters().material,
                                                     style_id: Filters.getFilters().style,
-                                                    on_sale: true
+                                                    on_sale: true,
+                                                    out_of_stock: false
                                                   }, 
                                                   sort: Filters.getFilters().sort, 
                                                   search_string: Filters.getFilters().searchString
