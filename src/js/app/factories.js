@@ -350,6 +350,29 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
   };
 }]);
 
+app.factory('MoreLikeThis', ['$http', '$rootScope', function($http, $rootScope){
+  var moreLikeThis = [];
+  return {
+    getMoreLikeThis: function(){
+      return moreLikeThis;
+    },
+    fetchMoreLikeThis: function(item){
+      searching = true;
+      $http.get(backendUrl + 'more_like_this.json', { async: true, 
+                                                      params: {
+                                                        id: item.id
+                                                      } 
+                                                    })
+                                                    .success(function(data){
+                                                      moreLikeThis = [];
+                                                      moreLikeThis = moreLikeThis.concat(data);
+                                                      moreLikeThis = _.reject(moreLikeThis, {'id': item.id})
+                                                      $rootScope.$broadcast('moreLikeThisLoaded')
+                                                    });
+    }
+  };
+}]);
+
 app.factory('Brands', ['$http', '$rootScope', function($http, $rootScope){
   var o = {}
   o.brands = [];
