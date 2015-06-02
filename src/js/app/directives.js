@@ -68,6 +68,15 @@ app.directive('ngSizeDropdown', function(){
   }
 });
 
+app.directive('ngMoreLikeThis', function(){
+  return {
+    restrict: 'A',
+    templateUrl: assetsUrl + 'templates/more-like-this.html',
+    replace: true,
+    transclude: true
+  }
+})
+
 app.directive('ngProductDetails', function(){
   return {
     restrict: 'A',
