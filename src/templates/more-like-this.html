@@ -1,0 +1,23 @@
+<div class="cards">
+  <div class="card" ng-repeat="moreLike in MLT.getMoreLikeThis() track by $index" >
+    <div class="card-image">
+      <a ui-sref="productDetail({productID: moreLike.id, slug: moreLike.slug})">
+        <img ng-src="{{moreLike.image_url}}" alt="{{moreLike.name + ' by ' + moreLike.brand_name}}">
+      </a>
+      <!-- <a class="save-button" ng-click="products.addToWishlist(product)"><span ng-show="!products.checkIfWishedFor(product.id)">Save</span><span ng-show="products.checkIfWishedFor(product.id)">Saved</span></a> -->
+    </div>
+    <div class="card-header">
+      {{ moreLike.brand_name }}
+    </div>
+    <div class="card-copy">
+      <a ui-sref="productDetail({productID: moreLike.id, slug: moreLike.slug})">
+        <p ng-bind-html="moreLike.name"></p>
+      </a>
+    </div>
+    <div class="card-stats">
+      <ul>
+        <li>{{ moreLike.display_price | currency : '£' }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

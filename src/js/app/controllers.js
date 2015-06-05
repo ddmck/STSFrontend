@@ -35,6 +35,7 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
 
   $scope.signOutClick = function() {
     $scope.signOut();
+    $localStorage.$reset();
     $state.go('account.signIn');
   };
 }]);
@@ -518,16 +519,20 @@ app.controller('SortController', ['$scope', 'Filters', 'Products', function($sco
   };
 }]);
 
-app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Meta', 'WishlistItems', '$auth', 'authModal','$localStorage', function($scope, $stateParams, $http, Meta, WishlistItems, $auth, authModal, $localStorage){
+app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Basket', 'Meta', 'WishlistItems', '$auth', 'authModal','$localStorage', 'MoreLikeThis', '$rootScope', function($scope, $stateParams, $http, Basket, Meta, WishlistItems, $auth, authModal, $localStorage, MoreLikeThis, $rootScope){
   // get the id
   $scope.showMenu = false;
   $scope.id = $stateParams.productID;
+  $scope.basket = Basket;
+  $scope.basket.fetchBasketItemProducts();
   $scope.size = null;
+
+  $scope.MLT = MoreLikeThis;
 
   $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
     $scope.product = data;
-    Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Search The Sales");
-    Meta.set("description", "Shop " + $scope.product.name + " by " + $scope.product.brand_name + " at Search The Sales, All Your Favourite Stores In One Place");
+    Meta.set("title", $scope.product.brand_name + " " + $scope.product.name + " at Fetch My Fashion");
+    Meta.set("description", "Shop " + $scope.product.name + " by " + $scope.product.brand_name + " at Fetch My Fashion, All Your Favourite Stores In One Place");
     $scope.currentImg = data.large_image_url || data.image_url;
     Meta.set("imageUrl", $scope.currentImg);
     Meta.set("displayPrice", $scope.product.display_price);
@@ -535,14 +540,28 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'M
     Meta.set("slug", $scope.product.slug);
     var sizes = _.map($scope.product.sizes, function(size){ return size.name }).join(" | ");
     Meta.set("sizes", sizes);
-
     if ($scope.product.image_urls) {
       $scope.product.image_urls = _.uniq($scope.product.image_urls);
     } else {
       $scope.product.image_urls = [$scope.currentImg];
     }
+
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
+
+    $scope.MLT.fetchMoreLikeThis($scope.product);
+    // if ($scope.product.deeplink) {
+    //   $scope.scraping = true
+
+    //   $http.get(scraperUrl + $scope.product.deeplink, {async: true}).success(function(data){
+    //     $scope.product.sizes = _.map(data.sizes, function(size) { 
+    //       return {name: size.name.split(" - ")[0]}; 
+    //     });
+    //     $scope.scraping = false
+    //   })
+
+    // }
+    
   });
 
   $scope.addToWishlist = function(product){
