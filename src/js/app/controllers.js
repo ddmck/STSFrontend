@@ -35,6 +35,7 @@ app.controller('UserSessionsController', ['$scope', '$state', '$auth', '$localSt
 
   $scope.signOutClick = function() {
     $scope.signOut();
+    $localStorage.$reset();
     $state.go('account.signIn');
   };
 }]);
