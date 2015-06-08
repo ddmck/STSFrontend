@@ -518,11 +518,18 @@ app.controller('SortController', ['$scope', 'Filters', 'Products', function($sco
   };
 }]);
 
-app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Meta', 'WishlistItems', '$auth', 'authModal','$localStorage', function($scope, $stateParams, $http, Meta, WishlistItems, $auth, authModal, $localStorage){
+app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Meta', 'WishlistItems', '$auth', 'authModal','$localStorage', '$state', '$rootScope', function($scope, $stateParams, $http, Meta, WishlistItems, $auth, authModal, $localStorage, $state, $rootScope){
   // get the id
   $scope.showMenu = false;
+  if ($scope.errorSeen) { $rootScope.$broadcast("hideError"); }
   $scope.id = $stateParams.productID;
   $scope.size = null;
+  $rootScope.$on('hideError', function(){
+    $rootScope.error = null;
+  });
+  $rootScope.$on('$stateChangeSuccess', function(event, toState){
+    if (toState.name != "products.new") { $rootScope.$broadcast("hideError"); }
+  });
 
   $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
     $scope.product = data;
@@ -543,6 +550,11 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'M
     }
     $scope.getStoreDetails($scope.product);
     window.scrollTo(0, 0);
+  }).error(function(data, status){
+    if (status === 404){
+      $state.go('products.new');
+      $rootScope.error = data.response;
+    };
   });
 
   $scope.addToWishlist = function(product){
