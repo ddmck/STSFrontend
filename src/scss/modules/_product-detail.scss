@@ -44,6 +44,15 @@ section.row {
         font-size: $base-font-size * 2.25;
       }
     }
+    h2 {
+      font-weight: 300;
+      text-align: center;
+      text-transform: capitalize;
+      font-size: 0.75em;
+      @include media($large-screen) {
+        font-size: $base-font-size * 1.25;
+      }
+    }
     .table {
       display: table;   /* Allow the centering to work */
       margin: 1em auto 0 auto;
