@@ -136,6 +136,11 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         Products.resetProducts();
         Filters.resetAll();
         Products.fetchProducts();
+        setTimeout(function(){ window.scrollTo(0,Products.getLastScrollLocation()); }, 5);
+      },
+      onExit: function(Products){
+        var lastScroll = document.body.scrollTop || document.documentElement.scrollTop
+        Products.setLastScrollLocation(lastScroll)
       }
     })
 
@@ -195,6 +200,11 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         Filters.setFilter('category', $stateParams.catID);
         Filters.setFilter('gender', genderVar);
         Products.fetchProducts();
+        setTimeout(function(){ window.scrollTo(0,Products.getLastScrollLocation()); }, 5);
+      },
+      onExit: function(Products){
+        var lastScroll = document.body.scrollTop || document.documentElement.scrollTop
+        Products.setLastScrollLocation(lastScroll)
       }
     })
 
@@ -237,6 +247,11 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
         $scope.searchString = $stateParams.searchString;
         Products.resetProducts();
         Products.fetchProducts();
+        setTimeout(function(){ window.scrollTo(0,Products.getLastScrollLocation()); }, 5);
+      },
+      onExit: function(Products){
+        var lastScroll = document.body.scrollTop || document.documentElement.scrollTop
+        Products.setLastScrollLocation(lastScroll)
       }
     })
 
@@ -315,7 +330,10 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
   
   $authProvider.configure({
     apiUrl: backendUrl + 'api',
-    passwordResetSuccessUrl: window.location.protocol + '//' + window.location.host + '/account/password-reset'
+    passwordResetSuccessUrl: window.location.protocol + '//' + window.location.host + '/account/password-reset',
+    authProviderPaths: {
+        facebook: '/auth/facebook'
+      }
   });
 
   $locationProvider.html5Mode(true);
@@ -323,6 +341,9 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider, $location
 })
 
 app.run(function($rootScope, $location, Meta) {
+  $rootScope.$on('$stateChangeStart', function (event, nextState, currentState) {
+    $rootScope.lastScrollLocation = document.documentElement.scrollTop || document.body.scrollTop;
+  });
 
   $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
     ga('send', 'pageview', $location.path());
