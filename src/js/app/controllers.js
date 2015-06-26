@@ -552,11 +552,12 @@ app.controller('SortController', ['$scope', 'Filters', 'Products', function($sco
   };
 }]);
 
-app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Meta', 'WishlistItems', '$auth', 'authModal','$localStorage', function($scope, $stateParams, $http, Meta, WishlistItems, $auth, authModal, $localStorage){
+app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'Meta', 'WishlistItems', '$auth', 'authModal','$localStorage', 'MoreLikeThis', function($scope, $stateParams, $http, Meta, WishlistItems, $auth, authModal, $localStorage, MoreLikeThis){
   // get the id
   $scope.showMenu = false;
   $scope.id = $stateParams.productID;
   $scope.size = null;
+  $scope.MLT = MoreLikeThis;
 
   $http.get(backendUrl + 'products/' + $scope.id + '.json', {async: true}).success(function(data){
     $scope.product = data;
@@ -569,6 +570,8 @@ app.controller('ProductDetailController', ['$scope', '$stateParams', '$http', 'M
     Meta.set("slug", $scope.product.slug);
     var sizes = _.map($scope.product.sizes, function(size){ return size.name }).join(" | ");
     Meta.set("sizes", sizes);
+
+    $scope.MLT.fetchMoreLikeThis($scope.product);
 
     if ($scope.product.image_urls) {
       $scope.product.image_urls = _.uniq($scope.product.image_urls);
