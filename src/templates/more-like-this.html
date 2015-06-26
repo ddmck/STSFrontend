@@ -16,7 +16,9 @@
     </div>
     <div class="card-stats">
       <ul>
-        <li>{{ moreLike.display_price | currency : '£' }}</li>
+        <li>{{ moreLike.display_price | currency : '£' }}<span>Sale Price</span></li>
+        <li>{{ moreLike.rrp | currency : '£' }}<span>RRP</span></li>
+        <li>{{( 1 - (moreLike.display_price / moreLike.rrp))  * 100 | number:0 }}%<span>OFF</span></li>
       </ul>
     </div>
   </div>

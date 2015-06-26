@@ -21,14 +21,14 @@ app.factory('Filters', ['$location', function($location){
     },
     resetAll: function(hard){
       if (hard) {
-        
+
         filters = {gender: filters.gender};
         lastResetFrom = $location.absUrl();
       } else if (lastResetFrom !== $location.absUrl()) {
         filters = {gender: filters.gender};
         lastResetFrom = $location.absUrl();
-      } 
-    }         
+      }
+    }
   };
 }]);
 
@@ -201,21 +201,21 @@ app.factory('Deliveries', ['$localStorage', function($localStorage){
         holdingArr.push(delivery);
       }
       $localStorage.deliveries = holdingArr;
-    }, 
+    },
     reset: function(){
       $localStorage.deliveries = [];
     },
     total: function(){
       if ($localStorage.deliveries.length > 0) {
         var total = 0;
-         _.forEach($localStorage.deliveries, function(n) { 
-          total += n.price; 
+         _.forEach($localStorage.deliveries, function(n) {
+          total += n.price;
         });
         return total;
       } else {
         return 0;
       }
-      
+
     }
   }
 }])
@@ -307,18 +307,18 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
       return !(ans === undefined);
     },
     addToWishlistItems: function(product){
-      
+
       var wli = _.find(wishlistItems, function(wl){
         return wl.product.id === product.id;
       })
       if ( wli === undefined ) {
         $http.post(backendUrl + 'api/wishlist_items.json', {async: true, params: {
-                                                                              product_id: product.id 
+                                                                              product_id: product.id
                                                                               }})
           .success(function(data){
             wishlistItems.push(data)
           });
-        
+
       } else {
 
         $http.delete(backendUrl + 'api/wishlist_items/' + wli.id + '.json', {async: true})
@@ -393,23 +393,23 @@ app.factory('Products', ['$http', 'Filters', '$location', 'Colors', 'Brands', '$
     },
     fetchProducts: function(){
       searching = true;
-      $http.get(backendUrl + 'products.json', { async: true, 
+      $http.get(backendUrl + 'products.json', { async: true,
                                                 params: {
-                                                  page: page.toString(), 
+                                                  page: page.toString(),
                                                   filters: {
                                                     gender_id: Filters.getFilters().gender,
-                                                    brand_id: Filters.getFilters().brand, 
-                                                    category_id: Filters.getFilters().category, 
+                                                    brand_id: Filters.getFilters().brand,
+                                                    category_id: Filters.getFilters().category,
                                                     sub_category_id: Filters.getFilters().subCategory,
                                                     color_id: Filters.getFilters().color,
                                                     material_id: Filters.getFilters().material,
                                                     style_id: Filters.getFilters().style,
                                                     on_sale: true,
                                                     out_of_stock: false
-                                                  }, 
-                                                  sort: Filters.getFilters().sort, 
+                                                  },
+                                                  sort: Filters.getFilters().sort,
                                                   search_string: Filters.getFilters().searchString
-                                                  
+
                                                 }}).success(function(data){
                                                   if (data.colors && data.colors.length > 0) {
                                                     Colors.fetchColors(data.colors);
@@ -434,7 +434,7 @@ app.factory('Products', ['$http', 'Filters', '$location', 'Colors', 'Brands', '$
                                                     scrollActive = false;
                                                     searching = false;
                                                   }
-       
+
       });
     },
     currentlySearching: function(){
@@ -451,10 +451,11 @@ app.factory('MoreLikeThis', ['$http', '$rootScope', function($http, $rootScope){
     },
     fetchMoreLikeThis: function(item){
       searching = true;
-      $http.get(backendUrl + 'more_like_this.json', { async: true, 
+      $http.get(backendUrl + 'more_like_this.json', { async: true,
                                                       params: {
-                                                        id: item.id
-                                                      } 
+                                                        id: item.id,
+                                                        on_sale: true
+                                                      }
                                                     })
                                                     .success(function(data){
                                                       moreLikeThis = [];
@@ -474,7 +475,7 @@ app.factory('Brands', ['$http', '$rootScope', function($http, $rootScope){
     $http.get(backendUrl + 'brands.json', { async: true }).success(function(data){
       o.brands = data;
       if (!o.loaded) {$rootScope.$broadcast('brandsLoaded'); o.loaded = true;}
-      if (!!dataHolder) {$rootScope.$broadcast('brandsReceived', dataHolder);}     
+      if (!!dataHolder) {$rootScope.$broadcast('brandsReceived', dataHolder);}
     });
   };
 
