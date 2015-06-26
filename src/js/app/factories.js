@@ -47,54 +47,103 @@ app.factory('Trends', [ '$http', 'Products', 'Filters', function($http, Products
   }
 }]);
 
-
 app.factory('Categories', [ '$http', '$rootScope', function($http, $rootScope){
   var categories = [];
+  var loaded = false;
   return {
-    fetchCategories: function(){
+    fetchCategories: function(dataHolder){
       $http.get(backendUrl + 'categories.json', {async: true}).success(function(data){
         categories = data;
-        $rootScope.$broadcast('catsLoaded');
-        $rootScope.$broadcast('stylesLoaded');
+        if (!loaded) { $rootScope.$broadcast('catsLoaded'); loaded = true; }
+        if (!!dataHolder) {$rootScope.$broadcast('categoriesReceived', dataHolder);}
       });
     },
     list: function(){
       return categories;
+    },
+    addCount: function(newArr){
+      var array = [];
+      _.map(categories, function(n){
+        _.forEach(newArr, function(v){
+          if (v.name == n.name){
+            n.count = v.count;
+            n.displayName = n.name + ' ' + '(' + n.count + ')';
+          }
+        });
+        if (!n.count){
+          n.count = 0;
+          n.displayName = n.name;
+        }
+      });
+      $rootScope.$broadcast('catsLoaded');
     }
-
-  }
+  };
 }]);
 
 app.factory('Colors', [ '$http', '$rootScope', function($http, $rootScope){
   var colors = [];
+  var loaded = false;
   return {
-    fetchColors: function(){
+    fetchColors: function(dataHolder){
       $http.get(backendUrl + 'colors.json', {async: true}).success(function(data){
         colors = data;
-        $rootScope.$broadcast('colorsLoaded');
+        if (!loaded) {$rootScope.$broadcast('colorsLoaded'); loaded = true;}
+        if (!!dataHolder) {$rootScope.$broadcast('colorsReceived', dataHolder);}
       });
     },
     list: function(){
       return colors;
+    },
+    addCount: function(newArr){
+      var array = [];
+      _.map(colors, function(n){
+        _.forEach(newArr, function(v){
+          if (v.name == n.name){
+            n.count = v.count;
+            n.displayName = n.name + ' ' + '(' + n.count + ')';
+          }
+        });
+        if (!n.count){
+          n.count = 0;
+          n.displayName = n.name;
+        }
+      });
+      $rootScope.$broadcast('colorsLoaded');
     }
-
-  }
+  };
 }]);
 
 app.factory('Materials', [ '$http', '$rootScope', function($http, $rootScope){
   var materials = [];
+  var loaded = false;
   return {
-    fetchMaterials: function(){
+    fetchMaterials: function(dataHolder){
       $http.get(backendUrl + 'materials.json', {async: true}).success(function(data){
         materials = data;
-        $rootScope.$broadcast('materialsLoaded');
+        if (!loaded) {$rootScope.$broadcast('materialsLoaded'); loaded = true;}
+        if (!!dataHolder) {$rootScope.$broadcast('materialsReceived', dataHolder);}
       });
     },
     list: function(){
       return materials;
+    },
+    addCount: function(newArr){
+      var array = [];
+      _.map(materials, function(n){
+        _.forEach(newArr, function(v){
+          if (v.name == n.name){
+            n.count = v.count;
+            n.displayName = n.name + ' ' + '(' + n.count + ')';
+          }
+        });
+        if (!n.count){
+          n.count = 0;
+          n.displayName = n.name;
+        }
+      });
+      $rootScope.$broadcast('materialsLoaded');
     }
-
-  }
+  };
 }]);
 
 app.factory('Stores', [ '$http', function($http){
@@ -191,12 +240,15 @@ app.factory('SubCategories', [ '$http', 'Filters', function($http, Filters){
   }
 }]);
 
-app.factory('Styles', [ '$http', 'Filters', function($http, Filters){
+app.factory('Styles', [ '$http', 'Filters', '$rootScope', function($http, Filters, $rootScope){
   var styles = [];
+  var loaded = false;
   return {
-    fetchStyles: function(){
+    fetchStyles: function(dataHolder){
       $http.get(backendUrl + 'styles.json', {async: true}).success(function(data){
         styles = data;
+        if (!loaded) {$rootScope.$broadcast('stylesLoaded'); loaded = true;}
+        if (!!dataHolder) {$rootScope.$broadcast('stylesReceived', dataHolder);}
       });
     },
     list: function(){
@@ -204,10 +256,26 @@ app.factory('Styles', [ '$http', 'Filters', function($http, Filters){
     },
     availableList: function(){
       return _.filter(styles, function(style){
-        return style.category_id == Filters.getFilters().category
-      })
+        return style.category_id == Filters.getFilters().category;
+      });
+    },
+    addCount: function(newArr){
+      var array = [];
+      _.map(styles, function(n){
+        _.forEach(newArr, function(v){
+          if (v.name == n.name){
+            n.count = v.count;
+            n.displayName = n.name + ' ' + '(' + n.count + ')';
+          }
+        });
+        if (!n.count){
+          n.count = 0;
+          n.displayName = n.name;
+        }
+      });
+      $rootScope.$broadcast('stylesLoaded');
     }
-  }
+  };
 }]);
 
 app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localStorage){
@@ -265,7 +333,7 @@ app.factory('WishlistItems', [ '$http', '$localStorage', function($http, $localS
   }
 }]);
 
-app.factory('Products', ['$http', 'Filters', '$location', function($http, Filters, $location){
+app.factory('Products', ['$http', 'Filters', '$location', 'Colors', 'Brands', '$rootScope', 'Materials', 'Categories', 'Styles', function($http, Filters, $location, Colors, Brands, $rootScope, Materials, Categories, Styles){
   var query = $location.search();
   Filters.useQuery(query);
   var factory = this;
@@ -343,8 +411,22 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
                                                   search_string: Filters.getFilters().searchString
                                                   
                                                 }}).success(function(data){
-                                                  if (data.length > 0) {
-                                                    products = products.concat(data);
+                                                  if (data.colors && data.colors.length > 0) {
+                                                    Colors.fetchColors(data.colors);
+                                                  }
+                                                  if (data.categories && data.categories.length > 0) {
+                                                    Categories.fetchCategories(data.categories);
+                                                  }
+                                                  if (data.materials && data.materials.length > 0) {
+                                                    Materials.fetchMaterials(data.materials);
+                                                  }
+                                                  if (data.brands && data.brands.length > 0) {
+                                                    Brands.fetchBrands(data.brands);
+                                                  }
+                                                  if (data.styles && data.styles.length > 0) {
+                                                    Styles.fetchStyles(data.styles);                                                  }
+                                                  if (data.products.length > 0) {
+                                                    products = products.concat(data.products);
                                                     page += 1;
                                                     scrollActive = true;
                                                     searching = false;
@@ -362,27 +444,46 @@ app.factory('Products', ['$http', 'Filters', '$location', function($http, Filter
 }]);
 
 app.factory('Brands', ['$http', '$rootScope', function($http, $rootScope){
-  var o = {}
+  var o = {};
   o.brands = [];
-  o.fetchBrands = function(){
+  o.loaded = false;
+  o.fetchBrands = function(dataHolder){
     $http.get(backendUrl + 'brands.json', { async: true }).success(function(data){
       o.brands = data;
-      $rootScope.$broadcast('brandsLoaded');       
+      if (!o.loaded) {$rootScope.$broadcast('brandsLoaded'); o.loaded = true;}
+      if (!!dataHolder) {$rootScope.$broadcast('brandsReceived', dataHolder);}     
     });
-  }
+  };
 
   o.formattedList = function(){
     return _.groupBy(o.brands, function(br){
       return br.name[0].toLowerCase();
     });
-  }
+  };
 
   o.list = function(){
     return o.brands;
-  }
+  };
 
-  return o
-}])
+  o.addCount = function(newArr){
+    var array = [];
+    _.map(o.brands, function(n){
+      _.forEach(newArr, function(v){
+        if (v.name == n.name){
+          n.count = v.count;
+          n.displayName = n.name + ' ' + '(' + n.count + ')';
+        }
+      });
+      if (!n.count){
+        n.count = 0;
+        n.displayName = n.name;
+      }
+    });
+    $rootScope.$broadcast('brandsLoaded');
+  };
+
+  return o;
+}]);
 
 app.factory('Meta', function(){
   content = {};

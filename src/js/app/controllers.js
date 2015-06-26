@@ -250,30 +250,34 @@ app.controller('CategoryController', ['$scope', 'Filters', 'Products', 'Categori
   var changed;
   Categories.fetchCategories();
   $scope.catId = Filters.getFilters().category;
-  $scope.myCats = [{id: 0, name: "All"}].concat(Categories.list());
+  $scope.myCats = [{id: 0, displayName: "All"}].concat(Categories.list());
   $scope.$on("catsLoaded", function(){
-    $scope.myCats = [{id: 0, name: "All"}].concat(Categories.list());
+    $scope.myCats = [{id: 0, displayName: "All"}].concat(Categories.list());
   });
 
+  $rootScope.$on("categoriesReceived", function(event, array){
+    Categories.addCount(array);
+  });
 
-  $scope.categories = Categories
+  $scope.categories = Categories;
 
   $scope.myConfig = {
       create: false,
       valueField: 'id',
-      labelField: 'name',
+      labelField: 'displayName',
+      sortField: [{field: 'count', direction: 'desc'}],
       maxItems: 1,
       searchField: 'name',
       allowEmptyOption: true
     };
 
   $scope.setCategory = function(cat_id){
-    if (cat_id === undefined || cat_id == 0) {
+    if (cat_id === undefined || cat_id === 0) {
       changed = Filters.removeFilter("category");
     } else {
       changed = Filters.setFilter("category", parseInt(cat_id));
       ga('send', 'event', 'filters', 'selectCategory', cat_id);
-      $rootScope.$broadcast('stylesLoaded');
+      //$rootScope.$broadcast('stylesLoaded');
     }
     
     if (changed) {
@@ -315,13 +319,17 @@ app.controller('SubCategoryController', ['$scope', 'Filters', 'Products', 'Categ
   };
 }]);
 
-app.controller('StylesController', ['$scope', 'Filters', 'Products', 'Categories', 'Styles', function($scope, Filters, Products, Categories, Styles){
+app.controller('StylesController', ['$scope', 'Filters', 'Products', 'Categories', 'Styles', '$rootScope', function($scope, Filters, Products, Categories, Styles, $rootScope){
   var changed;
   $scope.styleId = Filters.getFilters().style;
   Styles.fetchStyles();
-  $scope.myStyles = [{id: 0, name: "All"}].concat(Styles.availableList());
+  $scope.myStyles = [{id: 0, displayName: "All"}].concat(Styles.availableList());
   $scope.$on("stylesLoaded", function(){
-    $scope.myStyles = [{id: 0, name: "All"}].concat(Styles.availableList());
+    $scope.myStyles = [{id: 0, displayName: "All"}].concat(Styles.availableList());
+  });
+
+  $rootScope.$on("stylesReceived", function(event, array){
+    Styles.addCount(array);
   });
 
   $scope.styles = Styles;
@@ -330,7 +338,8 @@ app.controller('StylesController', ['$scope', 'Filters', 'Products', 'Categories
   $scope.myConfig = {
     create: false,
     valueField: 'id',
-    labelField: 'name',
+    labelField: 'displayName',
+    sortField: [{field: 'count', direction: 'desc'}],
     maxItems: 1,
     searchField: 'name',
     allowEmptyOption: true
@@ -350,23 +359,27 @@ app.controller('StylesController', ['$scope', 'Filters', 'Products', 'Categories
   };
 }]);
 
-app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', function($scope, Filters, Products, Colors){
+app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', '$rootScope', function($scope, Filters, Products, Colors, $rootScope){
   var changed;
-  $scope.colorId = Filters.getFilters().color;
   Colors.fetchColors();
-  $scope.myColors = [{id: 0, name: "All"}].concat(Colors.list());
+  $scope.colorId = Filters.getFilters().color;
+  $scope.myColors = [{id: 0, displayName: "All"}].concat(Colors.list());
   $scope.$on("colorsLoaded", function(){
-    $scope.myColors = [{id: 0, name: "All"}].concat(Colors.list());
+    $scope.myColors = [{id: 0, displayName: "All"}].concat(Colors.list());
+  });
+
+  $rootScope.$on("colorsReceived", function(event, array){
+    Colors.addCount(array);
   });
 
   $scope.colors = Colors;
-  
   $scope.myConfig = {
       create: false,
       valueField: 'id',
-      labelField: 'name',
+      labelField: 'displayName',
+      sortField: [{field: 'count', direction: 'desc'}],
       maxItems: 1,
-      searchField: 'name',
+      searchField: 'displayName',
       allowEmptyOption: true
     };
 
@@ -383,15 +396,19 @@ app.controller('ColorController', ['$scope', 'Filters', 'Products', 'Colors', fu
   };
 }]);
 
-app.controller('BrandDropdownController', ['$scope', 'Filters', 'Products', 'Brands', '$http', function($scope, Filters, Products, Brands, $http){
+app.controller('BrandDropdownController', ['$scope', 'Filters', 'Products', 'Brands', '$http', '$rootScope', function($scope, Filters, Products, Brands, $http, $rootScope){
   var changed;
   $scope.brandId = Filters.getFilters().brand;
 
   Brands.fetchBrands();
-  $scope.myBrands = [{id: 0, name: "All"}].concat(Brands.brands);
+  $scope.myBrands = [{id: 0, displayName: "All"}].concat(Brands.brands);
   
   $scope.$on("brandsLoaded", function(){
-    $scope.myBrands = [{id: 0, name: "All"}].concat(Brands.brands)
+    $scope.myBrands = [{id: 0, displayName: "All"}].concat(Brands.brands);
+  });
+
+  $rootScope.$on("brandsReceived", function(event, array){
+    Brands.addCount(array);
   });
 
   $scope.brands = Brands;
@@ -399,7 +416,8 @@ app.controller('BrandDropdownController', ['$scope', 'Filters', 'Products', 'Bra
   $scope.myConfig = {
       create: false,
       valueField: 'id',
-      labelField: 'name',
+      labelField: 'displayName',
+      sortField: [{field: 'count', direction: 'desc'}],
       maxItems: 1,
       searchField: 'name',
       allowEmptyOption: true
@@ -418,21 +436,27 @@ app.controller('BrandDropdownController', ['$scope', 'Filters', 'Products', 'Bra
   }; 
 }]);
 
-app.controller('MaterialController', ['$scope', 'Filters', 'Products', 'Materials', function($scope, Filters, Products, Materials){
+
+app.controller('MaterialController', ['$scope', 'Filters', 'Products', 'Materials', '$rootScope', function($scope, Filters, Products, Materials, $rootScope){
   
   $scope.materials = [];
   Materials.fetchMaterials();
-  $scope.myMaterials = [{id: 0, name: "All"}].concat(Materials.list());
+  $scope.myMaterials = [{id: 0, displayName: "All"}].concat(Materials.list());
   $scope.filters = Filters;
 
   $scope.$on("materialsLoaded", function(){
-    $scope.myMaterials = [{id: 0, name: "All"}].concat(Materials.list())
+    $scope.myMaterials = [{id: 0, displayName: "All"}].concat(Materials.list())
+  });
+
+  $rootScope.$on("materialsReceived", function(event, array){
+    Materials.addCount(array);
   });
 
   $scope.myConfig = {
     create: false,
     valueField: 'id',
-    labelField: 'name',
+    labelField: 'displayName',
+    sortField: [{field: 'count', direction: 'desc'}],
     maxItems: 1,
     searchField: 'name',
     allowEmptyOption: true
